@@ -1,5 +1,5 @@
-﻿using DataAccess.ApiRequests;
-using DataAccess.ApiRequests.Nasa;
+﻿using ApiRequests;
+using ApiRequests.Nasa;
 using System;
 using System.Threading.Tasks;
 

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 
 
-namespace DataAccess.ApiRequests.Nasa
+namespace ApiRequests.Nasa
 {
     internal class SatelliteCollection
     {

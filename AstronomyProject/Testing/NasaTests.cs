@@ -1,4 +1,4 @@
-﻿using DataAccess.ApiRequests.Nasa;
+﻿using ApiRequests.Nasa;
 using System;
 using System.Threading.Tasks;
 

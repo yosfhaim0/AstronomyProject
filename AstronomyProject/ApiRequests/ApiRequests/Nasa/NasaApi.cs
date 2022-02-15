@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 // tytdjk9rjM9VFGudlmOf7tnLyMYeOTFZjRp36YjU
 // noam api
-namespace DataAccess.ApiRequests.Nasa
+namespace ApiRequests.Nasa
 {
     public class NasaApi
     {
