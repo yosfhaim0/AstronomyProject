@@ -11,8 +11,9 @@ namespace Testing
 
         static async Task Main(string[] args)
         {
-            await _nasaTest.TestSatellaitGet();
-            await _nasaTest.GetImageTest();
+            //await _nasaTest.TestSatellaitGet();
+            //await _nasaTest.GetImageTest();
+            await _nasaTest.GetImageOfTheDayTest();
         }
     }
 }

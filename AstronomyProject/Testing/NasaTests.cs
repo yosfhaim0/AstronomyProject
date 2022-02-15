@@ -10,7 +10,7 @@ namespace Testing
 
         public async Task GetImageTest()
         {  
-            var result = await _nasaClient.GetImage("jupiter");
+            var result = await _nasaClient.GetImageBy("jupiter");
             Console.WriteLine(result);
         }
 
@@ -20,5 +20,12 @@ namespace Testing
             var output = string.Join("\n", result);
             Console.WriteLine(output);
         }
+
+        public async Task GetImageOfTheDayTest()
+        {
+            var result = await _nasaClient.GetImageOfTheDay();
+            Console.WriteLine(result);
+        }
+
     }
 }
