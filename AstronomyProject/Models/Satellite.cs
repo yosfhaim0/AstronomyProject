@@ -3,14 +3,8 @@ using System;
 
 namespace Models
 {
-    public class Satellite
+    public record Satellite
     {
-        //[JsonProperty("@id")]
-        //public string Id { get; set; }
-
-        //[JsonProperty("@type")]
-        //public string Type { get; set; }
-
         [JsonProperty("satelliteId")]
         public int SatelliteId { get; set; }
 

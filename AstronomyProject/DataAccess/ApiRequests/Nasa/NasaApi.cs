@@ -33,7 +33,7 @@ namespace DataAccess.ApiRequests.Nasa
             {
                 var jsonString = await GetTle();
                 var result = JsonConvert.DeserializeObject<SatelliteCollection>(jsonString);
-                return result.member;
+                return result.Satellites;
             }
             catch (Exception)
             {
