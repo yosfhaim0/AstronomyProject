@@ -18,27 +18,13 @@ namespace DataAccess.ApiRequests.Nasa
 
         const string GET_APOD = @"https://api.nasa.gov/planetary/apod?api_key=";
 
-
         readonly HttpGet client = new();
         
-        private async Task<string> GetTle()
-        {
-            try
-            {
-                return await client.GetAsync(GET_TLE);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-
-        }
-
         public async Task<List<Satellite>> GetSatellites()
         {
             try
             {
-                var jsonString = await GetTle();
+                var jsonString = await client.GetAsync(GET_TLE);
                 var result = JsonConvert.DeserializeObject<SatelliteCollection>(jsonString);
                 return result.Satellites;
             }
