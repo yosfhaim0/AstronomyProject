@@ -17,9 +17,9 @@ namespace DataAccess.Repositories
             Context = dbContext;
         }
 
-        public Task Delete(TModel model)
+        public async Task Delete(TModel model)
         {
-            return Task.Run(() => Context.Set<TModel>().Remove(model));
+            await Task.Run(() => Context.Set<TModel>().Remove(model));
         }
 
         public async Task<IEnumerable<TModel>> FindAll(Expression<Func<TModel, bool>> predicate)

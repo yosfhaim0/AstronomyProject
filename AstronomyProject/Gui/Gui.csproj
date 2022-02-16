@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ApiRequests\ApiRequests.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
+    <ProjectReference Include="..\Tools\Tools.csproj" />
   </ItemGroup>
 
 </Project>

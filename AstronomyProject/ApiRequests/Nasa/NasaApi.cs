@@ -1,4 +1,5 @@
 ﻿using Models;
+using Models.Dtos;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,18 @@ namespace ApiRequests.Nasa
         const string GET_APOD = @"https://api.nasa.gov/planetary/apod?api_key=";
 
         readonly HttpGet client = new();
+
+        readonly string _apiKey;
+
+        public NasaApi()
+        {
+
+        }
+
+        public NasaApi(string apiKey)
+        {
+            _apiKey = apiKey;
+        }
         
         public async Task<List<Satellite>> GetSatellites()
         {
@@ -42,7 +55,7 @@ namespace ApiRequests.Nasa
             return content;
         }
 
-        public async Task<ImageOfTheDay> GetImageOfTheDay()
+        public async Task<GetAPODNasaDto> GetImageOfTheDay()
         {
             try
             {
@@ -50,7 +63,7 @@ namespace ApiRequests.Nasa
 
                 var jsonString = await client.GetAsync(query);
 
-                var result = JsonConvert.DeserializeObject<ImageOfTheDay>(jsonString);
+                var result = JsonConvert.DeserializeObject<GetAPODNasaDto>(jsonString);
 
                 return result;
             }

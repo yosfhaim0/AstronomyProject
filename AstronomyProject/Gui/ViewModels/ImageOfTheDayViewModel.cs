@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tools;
 
 namespace Gui.ViewModels
 {
@@ -20,7 +21,8 @@ namespace Gui.ViewModels
             new DelegateCommand(async () =>
             {
                 NasaApi nasaApi = new NasaApi();
-                var img = await nasaApi.GetImageOfTheDay();
+                var imgDto = await nasaApi.GetImageOfTheDay();
+                var img = imgDto.CopyPropertiesToNew(typeof(ImageOfTheDay)) as ImageOfTheDay;
                 Images.Clear();
                 Images.Add(img);
             });
