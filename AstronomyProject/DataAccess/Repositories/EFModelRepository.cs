@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
-    internal class EFModelRepository<TModel> : IModelRepository<TModel> where TModel : class
+    public class EFModelRepository<TModel> : IModelRepository<TModel> where TModel : class
     {
         readonly protected DbContext Context;
 

@@ -42,7 +42,7 @@ namespace ApiRequests.Nasa
             return content;
         }
 
-        public async Task<NASAImageOfTheDay> GetImageOfTheDay()
+        public async Task<ImageOfTheDay> GetImageOfTheDay()
         {
             try
             {
@@ -50,7 +50,7 @@ namespace ApiRequests.Nasa
 
                 var jsonString = await client.GetAsync(query);
 
-                var result = JsonConvert.DeserializeObject<NASAImageOfTheDay>(jsonString);
+                var result = JsonConvert.DeserializeObject<ImageOfTheDay>(jsonString);
 
                 return result;
             }

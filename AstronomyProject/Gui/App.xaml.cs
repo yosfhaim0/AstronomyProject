@@ -27,13 +27,8 @@ namespace Gui
     public partial class App : PrismApplication
     {
 
-        protected override async void RegisterTypes(IContainerRegistry containerRegistry)
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-
-            NasaApi nasaApi = new NasaApi();
-            var a = await nasaApi.GetImageOfTheDay();
-            containerRegistry.RegisterInstance(a);//NASAImageOfTheDay
-
         }
 
         protected override Window CreateShell()

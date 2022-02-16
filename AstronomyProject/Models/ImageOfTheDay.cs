@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public record NASAImageOfTheDay
+    public record ImageOfTheDay
     {
         public int Id { get; set; }
 
@@ -22,5 +22,8 @@ namespace Models
 
         [JsonProperty("title")]
         public string Title { get; set; }
+
+        [JsonProperty("media_type")]
+        public string MediaType { get; set; }
     }
 }

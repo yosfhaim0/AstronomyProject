@@ -18,7 +18,7 @@ namespace DataAccess.DbContexts
         {
 
         }
-        public DbSet<NASAImageOfTheDay> ImageOfTheDayGallery { get; set; }
+        public DbSet<ImageOfTheDay> ImageOfTheDayGallery { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
