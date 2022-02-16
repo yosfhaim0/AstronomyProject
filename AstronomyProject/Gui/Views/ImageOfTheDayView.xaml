@@ -39,7 +39,7 @@
                                     Grid.Row="2"
                                     Width="600"
                                     Height="350"
-                                    Address="{Binding ImageUrl}" />
+                                    Address="{Binding Url}" />
                                 <Expander>
                                     <Expander.Header>
                                         <materialDesign:PackIcon
@@ -66,7 +66,7 @@
         </ItemsControl>
         <Button
             Width="130"
-            Command="{Binding load}"
+            Command="{Binding Load}"
             Content="Load image" />
     </StackPanel>
 </UserControl>

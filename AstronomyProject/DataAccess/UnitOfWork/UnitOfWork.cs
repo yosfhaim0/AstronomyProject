@@ -14,13 +14,13 @@ namespace DataAccess.UnitOfWork
     {
         readonly AstronomyContext _context;
 
-        public UnitOfWork(AstronomyContext context)
+        public UnitOfWork(DbContextFactory contextFactory)
         {
-            _context = context;
-            ImageOfTheDayRepository = new EFModelRepository<ImageOfTheDay>(context);
+            _context = contextFactory.CreateAstronomyContext();
+            ImageOfTheDayRepository = new ImageOfTheDayRepository(_context);
         }
 
-        public IModelRepository<ImageOfTheDay> ImageOfTheDayRepository { get; }
+        public IImageOfTheDayRepository ImageOfTheDayRepository { get; }
 
         public async Task Complete()
         {

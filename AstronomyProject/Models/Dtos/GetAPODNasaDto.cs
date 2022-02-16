@@ -10,7 +10,7 @@ namespace Models.Dtos
     public class GetAPODNasaDto
     {
         [JsonProperty("url")]
-        public string ImageUrl { get; set; }
+        public string Url { get; set; }
 
         [JsonProperty("explanation")]
         public string Explanation { get; set; }

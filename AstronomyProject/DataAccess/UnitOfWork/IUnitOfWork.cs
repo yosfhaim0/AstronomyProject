@@ -10,7 +10,7 @@ namespace DataAccess.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {
-        public IModelRepository<ImageOfTheDay> ImageOfTheDayRepository { get; }
+        public IImageOfTheDayRepository ImageOfTheDayRepository { get; }
 
         Task Complete();
     }

@@ -1,4 +1,6 @@
 ﻿using ApiRequests.Nasa;
+using DataAccess.DbContexts;
+using DataAccess.UnitOfWork;
 using Models;
 using Prism.Ioc;
 using Prism.Unity;
@@ -29,6 +31,9 @@ namespace Gui
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            var con = @"Data Source=(localdb)\MSSQLLocalDB;Database=AstronomyDB;Trusted_Connection=True;";
+            containerRegistry.RegisterSingleton<IUnitOfWork, UnitOfWork>();
+            containerRegistry.RegisterInstance(new DbContextFactory(con));
         }
 
         protected override Window CreateShell()
