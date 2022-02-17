@@ -13,7 +13,7 @@ namespace Testing
         {
             //await _nasaTest.TestSatellaitGet();
             //await _nasaTest.GetImageTest();
-            await _nasaTest.GetImageOfTheDayTest();
+            await _nasaTest.GetAstroid();
         }
     }
 }

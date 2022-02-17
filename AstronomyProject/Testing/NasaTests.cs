@@ -26,6 +26,12 @@ namespace Testing
             var result = await _nasaClient.GetImageOfTheDay();
             Console.WriteLine(result);
         }
+        public async Task GetAstroid()
+        {
+            var result = await _nasaClient.GetClosestAsteroids(DateTime.Parse("16.02.2022"),DateTime.Now);
+            var output = string.Join("\n", result);
+            Console.WriteLine(output);
+        }
 
     }
 }
