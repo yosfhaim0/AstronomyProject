@@ -1,5 +1,6 @@
 ﻿using ApiRequests.Nasa;
 using DataAccess.UnitOfWork;
+using DomainModel.Services;
 using Models;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -15,21 +16,20 @@ namespace Gui.ViewModels
 {
     public class ImageOfTheDayViewModel : BindableBase
     {
-        IUnitOfWork _unitOfWork;
+        readonly IGalleryImageOfTheDayService _gallery;
 
-        public ImageOfTheDayViewModel(IUnitOfWork unitOfWork)
+        public ImageOfTheDayViewModel(IGalleryImageOfTheDayService gallery)
         {
-            _unitOfWork = unitOfWork;
+            _gallery = gallery;
         }
 
         public ObservableCollection<ImageOfTheDay> Images { get; set; } = new();
-        DelegateCommand _load;
         
+        DelegateCommand _load;
         public DelegateCommand Load => _load ??=
             new DelegateCommand(async () =>
             {
-                var img = await _unitOfWork.ImageOfTheDayRepository.GetImageOfTheDayFromNasa();
-                await _unitOfWork.Complete();
+                var img = await _gallery.GetTodayImage();
                 Images.Clear();
                 Images.Add(img);
             });

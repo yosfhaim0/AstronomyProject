@@ -2,6 +2,7 @@
 using DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Models.Configurations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,11 @@ namespace DataAccess.UnitOfWork
     {
         readonly AstronomyContext _context;
 
-        public UnitOfWork(DbContextFactory contextFactory)
+        public UnitOfWork(MyConfigurations configurations)
         {
-            _context = contextFactory.CreateAstronomyContext();
+            var dbContexFactory = new DbContextFactory(configurations.CurrentConnectionStrings);
+            _context = dbContexFactory.CreateAstronomyContext();
+            
             ImageOfTheDayRepository = new ImageOfTheDayRepository(_context);
         }
 

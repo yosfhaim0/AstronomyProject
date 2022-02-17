@@ -1,44 +1,37 @@
-﻿using ApiRequests.Nasa;
-using DataAccess.DbContexts;
-using DataAccess.UnitOfWork;
-using Models;
+﻿using DomainModel.DbFactory;
+using DomainModel.Services;
+using Models.Configurations;
+using Newtonsoft.Json;
 using Prism.Ioc;
 using Prism.Unity;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
 namespace Gui
 {
-    class temp
-    {
-        //public string MyProperty { get; set; }
-        //async Task fun()
-        //{
-        //    NasaApi nasaApi = new NasaApi();
-        //    MyProperty = await nasaApi.GetImageOfTheDay();
-        //}
-    }
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : PrismApplication
-    {
-
+    { 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            var con = @"Data Source=(localdb)\MSSQLLocalDB;Database=AstronomyDB;Trusted_Connection=True;";
-            containerRegistry.RegisterSingleton<IUnitOfWork, UnitOfWork>();
-            containerRegistry.RegisterInstance(new DbContextFactory(con));
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"appsettings.json");
+            var jsonString = File.ReadAllText(path);
+            var configurations = JsonConvert.DeserializeObject<MyConfigurations>(jsonString);
+
+            containerRegistry.RegisterInstance(configurations);
+            containerRegistry.RegisterSingleton<IDbFactory, DbFactory>();
+            containerRegistry.Register<IGalleryImageOfTheDayService, GalleryImageOfTheDayService>();
         }
 
         protected override Window CreateShell()
         {
-            //var a = Container.Resolve<NASAImageOfTheDay>();
             var main = Container.Resolve<MainWindow>();
             return main;
         }
