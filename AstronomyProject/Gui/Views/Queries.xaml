@@ -7,19 +7,25 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel Orientation="Vertical">
-        <TextBlock Text="what you want to seek?"></TextBlock>
-        <ComboBox>
-            <ComboBoxItem>
-                <TextBlock Text="find all the astroid that large then"></TextBlock>
-            </ComboBoxItem>
-            <ComboBoxItem>
-                <TextBlock Text="find all the astroid that dengerous to earth"></TextBlock>
-            </ComboBoxItem>
-            <ComboBoxItem>
-                <TextBlock Text="find all the astroid from date to date"></TextBlock>
-            </ComboBoxItem>
-        </ComboBox>
-
+        
+        <TextBlock Text="what you want to find?"></TextBlock>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+            <ComboBox HorizontalAlignment="Left">
+                <ComboBoxItem>
+                    <TextBlock Text="find all the astroid that large then"></TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <TextBlock Text="find all the astroid that dengerous to earth"></TextBlock>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <TextBlock Text="find all the astroid from date to date"></TextBlock>
+                </ComboBoxItem>
+            </ComboBox>
+            <TextBox Text="value " HorizontalAlignment="Right" ></TextBox>
+        </StackPanel>
+        <Button Content="ok">
+            
+        </Button>
 
     </StackPanel>
 </UserControl>

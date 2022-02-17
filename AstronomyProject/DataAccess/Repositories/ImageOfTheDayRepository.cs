@@ -19,7 +19,7 @@ namespace DataAccess.Repositories
 
         public async Task<ImageOfTheDay> GetImageOfTheDayFromNasa()
         {
-            var isExist = await FindAll(i => i.Date == DateTime.Now);
+            var isExist = await FindAll(i => i.Date == DateTime.Now.Date);
             if (isExist.Any())
             {
                 return isExist.First();
