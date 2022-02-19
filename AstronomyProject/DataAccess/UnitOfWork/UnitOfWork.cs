@@ -1,5 +1,6 @@
 ﻿using DataAccess.DbContexts;
 using DataAccess.Repositories;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using Models.Configurations;

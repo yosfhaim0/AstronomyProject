@@ -29,9 +29,12 @@ namespace DomainModel.Services
             return img;
         }
 
-        public Task<IEnumerable<ImageOfTheDay>> GetGallery()
+        public async Task<IEnumerable<ImageOfTheDay>> GetGallery()
         {
-            throw new NotImplementedException();
+            var images = await _unitOfWork
+                .ImageOfTheDayRepository
+                .GetAll();
+            return images;
         }
     }
 }

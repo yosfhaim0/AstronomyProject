@@ -8,65 +8,121 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:web="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+    Width="1200"
+    Height="800"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <StackPanel>
-        <ItemsControl ItemsSource="{Binding Images}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-
-                        <TextBlock
-                            Grid.Row="0"
-                            HorizontalAlignment="Center"
-                            Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                            Text="{Binding Title}" />
-                        <TextBlock
-                            Grid.Row="1"
-                            HorizontalAlignment="Center"
-                            Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
-                            Text="{Binding Date, StringFormat=dd/MM/yyyy}" />
-                        <Border Grid.Row="2" Width="600">
-                            <StackPanel>
-                                <web:ChromiumWebBrowser
-                                    Grid.Row="2"
-                                    Width="600"
-                                    Height="350"
-                                    Address="{Binding Url}" />
-                                <Expander>
-                                    <Expander.Header>
-                                        <materialDesign:PackIcon
-                                            Width="30"
-                                            Height="30"
-                                            Kind="ImageDescription"
-                                            ToolTip="Description" />
-                                    </Expander.Header>
-                                    <TextBox
-                                        MaxWidth="400"
-                                        Background="Transparent"
-                                        BorderThickness="0"
-                                        FontFamily="{StaticResource MaterialDesignFont}"
-                                        FontSize="14"
-                                        IsReadOnly="True"
-                                        Text="{Binding Explanation}"
-                                        TextWrapping="Wrap" />
-                                </Expander>
-                            </StackPanel>
-                        </Border>
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
         <Button
             Width="130"
             Command="{Binding Load}"
             Content="Load image" />
+        <GroupBox
+            materialDesign:ColorZoneAssist.Background="Black"
+            materialDesign:ColorZoneAssist.Foreground="White"
+            materialDesign:ColorZoneAssist.Mode="Custom"
+            DataContext="{Binding SelectedImage}"
+            Header="{Binding Title}"
+            Style="{StaticResource MaterialDesignCardGroupBox}">
+            <GroupBox.HeaderTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="32"
+                            Height="32"
+                            VerticalAlignment="Center"
+                            Kind="ImageArea" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                            Text="{Binding}" />
+                    </StackPanel>
+                </DataTemplate>
+            </GroupBox.HeaderTemplate>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    HorizontalAlignment="Center"
+                    Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
+                    Text="{Binding Date, StringFormat=dd/MM/yyyy}" />
+                <TextBox
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    MaxWidth="350"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    FontFamily="{StaticResource MaterialDesignFont}"
+                    FontSize="14"
+                    IsReadOnly="True"
+                    Text="{Binding Explanation}"
+                    TextWrapping="Wrap" />
+                <web:ChromiumWebBrowser
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="1"
+                    Width="600"
+                    Height="400"
+                    Margin="30,0,0,0"
+                    HorizontalAlignment="Stretch"
+                    Address="{Binding Url}" />
+                <!--<Border Grid.Row="1" Width="500">
+                    <StackPanel>
+
+                        <Expander>
+                            <Expander.Header>
+                                <materialDesign:PackIcon
+                                    Width="30"
+                                    Height="30"
+                                    Kind="ImageDescription"
+                                    ToolTip="Description" />
+                            </Expander.Header>
+                            <TextBox
+                                MaxWidth="400"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                FontFamily="{StaticResource MaterialDesignFont}"
+                                FontSize="14"
+                                IsReadOnly="True"
+                                Text="{Binding Explanation}"
+                                TextWrapping="Wrap" />
+                        </Expander>
+                    </StackPanel>
+                </Border>-->
+            </Grid>
+        </GroupBox>
+        <ListBox
+            HorizontalAlignment="Stretch"
+            ItemsSource="{Binding Gallery}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            SelectedItem="{Binding SelectedImage}"
+            Style="{StaticResource MaterialDesignNavigationListBox}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <web:ChromiumWebBrowser
+                            Width="240"
+                            Height="120"
+                            Address="{Binding Url}"
+                            IsEnabled="False" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </StackPanel>
 </UserControl>

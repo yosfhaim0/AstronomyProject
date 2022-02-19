@@ -23,15 +23,27 @@ namespace Gui.ViewModels
             _gallery = gallery;
         }
 
-        public ObservableCollection<ImageOfTheDay> Images { get; set; } = new();
-        
+        public ObservableCollection<ImageOfTheDay> Gallery { get; set; } = new();
+
+        private ImageOfTheDay _selectedImage;
+        public ImageOfTheDay SelectedImage
+        {
+            get { return _selectedImage; }
+            set 
+            { 
+                SetProperty(ref _selectedImage, value); 
+            }
+        }
+
+
         DelegateCommand _load;
         public DelegateCommand Load => _load ??=
             new DelegateCommand(async () =>
             {
-                var img = await _gallery.GetTodayImage();
-                Images.Clear();
-                Images.Add(img);
+                SelectedImage = await _gallery.GetTodayImage();
+                var gallery = await _gallery.GetGallery();
+                Gallery.Clear();
+                Gallery.AddRange(gallery);
             });
     }
 }
