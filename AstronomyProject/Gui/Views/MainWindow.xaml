@@ -6,7 +6,9 @@
     xmlns:local="clr-namespace:Gui.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
     Title="MainWindow"
+    prism:ViewModelLocator.AutoWireViewModel="True"
     WindowState="Maximized"
     mc:Ignorable="d">
     <DockPanel Margin="10">
@@ -15,19 +17,27 @@
             materialDesign:ShadowAssist.ShadowDepth="Depth2"
             DockPanel.Dock="Top">
             <StackPanel Orientation="Horizontal">
-                <ToggleButton
-                    x:Name="MenuToggleButton"
-                    HorizontalAlignment="Left"
-                    AutomationProperties.Name="HamburgerToggleButton"
-                    IsChecked="False"
-                    Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
-                <Button
-                    Margin="16,0,0,0"
-                    Content="{materialDesign:PackIcon Kind=Home,
-                                                      Size=30}"
-                    Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
-                    Style="{StaticResource MaterialDesignToolButton}"
-                    ToolTip="Home" />
+                <StackPanel Orientation="Horizontal">
+                    <ToggleButton
+                        x:Name="MenuToggleButton"
+                        HorizontalAlignment="Left"
+                        AutomationProperties.Name="HamburgerToggleButton"
+                        IsChecked="False"
+                        Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
+                    <Button
+                        Margin="16,0,0,0"
+                        Content="{materialDesign:PackIcon Kind=Home,
+                                                          Size=30}"
+                        Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
+                        Style="{StaticResource MaterialDesignToolButton}"
+                        ToolTip="Home" />
+                </StackPanel>
+                <TextBlock
+                    Margin="400,0,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                    Text="Astronomy Project" />
             </StackPanel>
         </materialDesign:ColorZone>
         <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
@@ -51,14 +61,19 @@
                         </TabItem>
                         <TabItem>
                             <TabItem.Header>
-                                <StackPanel Width="auto" Height="auto">
-                                    <materialDesign:PackIcon
-                                        Width="24"
-                                        Height="24"
-                                        HorizontalAlignment="Center"
-                                        Kind="Images" />
-                                    <TextBlock HorizontalAlignment="Center" Text="Photos" />
-                                </StackPanel>
+                                <Button
+                                    Command="{Binding NavigateCommand}"
+                                    CommandParameter="ImageOfTheDayView"
+                                    Style="{StaticResource MaterialDesignIconForegroundButton}">
+                                    <StackPanel Width="auto" Height="auto">
+                                        <materialDesign:PackIcon
+                                            Width="24"
+                                            Height="24"
+                                            HorizontalAlignment="Center"
+                                            Kind="Images" />
+                                        <TextBlock HorizontalAlignment="Center" Text="Images" />
+                                    </StackPanel>
+                                </Button>
                             </TabItem.Header>
                         </TabItem>
                         <TabItem>
@@ -77,14 +92,8 @@
                 </materialDesign:Card>
             </materialDesign:DrawerHost.LeftDrawerContent>
         </materialDesign:DrawerHost>
-        <Grid>
-            <!--<Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>-->
-            <local:ImageOfTheDayView />
-            <!--<Views:Queries Grid.Column="1" HorizontalAlignment="Left" Margin="86,0,0,0" VerticalAlignment="Center" Width="316" Height="136"/>-->
-        </Grid>
+
+        <ContentControl Margin="5" prism:RegionManager.RegionName="ContentRegion" />
     </DockPanel>
 
 </Window>
