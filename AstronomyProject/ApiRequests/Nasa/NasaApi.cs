@@ -105,6 +105,18 @@ namespace ApiRequests.Nasa
             DateTime dateVal = DateTime.ParseExact(date.ToShortDateString(), "yyyy-MM-dd", culture);
             //return dateVal;
         }
+        public async Task<List<string>> GetMediaBy(string keyWord)
+        {
+            var query = $"{GET_IMAGE_LIB_BASE}/asset/{keyWord}";
+            var content = await client.GetAsync(query);
+            var a = JsonConvert.DeserializeObject<Root>(content);
+            var result=new List<String>();
+            foreach (var item in a.collection.items)
+            {
+                result.Add(item.href);
+            }
+            return result;
+        }
 
 
     }
