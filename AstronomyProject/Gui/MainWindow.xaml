@@ -11,50 +11,74 @@
     WindowState="Maximized"
     mc:Ignorable="d">
     <DockPanel Margin="10">
-        <materialDesign:Card DockPanel.Dock="Left">
-            <TabControl
-                materialDesign:ColorZoneAssist.Mode="Standard"
-                materialDesign:ShadowAssist.ShadowDepth="Depth3"
-                Style="{StaticResource MaterialDesignNavigatilRailTabControl}">
-                <TabItem>
-                    <TabItem.Header>
-                        <StackPanel Width="auto" Height="auto">
-                            <materialDesign:PackIcon
-                                Width="24"
-                                Height="24"
-                                HorizontalAlignment="Center"
-                                Kind="ClockOutline" />
-                            <TextBlock HorizontalAlignment="Center" Text="Recent" />
-                        </StackPanel>
-                    </TabItem.Header>
-                </TabItem>
-                <TabItem>
-                    <TabItem.Header>
-                        <StackPanel Width="auto" Height="auto">
-                            <materialDesign:PackIcon
-                                Width="24"
-                                Height="24"
-                                HorizontalAlignment="Center"
-                                Kind="Images" />
-                            <TextBlock HorizontalAlignment="Center" Text="Photos" />
-                        </StackPanel>
-                    </TabItem.Header>
-                </TabItem>
-                <TabItem>
-                    <TabItem.Header>
-                        <StackPanel Width="auto" Height="auto">
-                            <materialDesign:PackIcon
-                                Width="24"
-                                Height="24"
-                                HorizontalAlignment="Center"
-                                Kind="MusicBoxMultiple" />
-                            <TextBlock HorizontalAlignment="Center" Text="Sounds" />
-                        </StackPanel>
-                    </TabItem.Header>
-                </TabItem>
-            </TabControl>
-        </materialDesign:Card>
-        <Grid DockPanel.Dock="Right">
+        <materialDesign:ColorZone
+            Padding="5"
+            materialDesign:ShadowAssist.ShadowDepth="Depth2"
+            DockPanel.Dock="Top">
+            <StackPanel Orientation="Horizontal">
+                <ToggleButton
+                    x:Name="MenuToggleButton"
+                    HorizontalAlignment="Left"
+                    AutomationProperties.Name="HamburgerToggleButton"
+                    IsChecked="False"
+                    Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
+                <Button
+                    Margin="16,0,0,0"
+                    Content="{materialDesign:PackIcon Kind=Home,
+                                                      Size=30}"
+                    Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
+                    Style="{StaticResource MaterialDesignToolButton}"
+                    ToolTip="Home" />
+            </StackPanel>
+        </materialDesign:ColorZone>
+        <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+            <materialDesign:DrawerHost.LeftDrawerContent>
+                <materialDesign:Card>
+                    <TabControl
+                        materialDesign:ColorZoneAssist.Mode="Standard"
+                        materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                        Style="{StaticResource MaterialDesignNavigatilRailTabControl}">
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Width="auto" Height="auto">
+                                    <materialDesign:PackIcon
+                                        Width="24"
+                                        Height="24"
+                                        HorizontalAlignment="Center"
+                                        Kind="ClockOutline" />
+                                    <TextBlock HorizontalAlignment="Center" Text="Recent" />
+                                </StackPanel>
+                            </TabItem.Header>
+                        </TabItem>
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Width="auto" Height="auto">
+                                    <materialDesign:PackIcon
+                                        Width="24"
+                                        Height="24"
+                                        HorizontalAlignment="Center"
+                                        Kind="Images" />
+                                    <TextBlock HorizontalAlignment="Center" Text="Photos" />
+                                </StackPanel>
+                            </TabItem.Header>
+                        </TabItem>
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Width="auto" Height="auto">
+                                    <materialDesign:PackIcon
+                                        Width="24"
+                                        Height="24"
+                                        HorizontalAlignment="Center"
+                                        Kind="MusicBoxMultiple" />
+                                    <TextBlock HorizontalAlignment="Center" Text="Sounds" />
+                                </StackPanel>
+                            </TabItem.Header>
+                        </TabItem>
+                    </TabControl>
+                </materialDesign:Card>
+            </materialDesign:DrawerHost.LeftDrawerContent>
+        </materialDesign:DrawerHost>
+        <Grid>
             <!--<Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />

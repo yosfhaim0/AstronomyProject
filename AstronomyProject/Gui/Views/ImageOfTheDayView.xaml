@@ -10,7 +10,7 @@
     xmlns:prism="http://prismlibrary.com/"
     xmlns:web="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
     Name="GalleryView"
-    Width="1100"
+    Width="1120"
     Height="720"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
@@ -108,31 +108,27 @@
                     Grid.RowSpan="2"
                     Grid.Column="1"
                     Width="650"
-                    Height="400"
+                    Height="380"
                     Margin="20,0"
                     HorizontalAlignment="Stretch"
                     Address="{Binding Url}" />
                 <StackPanel Grid.RowSpan="2" Grid.Column="2">
-                    <Button Command="{Binding ElementName=GalleryView, Path=DataContext.MoveNext}" Style="{StaticResource MaterialDesignIconButton}">
-                        <materialDesign:PackIcon
-                            Width="90"
-                            Height="60"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Kind="ArrowRight" />
-                    </Button>
+                    <Button
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Command="{Binding ElementName=GalleryView, Path=DataContext.MoveNext}"
+                        Content="{materialDesign:PackIcon Kind=ArrowRight,
+                                                          Size=55}"
+                        Style="{StaticResource MaterialDesignIconButton}" />
                     <Button
                         Margin="0,20,0,0"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
                         Command="{Binding ElementName=GalleryView, Path=DataContext.MovePrev}"
+                        Content="{materialDesign:PackIcon Kind=ArrowLeft,
+                                                          Size=55}"
                         Foreground="#70757a"
-                        Style="{StaticResource MaterialDesignIconButton}">
-                        <materialDesign:PackIcon
-                            Width="90"
-                            Height="60"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Kind="ArrowLeft" />
-                    </Button>
+                        Style="{StaticResource MaterialDesignIconButton}" />
                 </StackPanel>
             </Grid>
         </GroupBox>

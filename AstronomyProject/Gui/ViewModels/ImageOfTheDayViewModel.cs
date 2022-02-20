@@ -30,7 +30,6 @@ namespace Gui.ViewModels
             set { SetProperty(ref _isLoading, value); }
         }
 
-
         public ObservableCollection<ImageOfTheDay> Gallery { get; set; } = new();
 
         private ImageOfTheDay _selectedImage;
