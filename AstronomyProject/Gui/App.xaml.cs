@@ -26,6 +26,8 @@ namespace Gui
             containerRegistry.RegisterSingleton<IDbFactory, DbFactory>();
             containerRegistry.Register<IGalleryImageOfTheDayService, GalleryImageOfTheDayService>();
             containerRegistry.RegisterForNavigation<ImageOfTheDayView>(nameof(ImageOfTheDayView));
+            containerRegistry.RegisterForNavigation<HomeView>(nameof(HomeView));
+
         }
 
         private MyConfigurations GetConfigurations()
