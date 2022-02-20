@@ -36,6 +36,9 @@ namespace Gui
             var jsonString = File.ReadAllText(path);
             var configurations = JsonConvert.DeserializeObject<MyConfigurations>(jsonString);
             return configurations;
+
+
+
         }
 
         protected override Window CreateShell()

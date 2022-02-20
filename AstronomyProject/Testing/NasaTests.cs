@@ -10,7 +10,7 @@ namespace Testing
 
         public async Task GetImageTest()
         {  
-            var result = await _nasaClient.GetImageBy("asll-40-5874");
+            var result = await _nasaClient.GetMediaBy("as11-40-5874");
             Console.WriteLine(result);
         }
 
