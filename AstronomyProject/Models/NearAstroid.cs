@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public class NearAstroid
+    public record NearAstroid
     {
         [Key]
         public int Id { get; set; }
@@ -16,7 +16,7 @@ namespace Models
 
         public string NeoReferenceId { get; set; }
 
-        [MaxLength (100)]
+        [MaxLength(100)]
         public string Name { get; set; }
 
         [MaxLength(500)]
