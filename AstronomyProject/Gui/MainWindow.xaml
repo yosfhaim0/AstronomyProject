@@ -14,7 +14,7 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>-->
-        <Views:ImageOfTheDayView />
+        <Views:Queries />
         <!--<Views:Queries Grid.Column="1" HorizontalAlignment="Left" Margin="86,0,0,0" VerticalAlignment="Center" Width="316" Height="136"/>-->
     </Grid>
 </Window>

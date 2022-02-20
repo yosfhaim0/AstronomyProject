@@ -18,12 +18,13 @@ namespace ApiRequests.Nasa
         const string API_KEY = @"tytdjk9rjM9VFGudlmOf7tnLyMYeOTFZjRp36YjU";
 
         const string GET_TLE = @"https://tle.ivanstanojevic.me/api/tle/";
-
+        //
         const string GET_IMAGE_LIB_BASE = @"https://images-api.nasa.gov";
-
+        //get nasa picture of the day 
         const string GET_APOD = @"https://api.nasa.gov/planetary/apod?api_key=";
-
+        //astrid closest to Earth
         string GET_AC = @"https://api.nasa.gov/neo/rest/v1/feed?start_date=START_DATE&end_date=END_DATE&api_key=API_KEY";
+
 
         readonly HttpGet client = new();
 
@@ -85,16 +86,16 @@ namespace ApiRequests.Nasa
             var query = GET_AC.Replace("START_DATE", startFormat)
                 .Replace("END_DATE", endFormat)
                 .Replace("API_KEY", API_KEY);
-            
+
             var jsonString = await client.GetAsync(query);
             var dict = JsonConvert.DeserializeObject<NearAstridCollection>(jsonString);
-            
+
             var result = new List<GetNANasaDto>();
-            foreach(var item in dict.NearAstroids)
+            foreach (var item in dict.NearAstroids)
             {
                 result.AddRange(item.Value);
             }
-            
+
             return result;
         }
 
@@ -104,5 +105,7 @@ namespace ApiRequests.Nasa
             DateTime dateVal = DateTime.ParseExact(date.ToShortDateString(), "yyyy-MM-dd", culture);
             //return dateVal;
         }
+
+
     }
 }

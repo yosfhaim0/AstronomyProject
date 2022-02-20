@@ -10,7 +10,7 @@ namespace Testing
 
         public async Task GetImageTest()
         {  
-            var result = await _nasaClient.GetImageBy("jupiter");
+            var result = await _nasaClient.GetImageBy("asll-40-5874");
             Console.WriteLine(result);
         }
 
@@ -29,7 +29,9 @@ namespace Testing
         public async Task GetAstroid()
         {
             var result = await _nasaClient.GetClosestAsteroids(DateTime.Parse("16.02.2022"),DateTime.Now);
+            
             var output = string.Join("\n", result);
+
             Console.WriteLine(output);
         }
 
