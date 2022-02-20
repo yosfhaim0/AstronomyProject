@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Gui.Views
 {
     /// <summary>
-    /// Interaction logic for Queries.xaml
+    /// Interaction logic for SearchMedia.xaml
     /// </summary>
-    public partial class Queries : UserControl
+    public partial class SearchMediaView : UserControl
     {
-        public Queries()
+        public SearchMediaView()
         {
             InitializeComponent();
         }
