@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public class NearAstroid
+    public record NearAstroid
     {
         [Key]
         public int Id { get; set; }
