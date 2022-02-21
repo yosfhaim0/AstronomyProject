@@ -35,7 +35,7 @@ namespace Gui.ViewModels
         private ImageOfTheDay _selectedImage;
         public ImageOfTheDay SelectedImage
         {
-            get { return _selectedImage; }
+            get { return _selectedImage ?? Gallery?.FirstOrDefault(); }
             set
             {
                 SetProperty(ref _selectedImage, value);
@@ -66,6 +66,10 @@ namespace Gui.ViewModels
         public DelegateCommand Load => _load ??= new DelegateCommand(
             async () =>
             {
+                if (Gallery.Any())
+                {
+                    return;
+                }
                 IsLoading = true;
                 SelectedImage = await _gallery.GetTodayImage();
                 var gallery = await _gallery.GetGallery();

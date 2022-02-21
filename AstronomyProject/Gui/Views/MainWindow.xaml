@@ -45,7 +45,17 @@
         <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
             <materialDesign:DrawerHost.LeftDrawerContent>
                 <materialDesign:Card>
-                    <TabControl
+                    <materialDesign:ColorZone Padding="5" materialDesign:ShadowAssist.ShadowDepth="Depth2">
+                        <StackPanel>
+                            <Button
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="ImageOfTheDayView"
+                                Content="Image of the day from NASA"
+                                Style="{StaticResource MaterialDesignFlatButton}" />
+                        </StackPanel>
+                    </materialDesign:ColorZone>
+
+                    <!--<TabControl
                         materialDesign:ColorZoneAssist.Mode="Standard"
                         materialDesign:ShadowAssist.ShadowDepth="Depth3"
                         Style="{StaticResource MaterialDesignNavigatilRailTabControl}">
@@ -90,12 +100,16 @@
                                 </StackPanel>
                             </TabItem.Header>
                         </TabItem>
-                    </TabControl>
+                    </TabControl>-->
                 </materialDesign:Card>
             </materialDesign:DrawerHost.LeftDrawerContent>
         </materialDesign:DrawerHost>
 
-        <ContentControl Margin="5" prism:RegionManager.RegionName="ContentRegion" />
+        <ContentControl
+            Margin="5"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            prism:RegionManager.RegionName="ContentRegion" />
     </DockPanel>
 
 </Window>

@@ -99,12 +99,6 @@ namespace ApiRequests.Nasa
             return result;
         }
 
-        private static void NewMethod(DateTime date)
-        {
-            IFormatProvider culture = new CultureInfo("en-US", true);
-            DateTime dateVal = DateTime.ParseExact(date.ToShortDateString(), "yyyy-MM-dd", culture);
-            //return dateVal;
-        }
         public async Task<List<string>> GetMediaBy(string keyWord)
         {
             var query = $"{GET_IMAGE_LIB_BASE}/asset/{keyWord}";

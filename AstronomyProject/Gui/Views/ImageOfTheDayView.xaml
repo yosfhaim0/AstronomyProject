@@ -10,8 +10,8 @@
     xmlns:prism="http://prismlibrary.com/"
     xmlns:web="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
     Name="GalleryView"
-    Width="1120"
-    Height="720"
+    Width="auto"
+    Height="auto"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <i:Interaction.Triggers>
@@ -41,8 +41,16 @@
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
-    <StackPanel>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <GroupBox
+            Grid.Row="0"
             materialDesign:ColorZoneAssist.Background="Black"
             materialDesign:ColorZoneAssist.Foreground="White"
             materialDesign:ColorZoneAssist.Mode="Custom"
@@ -68,12 +76,11 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <materialDesign:Card
                     Grid.Row="0"
@@ -94,7 +101,7 @@
                 <TextBox
                     Grid.Row="1"
                     Grid.Column="0"
-                    MaxWidth="350"
+                    MaxWidth="400"
                     HorizontalAlignment="Left"
                     Background="Transparent"
                     BorderThickness="0"
@@ -107,63 +114,80 @@
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="1"
-                    Width="650"
-                    Height="380"
+                    Width="640"
+                    Height="350"
                     Margin="20,0"
                     HorizontalAlignment="Stretch"
                     Address="{Binding Url}" />
-                <StackPanel Grid.RowSpan="2" Grid.Column="2">
-                    <Button
-                        HorizontalContentAlignment="Center"
-                        VerticalContentAlignment="Center"
-                        Command="{Binding ElementName=GalleryView, Path=DataContext.MoveNext}"
-                        Content="{materialDesign:PackIcon Kind=ArrowRight,
-                                                          Size=55}"
-                        Style="{StaticResource MaterialDesignIconButton}" />
-                    <Button
-                        Margin="0,20,0,0"
-                        HorizontalContentAlignment="Center"
-                        VerticalContentAlignment="Center"
-                        Command="{Binding ElementName=GalleryView, Path=DataContext.MovePrev}"
-                        Content="{materialDesign:PackIcon Kind=ArrowLeft,
-                                                          Size=55}"
-                        Foreground="#70757a"
-                        Style="{StaticResource MaterialDesignIconButton}" />
-                </StackPanel>
             </Grid>
         </GroupBox>
-        <ListBox
-            HorizontalAlignment="Stretch"
-            ItemsSource="{Binding Gallery}"
-            SelectedItem="{Binding SelectedImage}"
-            Style="{StaticResource MaterialDesignNavigationListBox}">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <materialDesign:Card
-                            Padding="4"
-                            Style="{StaticResource LoadingBarStyleTrigger}"
-                            UniformCornerRadius="14">
-                            <ProgressBar
-                                IsIndeterminate="True"
-                                Style="{StaticResource MaterialDesignCircularProgressBar}"
-                                Value="50" />
-                        </materialDesign:Card>
-                        <materialDesign:Card Style="{StaticResource LoadingListBoxItemStyleTrigger}">
-                            <web:ChromiumWebBrowser
-                                Width="240"
-                                Height="120"
-                                Address="{Binding Url}"
-                                IsEnabled="False" />
-                        </materialDesign:Card>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Button
+                Grid.Column="0"
+                Margin="0,0,0,10"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Command="{Binding ElementName=GalleryView, Path=DataContext.MovePrev}"
+                Content="{materialDesign:PackIcon Kind=ArrowLeft,
+                                                  Size=55}"
+                Foreground="#70757a"
+                Style="{StaticResource MaterialDesignIconButton}" />
+
+            <ListBox
+                Grid.Column="1"
+                ItemsSource="{Binding Gallery}"
+                ScrollViewer.CanContentScroll="True"
+                ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                SelectedItem="{Binding SelectedImage}"
+                Style="{StaticResource MaterialDesignNavigationListBox}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <materialDesign:Card
+                                Padding="4"
+                                Style="{StaticResource LoadingBarStyleTrigger}"
+                                UniformCornerRadius="14">
+                                <ProgressBar
+                                    IsIndeterminate="True"
+                                    Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                    Value="50" />
+                            </materialDesign:Card>
+                            <materialDesign:Card Style="{StaticResource LoadingListBoxItemStyleTrigger}">
+                                <web:ChromiumWebBrowser
+                                    Width="240"
+                                    Height="120"
+                                    Address="{Binding Url}"
+                                    IsEnabled="False" />
+                            </materialDesign:Card>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <Button
+                Grid.Column="2"
+                Margin="5,0,0,0"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Command="{Binding ElementName=GalleryView, Path=DataContext.MoveNext}"
+                Content="{materialDesign:PackIcon Kind=ArrowRight,
+                                                  Size=55}"
+                Foreground="#70757a"
+                Style="{StaticResource MaterialDesignIconButton}" />
+        </Grid>
+    </Grid>
 </UserControl>
