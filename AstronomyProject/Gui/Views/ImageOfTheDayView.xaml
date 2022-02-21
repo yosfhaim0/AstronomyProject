@@ -47,7 +47,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <GroupBox
             Grid.Row="0"
@@ -114,11 +114,15 @@
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="1"
-                    Width="640"
-                    Height="350"
+                    Width="900"
+                    Height="500"
                     Margin="20,0"
                     HorizontalAlignment="Stretch"
-                    Address="{Binding Url}" />
+                    Address="{Binding Url}" 
+                    ToolTip="Nasa Picture Of The Day"
+                    
+                    />
+                
             </Grid>
         </GroupBox>
         <Grid Grid.Row="1">
@@ -136,7 +140,7 @@
                 Margin="0,0,0,10"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
-                Command="{Binding ElementName=GalleryView, Path=DataContext.MovePrev}"
+                Command="{Binding MovePrev}"
                 Content="{materialDesign:PackIcon Kind=ArrowLeft,
                                                   Size=55}"
                 Foreground="#70757a"
@@ -156,7 +160,7 @@
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
+                        <Grid>
                             <materialDesign:Card
                                 Padding="4"
                                 Style="{StaticResource LoadingBarStyleTrigger}"
@@ -173,7 +177,7 @@
                                     Address="{Binding Url}"
                                     IsEnabled="False" />
                             </materialDesign:Card>
-                        </StackPanel>
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -183,7 +187,7 @@
                 Margin="5,0,0,0"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
-                Command="{Binding ElementName=GalleryView, Path=DataContext.MoveNext}"
+                Command="{Binding MoveNext}"
                 Content="{materialDesign:PackIcon Kind=ArrowRight,
                                                   Size=55}"
                 Foreground="#70757a"

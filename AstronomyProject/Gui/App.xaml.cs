@@ -27,6 +27,8 @@ namespace Gui
             containerRegistry.Register<IGalleryImageOfTheDayService, GalleryImageOfTheDayService>();
             containerRegistry.RegisterForNavigation<ImageOfTheDayView>(nameof(ImageOfTheDayView));
             containerRegistry.RegisterForNavigation<HomeView>(nameof(HomeView));
+            containerRegistry.RegisterForNavigation<SearchMediaView>(nameof(SearchMediaView));
+
 
         }
 

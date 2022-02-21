@@ -14,7 +14,7 @@ namespace Testing
         {
             //await _nasaTest.TestSatellaitGet();
             //await _nasaTest.GetImageTest();
-            await _nasaTest.GetImageTest();
+            await _nasaTest.GetMediaTest();
         }
     }
 }

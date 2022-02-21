@@ -52,6 +52,11 @@
                                 CommandParameter="ImageOfTheDayView"
                                 Content="Image of the day from NASA"
                                 Style="{StaticResource MaterialDesignFlatButton}" />
+                            <Button
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="SearchMediaView"
+                                Content="Search Media"
+                                Style="{StaticResource MaterialDesignFlatButton}" />
                         </StackPanel>
                     </materialDesign:ColorZone>
 
