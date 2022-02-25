@@ -10,12 +10,17 @@ namespace ApiRequests.FireBaseStorage
 {
     public class FireBase
     {
-        const string ONLINE_REPO = @"astronomyproject-36250.appspot.com";
+        private const string ONLINE_REPO = @"astronomyproject-36250.appspot.com";
         public FireBase()
         {
 
         }
-        //insert file to fire base
+        /// <summary>
+        /// insert file to fire base
+        /// </summary>
+        /// <param name="Path"> path in local machine</param>
+        /// <param name="NameToBeKeptInFirebase">The name given to the file in Firebase</param>
+        /// <returns>download Url link</returns>
         public async Task<string> Insert(String Path, String NameToBeKeptInFirebase)
         {
             try
@@ -46,9 +51,17 @@ namespace ApiRequests.FireBaseStorage
         //return URL for view the image or file
         public async Task<String> Get(String NameToBeKeptInFirebase)
         {
-            return await new FirebaseStorage(ONLINE_REPO).
-                Child(NameToBeKeptInFirebase).
-                GetDownloadUrlAsync();
+            try
+            {
+                return await new FirebaseStorage(ONLINE_REPO).
+                       Child(NameToBeKeptInFirebase).
+                       GetDownloadUrlAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
 
