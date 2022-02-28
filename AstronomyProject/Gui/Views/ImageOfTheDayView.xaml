@@ -61,8 +61,8 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon
-                            Width="32"
-                            Height="32"
+                            Width="30"
+                            Height="30"
                             VerticalAlignment="Center"
                             Kind="ImageArea" />
                         <TextBlock
@@ -110,16 +110,48 @@
                     IsReadOnly="True"
                     Text="{Binding Explanation}"
                     TextWrapping="Wrap" />
-                <web:ChromiumWebBrowser
+                <Grid
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="1"
-                    Height="Auto"
-                    MinWidth="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
-                    Margin="20,0"
-                    HorizontalAlignment="Stretch"
-                    Address="{Binding Url}"
-                    ToolTip="Nasa Picture Of The Day" />
+                    Margin="10,0">
+                    <Image
+                        Width="Auto"
+                        Height="Auto"
+                        Source="{Binding Url}">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding MediaType}" Value="image">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding MediaType}" Value="video">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                    <web:ChromiumWebBrowser
+                        Width="Auto"
+                        Height="Auto"
+                        HorizontalAlignment="Stretch"
+                        Address="{Binding Url}"
+                        ToolTip="Nasa Picture Of The Day">
+                        <web:ChromiumWebBrowser.Style>
+                            <Style TargetType="web:ChromiumWebBrowser">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding MediaType}" Value="image">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding MediaType}" Value="video">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </web:ChromiumWebBrowser.Style>
+                    </web:ChromiumWebBrowser>
+                </Grid>
 
             </Grid>
         </GroupBox>

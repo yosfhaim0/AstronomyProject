@@ -1,6 +1,9 @@
 ﻿using ApiRequests.Nasa;
 using System;
 using System.Threading.Tasks;
+using Tools;
+using Models;
+using System.Linq;
 
 namespace Testing
 {
@@ -38,8 +41,16 @@ namespace Testing
         }
         public async Task GetAstroid()
         {
-            var result = await _nasaClient.GetClosestAsteroids(DateTime.Parse("16.02.2022"),DateTime.Now);
+            var fromDate = DateTime.Parse("21.02.2022");
+            var to = DateTime.Now;
             
+            var result = await _nasaClient.GetClosestAsteroids(fromDate, to);
+            
+            var list = (from a in result
+                        select 
+                        a.CopyPropertiesToNew(typeof(NearAsteroid))
+                        as NearAsteroid)
+                        .ToList();
             var output = string.Join("\n", result);
 
             Console.WriteLine(output);

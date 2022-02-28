@@ -22,9 +22,12 @@ namespace DataAccess.UnitOfWork
             _context = dbContexFactory.CreateAstronomyContext();
             
             ImageOfTheDayRepository = new ImageOfTheDayRepository(_context);
+            NearAstroidRepository = new NearAsteroidRepository();
         }
 
         public IImageOfTheDayRepository ImageOfTheDayRepository { get; }
+
+        public INearAsteroidRepository NearAstroidRepository { get; }
 
         public async Task Complete()
         {

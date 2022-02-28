@@ -7,21 +7,16 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public record NearAstroid
+    public record NearAsteroid
     {
         [Key]
         public int Id { get; set; }
 
-        public DateTime Date { get; set; }
-
-        public string NeoReferenceId { get; set; }
-
         [MaxLength(100)]
+        [Required]
         public string Name { get; set; }
 
-        [MaxLength(500)]
-        public string NasaJplUrl { get; set; }
-
+        [Required]
         public double AbsoluteMagnitudeH { get; set; }
 
         [Required]
@@ -36,5 +31,10 @@ namespace Models
         [Required]
         public double EstimatedDiameterMin { get; set; }
 
+        public List<CloseApproach> CloseApproachData { get; set; }
+
+        [MaxLength(500)]
+        [Required]
+        public string NasaUrlQuery { get; set; }
     }
 }

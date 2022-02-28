@@ -23,13 +23,20 @@ namespace Gui
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterInstance(GetConfigurations());
+            
             containerRegistry.RegisterSingleton<IDbFactory, DbFactory>();
+            
+            #region Register services from the domain model
             containerRegistry.Register<IGalleryImageOfTheDayService, GalleryImageOfTheDayService>();
+            containerRegistry.Register<INearAsteroidService, NearAsteroidService>();
+            #endregion
+
+            #region Register views for navigation
             containerRegistry.RegisterForNavigation<ImageOfTheDayView>(nameof(ImageOfTheDayView));
             containerRegistry.RegisterForNavigation<HomeView>(nameof(HomeView));
-            containerRegistry.RegisterForNavigation<SearchMediaView>(nameof(SearchMediaView));
-
-
+            containerRegistry.RegisterForNavigation<SearchMediaView>(nameof(SearchMediaView)); 
+            containerRegistry.RegisterForNavigation<NearAsteroidListView>(nameof(NearAsteroidListView));
+            #endregion
         }
 
         private MyConfigurations GetConfigurations()

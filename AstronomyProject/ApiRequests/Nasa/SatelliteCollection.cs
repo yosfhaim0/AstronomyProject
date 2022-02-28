@@ -15,7 +15,7 @@ namespace ApiRequests.Nasa
     internal class NearAstridCollection
     {
         [JsonProperty("near_earth_objects")]
-        public Dictionary<string, List<GetNANasaDto>> NearAstroids { get; set; }
+        public Dictionary<string, List<GetNearAsteroidNasaDto>> NearAstroids { get; set; }
     }
     public class Item
     {

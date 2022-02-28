@@ -57,6 +57,11 @@
                                 CommandParameter="SearchMediaView"
                                 Content="Search Media"
                                 Style="{StaticResource MaterialDesignFlatButton}" />
+                            <Button
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="NearAsteroidListView"
+                                Content="Near Asteroids"
+                                Style="{StaticResource MaterialDesignFlatButton}" />
                         </StackPanel>
                     </materialDesign:ColorZone>
                 </materialDesign:Card>

@@ -9,6 +9,5 @@ namespace Gui.ViewModels
 {
     public class SearchMediaViewModel : BindableBase
     {
-
     }
 }

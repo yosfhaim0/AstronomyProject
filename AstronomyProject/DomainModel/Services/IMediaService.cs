@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace DomainModel.Services
 {
-    internal class IMedia
+    public interface IMediaService
     {
+        Task<object> SearchMedia(string keyWord); 
     }
 }

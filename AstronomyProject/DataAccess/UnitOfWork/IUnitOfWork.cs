@@ -12,6 +12,8 @@ namespace DataAccess.UnitOfWork
     {
         public IImageOfTheDayRepository ImageOfTheDayRepository { get; }
 
+        public INearAsteroidRepository NearAstroidRepository { get; }
+
         Task Complete();
     }
 }
