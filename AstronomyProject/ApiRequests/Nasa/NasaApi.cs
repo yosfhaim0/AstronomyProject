@@ -62,6 +62,7 @@ namespace ApiRequests.Nasa
             return content;
         }
 
+
         public async Task<GetAPODNasaDto> GetImageOfTheDay()
         {
             try
@@ -104,12 +105,29 @@ namespace ApiRequests.Nasa
             var query = $"{GET_IMAGE_LIB_BASE}/asset/{keyWord}";
             var content = await client.GetAsync(query);
             var a = JsonConvert.DeserializeObject<Root>(content);
-            var result=new List<String>();
-            foreach (var item in a.collection.items)
+            return DeserialObjMedia(a);
+        }
+
+        private static List<string> DeserialObjMedia(Root content)
+        {
+            
+            var result = new List<string>();
+            foreach (var item in content.collection.items)
             {
                 result.Add(item.href);
             }
             return result;
+        }
+
+        public async Task Get()
+        {
+            var a = await GetSatellites();
+            var s = new List<string>();
+            foreach (var i in a)
+            {
+                s.Add(await GetImageBy(i.Name));
+            }
+            var c=0;
         }
 
 

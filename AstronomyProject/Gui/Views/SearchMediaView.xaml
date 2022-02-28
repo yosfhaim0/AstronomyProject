@@ -7,6 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:web="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    xmlns:prism="http://prismlibrary.com/"
+    prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <Grid ShowGridLines="True">
         <Grid.RowDefinitions>
@@ -18,8 +20,7 @@
         <TextBlock Grid.Row="0" Text="search key Word"/>
         <TextBox Grid.Row="1" Text="put here input for search"/>
         <Button Grid.Row="2" Content="search!"/>
-        <RibbonGallery Grid.Row="2"
-                       Binding.SourceUpdated="{Binding }"/>
+       
 
     </Grid>
 </UserControl>
