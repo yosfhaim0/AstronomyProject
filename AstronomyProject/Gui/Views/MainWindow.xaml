@@ -16,8 +16,13 @@
             Padding="5"
             materialDesign:ShadowAssist.ShadowDepth="Depth2"
             DockPanel.Dock="Top">
-            <StackPanel Orientation="Horizontal">
-                <StackPanel Orientation="Horizontal">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Column="0">
+                        
                     <ToggleButton
                         x:Name="MenuToggleButton"
                         HorizontalAlignment="Left"
@@ -34,13 +39,13 @@
                         Style="{StaticResource MaterialDesignToolButton}"
                         ToolTip="Home" />
                 </StackPanel>
-                <TextBlock
-                    Margin="400,0,0,0"
+                <TextBlock Grid.Column="1"
+                    
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                     Text="Astronomy Project" />
-            </StackPanel>
+            </Grid>
         </materialDesign:ColorZone>
         <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
             <materialDesign:DrawerHost.LeftDrawerContent>
