@@ -156,7 +156,7 @@
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
+                        <Grid>
                             <materialDesign:Card
                                 Padding="4"
                                 Style="{StaticResource LoadingBarStyleTrigger}"
@@ -173,7 +173,7 @@
                                     Address="{Binding Url}"
                                     IsEnabled="False" />
                             </materialDesign:Card>
-                        </StackPanel>
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
