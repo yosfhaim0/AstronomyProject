@@ -59,53 +59,6 @@
                                 Style="{StaticResource MaterialDesignFlatButton}" />
                         </StackPanel>
                     </materialDesign:ColorZone>
-
-                    <!--<TabControl
-                        materialDesign:ColorZoneAssist.Mode="Standard"
-                        materialDesign:ShadowAssist.ShadowDepth="Depth3"
-                        Style="{StaticResource MaterialDesignNavigatilRailTabControl}">
-                        <TabItem>
-                            <TabItem.Header>
-                                <StackPanel Width="auto" Height="auto">
-                                    <materialDesign:PackIcon
-                                        Width="24"
-                                        Height="24"
-                                        HorizontalAlignment="Center"
-                                        Kind="ClockOutline" />
-                                    <TextBlock HorizontalAlignment="Center" Text="Recent" />
-                                </StackPanel>
-                            </TabItem.Header>
-                        </TabItem>
-                        <TabItem>
-                            <TabItem.Header>
-                                <Button
-                                    Command="{Binding NavigateCommand}"
-                                    CommandParameter="ImageOfTheDayView"
-                                    Style="{StaticResource MaterialDesignIconForegroundButton}">
-                                    <StackPanel Width="auto" Height="auto">
-                                        <materialDesign:PackIcon
-                                            Width="24"
-                                            Height="24"
-                                            HorizontalAlignment="Center"
-                                            Kind="Images" />
-                                        <TextBlock HorizontalAlignment="Center" Text="Images" />
-                                    </StackPanel>
-                                </Button>
-                            </TabItem.Header>
-                        </TabItem>
-                        <TabItem>
-                            <TabItem.Header>
-                                <StackPanel Width="auto" Height="auto">
-                                    <materialDesign:PackIcon
-                                        Width="24"
-                                        Height="24"
-                                        HorizontalAlignment="Center"
-                                        Kind="MusicBoxMultiple" />
-                                    <TextBlock HorizontalAlignment="Center" Text="Sounds" />
-                                </StackPanel>
-                            </TabItem.Header>
-                        </TabItem>
-                    </TabControl>-->
                 </materialDesign:Card>
             </materialDesign:DrawerHost.LeftDrawerContent>
         </materialDesign:DrawerHost>

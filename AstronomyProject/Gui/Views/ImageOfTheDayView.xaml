@@ -46,7 +46,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <GroupBox
@@ -114,15 +114,13 @@
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="1"
-                    Width="900"
-                    Height="500"
+                    Height="Auto"
+                    MinWidth="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
                     Margin="20,0"
                     HorizontalAlignment="Stretch"
-                    Address="{Binding Url}" 
-                    ToolTip="Nasa Picture Of The Day"
-                    
-                    />
-                
+                    Address="{Binding Url}"
+                    ToolTip="Nasa Picture Of The Day" />
+
             </Grid>
         </GroupBox>
         <Grid Grid.Row="1">
