@@ -1,5 +1,6 @@
 ﻿using ApiRequests.Nasa;
 using DataAccess.DbContexts;
+using ApiRequests.FireBaseStorage;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
@@ -13,8 +14,13 @@ namespace DataAccess.Repositories
 {
     public class ImageOfTheDayRepository : EFModelRepository<ImageOfTheDay> ,IImageOfTheDayRepository
     {
-        public ImageOfTheDayRepository(AstronomyContext context) : base(context)
+        readonly NasaApi _nasaApi;
+        readonly FireBase _firebase;
+
+        public ImageOfTheDayRepository(AstronomyContext context, NasaApi nasaApi, FireBase fireBase) : base(context)
         {
+            _nasaApi = nasaApi;
+            _firebase = fireBase;
         }
 
         public async Task<ImageOfTheDay> GetImageOfTheDayFromNasa()
@@ -25,8 +31,7 @@ namespace DataAccess.Repositories
                 return isExist.First();
             }
 
-            NasaApi nasaApi = new NasaApi();
-            var imgDto = await nasaApi.GetImageOfTheDay();
+            var imgDto = await _nasaApi.GetImageOfTheDay();
 
             var result = imgDto.CopyPropertiesToNew(typeof(ImageOfTheDay)) as ImageOfTheDay;
 

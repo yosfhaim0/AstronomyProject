@@ -12,7 +12,12 @@ namespace DataAccess.Repositories
 {
     public class NearAsteroidRepository : INearAsteroidRepository
     {
-        readonly NasaApi _naseApi = new();
+        readonly NasaApi _naseApi;
+
+        public NearAsteroidRepository(NasaApi nasaApi)
+        {
+            _naseApi = nasaApi;
+        }
 
         public async Task<IEnumerable<NearAsteroid>> ClosestApproachDateToEarth(DateTime startDate, DateTime endDate = default)
         {

@@ -1,4 +1,6 @@
-﻿using DataAccess.DbContexts;
+﻿using ApiRequests.FireBaseStorage;
+using ApiRequests.Nasa;
+using DataAccess.DbContexts;
 using DataAccess.Repositories;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -20,9 +22,12 @@ namespace DataAccess.UnitOfWork
         {
             var dbContexFactory = new DbContextFactory(configurations.CurrentConnectionStrings);
             _context = dbContexFactory.CreateAstronomyContext();
-            
-            ImageOfTheDayRepository = new ImageOfTheDayRepository(_context);
-            NearAstroidRepository = new NearAsteroidRepository();
+
+            var nasaApi = new NasaApi(configurations.CurrentNasaApiKey);
+            var firebase = new FireBase(configurations.FirebaseConnection);
+
+            ImageOfTheDayRepository = new ImageOfTheDayRepository(_context, nasaApi, firebase);
+            NearAstroidRepository = new NearAsteroidRepository(nasaApi);
         }
 
         public IImageOfTheDayRepository ImageOfTheDayRepository { get; }

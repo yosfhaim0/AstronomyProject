@@ -11,27 +11,39 @@ namespace ApiRequests.FireBaseStorage
     public class FireBase
     {
         private const string ONLINE_REPO = @"astronomyproject-36250.appspot.com";
+
+        readonly FirebaseStorage _storage;
+
         public FireBase()
         {
 
         }
+
+        public FireBase(string repoConnction)
+        {
+            _storage = new FirebaseStorage(repoConnction);  
+        }
+
         /// <summary>
-        /// insert file to fire base
+        /// Insert file to fire base
         /// </summary>
-        /// <param name="Path"> path in local machine</param>
-        /// <param name="NameToBeKeptInFirebase">The name given to the file in Firebase</param>
+        /// <param name="path"> path in local machine</param>
+        /// <param name="fileName">The name given to the file in Firebase</param>
         /// <returns>download Url link</returns>
-        public async Task<string> Insert(String Path, String NameToBeKeptInFirebase)
+        public async Task<string> Insert(string path, string fileName)
         {
             try
             {
-                var stream = File.Open(Path, FileMode.Open);
+                var stream = File.Open(path, FileMode.Open);
+                
                 // Construct FirebaseStorage with path to where you want to upload the 
                 //file and put it there
-                var task = new FirebaseStorage(ONLINE_REPO).
-                    Child(NameToBeKeptInFirebase)
-                            .PutAsync(stream);
-                var downloadUrl = await task;
+                var storege = new FirebaseStorage(ONLINE_REPO);
+                
+                var downloadUrl = await storege
+                    .Child(fileName)
+                    .PutAsync(stream);
+                
                 return downloadUrl;
             }
             catch (Exception)
@@ -40,21 +52,27 @@ namespace ApiRequests.FireBaseStorage
             }
 
         }
-        //delete file form fire base storage
-        public async Task Delete(String NameInFirebase)
+
+        /// <summary>
+        /// delete file form fire base storage
+        /// </summary>
+        /// <param name="nameInFirebase"></param>
+        /// <returns></returns>
+        public async Task Delete(string nameInFirebase)
         {
             await new FirebaseStorage(ONLINE_REPO).
-                Child(NameInFirebase).
+                Child(nameInFirebase).
                 DeleteAsync();
 
         }
+
         //return URL for view the image or file
-        public async Task<String> Get(String NameToBeKeptInFirebase)
+        public async Task<string> Get(string nameToBeKeptInFirebase)
         {
             try
             {
                 return await new FirebaseStorage(ONLINE_REPO).
-                       Child(NameToBeKeptInFirebase).
+                       Child(nameToBeKeptInFirebase).
                        GetDownloadUrlAsync();
             }
             catch (Exception)

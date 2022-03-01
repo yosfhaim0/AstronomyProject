@@ -18,58 +18,67 @@
             DockPanel.Dock="Top">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                    <StackPanel Orientation="Horizontal" Grid.Column="0">
-                        
-                    <ToggleButton
-                        x:Name="MenuToggleButton"
-                        HorizontalAlignment="Left"
-                        AutomationProperties.Name="HamburgerToggleButton"
-                        IsChecked="False"
-                        Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
-                    <Button
-                        Margin="16,0,0,0"
-                        Command="{Binding NavigateCommand}"
-                        CommandParameter="HomeView"
-                        Content="{materialDesign:PackIcon Kind=Home,
-                                                          Size=30}"
-                        Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
-                        Style="{StaticResource MaterialDesignToolButton}"
-                        ToolTip="Home" />
-                </StackPanel>
-                <TextBlock Grid.Column="1"
-                    
+
+                <ToggleButton
+                    x:Name="MenuToggleButton"
+                    Grid.Column="0"
+                    HorizontalAlignment="Left"
+                    AutomationProperties.Name="HamburgerToggleButton"
+                    IsChecked="False"
+                    Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="HomeView"
+                    Content="{materialDesign:PackIcon Kind=Home,
+                                                      Size=30}"
+                    Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
+                    Style="{StaticResource MaterialDesignToolButton}"
+                    ToolTip="Home" />
+                <TextBlock
+                    Grid.Column="2"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                     Text="Astronomy Project" />
             </Grid>
         </materialDesign:ColorZone>
+
         <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
             <materialDesign:DrawerHost.LeftDrawerContent>
-                <materialDesign:Card>
-                    <materialDesign:ColorZone Padding="5" materialDesign:ShadowAssist.ShadowDepth="Depth2">
-                        <StackPanel>
-                            <Button
-                                Command="{Binding NavigateCommand}"
-                                CommandParameter="ImageOfTheDayView"
-                                Content="Image of the day from NASA"
-                                Style="{StaticResource MaterialDesignFlatButton}" />
-                            <Button
-                                Command="{Binding NavigateCommand}"
-                                CommandParameter="SearchMediaView"
-                                Content="Search Media"
-                                Style="{StaticResource MaterialDesignFlatButton}" />
-                            <Button
-                                Command="{Binding NavigateCommand}"
-                                CommandParameter="NearAsteroidListView"
-                                Content="Near Asteroids"
-                                Style="{StaticResource MaterialDesignFlatButton}" />
-                        </StackPanel>
-                    </materialDesign:ColorZone>
-                </materialDesign:Card>
+                <materialDesign:ColorZone Padding="5" materialDesign:ShadowAssist.ShadowDepth="Depth2">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Button
+                            Grid.Row="0"
+                            Command="{Binding NavigateCommand}"
+                            CommandParameter="ImageOfTheDayView"
+                            Content="Image of the day from NASA"
+                            Style="{StaticResource MaterialDesignFlatButton}" />
+                        <Button
+                            Grid.Row="1"
+                            Command="{Binding NavigateCommand}"
+                            CommandParameter="SearchMediaView"
+                            Content="Search Media"
+                            Style="{StaticResource MaterialDesignFlatButton}" />
+                        <Button
+                            Grid.Row="2"
+                            Command="{Binding NavigateCommand}"
+                            CommandParameter="NearAsteroidListView"
+                            Content="Near Asteroids"
+                            Style="{StaticResource MaterialDesignFlatButton}" />
+                    </Grid>
+                </materialDesign:ColorZone>
             </materialDesign:DrawerHost.LeftDrawerContent>
         </materialDesign:DrawerHost>
 

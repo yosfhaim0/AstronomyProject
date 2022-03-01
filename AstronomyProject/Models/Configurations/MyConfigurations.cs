@@ -10,6 +10,8 @@ namespace Models.Configurations
     {
         public string Admin { get; set; }
 
+        public string FirebaseConnection { get; set; }
+
         public Dictionary<string, string> NasaApiKeys { get; set; }
 
         public string CurrentNasaApiKey { get => NasaApiKeys[Admin]; }

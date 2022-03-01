@@ -84,10 +84,12 @@
                 </Grid.ColumnDefinitions>
                 <materialDesign:Card
                     Grid.Row="0"
+                    Grid.RowSpan="2"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
                     Padding="4"
                     HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
                     Style="{StaticResource LoadingBarStyleTrigger}"
                     UniformCornerRadius="14">
                     <ProgressBar IsIndeterminate="True" />
@@ -110,12 +112,24 @@
                     IsReadOnly="True"
                     Text="{Binding Explanation}"
                     TextWrapping="Wrap" />
-                <Grid
+                <materialDesign:Card
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="1"
                     Margin="10,0">
-                    <Image
+                    <materialDesign:Card.Style>
+                        <Style TargetType="materialDesign:Card">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=GalleryView, Path=DataContext.IsLoading}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=GalleryView, Path=DataContext.IsLoading}" Value="False">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </materialDesign:Card.Style>
+                    <!--<Image
                         Width="Auto"
                         Height="Auto"
                         Source="{Binding Url}">
@@ -131,28 +145,14 @@
                                 </Style.Triggers>
                             </Style>
                         </Image.Style>
-                    </Image>
+                    </Image>-->
                     <web:ChromiumWebBrowser
                         Width="Auto"
                         Height="Auto"
                         HorizontalAlignment="Stretch"
                         Address="{Binding Url}"
-                        ToolTip="Nasa Picture Of The Day">
-                        <web:ChromiumWebBrowser.Style>
-                            <Style TargetType="web:ChromiumWebBrowser">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding MediaType}" Value="image">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding MediaType}" Value="video">
-                                        <Setter Property="Visibility" Value="Visible" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </web:ChromiumWebBrowser.Style>
-                    </web:ChromiumWebBrowser>
-                </Grid>
-
+                        ToolTip="Nasa Picture Of The Day" />
+                </materialDesign:Card>
             </Grid>
         </GroupBox>
         <Grid Grid.Row="1">
@@ -167,7 +167,6 @@
 
             <Button
                 Grid.Column="0"
-                Margin="0,0,0,10"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 Command="{Binding MovePrev}"
