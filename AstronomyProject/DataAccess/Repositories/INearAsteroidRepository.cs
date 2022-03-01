@@ -8,7 +8,7 @@ using Models;
 
 namespace DataAccess.Repositories
 {
-    public interface INearAsteroidRepository
+    public interface INearAsteroidRepository : IModelRepository<NearAsteroid>
     {
         Task<IEnumerable<NearAsteroid>> ClosestApproachDateToEarth(DateTime startDate, DateTime endDate = default);
 

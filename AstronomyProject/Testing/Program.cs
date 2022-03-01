@@ -26,8 +26,8 @@ namespace Testing
 
             //await _nasaTest.GetImageOfTheDayTest();
             //await imaggaReqTest.getJson();
-            await _nasaTest.GetAstroid();
-
+            //await _nasaTest.GetAstroid();
+            await _nasaTest.GetAsteroidById(54245556);
 
 
         }

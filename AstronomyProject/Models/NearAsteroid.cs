@@ -31,10 +31,6 @@ namespace Models
         [Required]
         public double EstimatedDiameterMin { get; set; }
 
-        public List<CloseApproach> CloseApproachData { get; set; }
-
-        [MaxLength(500)]
-        [Required]
-        public string NasaUrlQuery { get; set; }
+        public List<CloseApproach> CloseApproachs { get; set; }
     }
 }

@@ -10,16 +10,11 @@ namespace Models.Dtos
 {
     public record GetNearAsteroidNasaDto
     {
-        public Links links { get; set; }
-
         [JsonProperty("neo_reference_id")]
         public int Id { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
-
-        [JsonProperty("nasa_jpl_url")]
-        public string NasaJplUrl { get; set; }
 
         [JsonProperty("absolute_magnitude_h")]
         public double AbsoluteMagnitudeH { get; set; }
@@ -36,7 +31,7 @@ namespace Models.Dtos
 
         public List<CloseApproachDto> close_approach_data { get; set; }
         
-        public List<CloseApproach> CloseApproachData
+        public List<CloseApproach> CloseApproachs
         {
             get
             {
@@ -51,17 +46,10 @@ namespace Models.Dtos
             }
         }
 
-        public string NasaUrlQuery { get => links.self; }
-
         public double EstimatedDiameterMax { get => EstimatedDiameterDto.meters.estimated_diameter_max; }
 
         public double EstimatedDiameterMin { get => EstimatedDiameterDto.meters.estimated_diameter_min; }
 
-    }
-
-    public class Links
-    {
-        public string self { get; set; }
     }
 
     public class CloseApproachDto

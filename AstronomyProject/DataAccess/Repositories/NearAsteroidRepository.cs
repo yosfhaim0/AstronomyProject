@@ -1,4 +1,5 @@
 ﻿using ApiRequests.Nasa;
+using DataAccess.DbContexts;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,11 @@ using Tools;
 
 namespace DataAccess.Repositories
 {
-    public class NearAsteroidRepository : INearAsteroidRepository
+    public class NearAsteroidRepository : EFModelRepository<NearAsteroid>, INearAsteroidRepository
     {
         readonly NasaApi _naseApi;
 
-        public NearAsteroidRepository(NasaApi nasaApi)
+        public NearAsteroidRepository(AstronomyContext context, NasaApi nasaApi) : base(context)
         {
             _naseApi = nasaApi;
         }

@@ -27,7 +27,7 @@ namespace DataAccess.UnitOfWork
             var firebase = new FireBase(configurations.FirebaseConnection);
 
             ImageOfTheDayRepository = new ImageOfTheDayRepository(_context, nasaApi, firebase);
-            NearAstroidRepository = new NearAsteroidRepository(nasaApi);
+            NearAstroidRepository = new NearAsteroidRepository(_context, nasaApi);
         }
 
         public IImageOfTheDayRepository ImageOfTheDayRepository { get; }

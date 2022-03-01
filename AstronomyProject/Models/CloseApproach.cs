@@ -3,20 +3,23 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Models
 {
-    public class CloseApproach
+    public record CloseApproach
     {
         [Key]
         public int Id { get; set; }
 
-        [MaxLength(100)]
-        public string NeoReferenceId { get; set; }
-
         [Required]
         public DateTime CloseApproachDate { get; set; }
 
+        /// <summary>
+        /// Relative velocity, kilometers per second
+        /// </summary>
         [Required]
         public double RelativeVelocity { get; set; }
 
+        /// <summary>
+        /// Miss distance in kilometers
+        /// </summary>
         [Required]
         public double MissDistance { get; set; }
 

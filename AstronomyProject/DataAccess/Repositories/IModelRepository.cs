@@ -16,6 +16,6 @@ namespace DataAccess.Repositories
         Task Delete(TModel model);
         Task<IEnumerable<TModel>> FindAll(Expression<Func<TModel, bool>> predicate);
 
-
+        Task<int> Count(Expression<Func<TModel, bool>> predicate = null);
     }
 }
