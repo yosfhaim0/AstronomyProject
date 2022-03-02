@@ -11,13 +11,11 @@ namespace DomainModel.Services
 {
     public class GalleryImageOfTheDayService : IGalleryImageOfTheDayService
     {
-        readonly IDbFactory _dbFactory;
         readonly IUnitOfWork _unitOfWork;
 
         public GalleryImageOfTheDayService(IDbFactory dbFactory)
         {
-            _dbFactory = dbFactory;
-            _unitOfWork = _dbFactory.GetDataAccess();
+            _unitOfWork = dbFactory.GetDataAccess();
         }
 
         public async Task<ImageOfTheDay> GetTodayImage()
@@ -34,7 +32,7 @@ namespace DomainModel.Services
             var images = await _unitOfWork
                 .ImageOfTheDayRepository
                 .GetAll();
-            return images;
+            return images.OrderByDescending(i => i.Date);
         }
     }
 }

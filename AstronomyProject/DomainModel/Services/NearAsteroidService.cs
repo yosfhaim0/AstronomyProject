@@ -12,13 +12,11 @@ namespace DomainModel.Services
 {
     public class NearAsteroidService : INearAsteroidService
     {
-        readonly IDbFactory _dbFactory;
         readonly IUnitOfWork _unitOfWork;
 
         public NearAsteroidService(IDbFactory dbFactory)
         {
-            _dbFactory = dbFactory;
-            _unitOfWork = _dbFactory.GetDataAccess();
+            _unitOfWork = dbFactory.GetDataAccess();
         }
 
         public async Task<IEnumerable<NearAsteroid>> GetPotentiallyHazardous()

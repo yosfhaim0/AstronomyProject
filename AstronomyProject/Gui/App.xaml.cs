@@ -29,6 +29,7 @@ namespace Gui
             #region Register services from the domain model
             containerRegistry.Register<IGalleryImageOfTheDayService, GalleryImageOfTheDayService>();
             containerRegistry.Register<INearAsteroidService, NearAsteroidService>();
+            containerRegistry.RegisterSingleton<SaveAllToDB>();
             #endregion
 
             #region Register views for navigation
@@ -45,10 +46,14 @@ namespace Gui
             var jsonString = File.ReadAllText(path);
             var configurations = JsonConvert.DeserializeObject<MyConfigurations>(jsonString);
             return configurations;
-
-
-
         }
+
+        //protected override async void OnExit(ExitEventArgs e)
+        //{
+        //    await Container.Resolve<SaveAllToDB>().SaveAsync();
+        //    Current.Shutdown();
+        //    base.OnExit(e);
+        //}
 
         protected override Window CreateShell()
         {
