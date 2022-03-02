@@ -1,8 +1,14 @@
 ﻿using DomainModel.Services;
+using LiveChartsCore;
+using LiveChartsCore.Measure;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
 using Prism.Commands;
 using Prism.Mvvm;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -55,6 +61,15 @@ namespace Gui.ViewModels
             {
                 return !IsLoading;
             });
+
+        public IEnumerable<ISeries> Series { get; set; } = new ObservableCollection<ISeries>
+        {
+            new StepLineSeries<double?>
+            {
+                Values = new ObservableCollection<double?> { 2, 1, 3, 4, 3, 4, 6 },
+                Fill = null
+            }
+        };
 
 
     }

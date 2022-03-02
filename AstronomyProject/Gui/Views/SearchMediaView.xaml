@@ -4,43 +4,51 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Gui.Views"
+    xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:web="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:web="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <Grid ShowGridLines="True">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="0" Text="{Binding SearchWord}"  materialDesign:HintAssist.Hint="Search here" Style="{StaticResource MaterialDesignOutlinedTextBox}" />
-            <Button Grid.Column="1" Command="{Binding SearchCommand}" Content="{materialDesign:PackIcon Kind=Search,
+            <TextBox
+                Grid.Column="0"
+                materialDesign:HintAssist.Hint="Search here"
+                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                Text="{Binding SearchWord}" />
+            <Button
+                Grid.Column="1"
+                Command="{Binding SearchCommand}"
+                Content="{materialDesign:PackIcon Kind=Search,
                                                   Size=55}">
                 <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignIconButton}">
+                    <Style BasedOn="{StaticResource MaterialDesignIconButton}" TargetType="Button">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsLoading}" Value="False">
-                                <Setter Property="IsEnabled" Value="True"/>
+                                <Setter Property="IsEnabled" Value="True" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsLoading}" Value="True">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                </DataTrigger>
-                            </Style.Triggers>
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
                     </Style>
                 </Button.Style>
             </Button>
         </Grid>
-        <TextBlock Grid.Row="1" Text="{Binding Content}" >
-            
-        </TextBlock>
-
+        <TextBlock Grid.Row="1" Text="{Binding Content}" />
+        <lvc:CartesianChart Grid.Row="2" Series="{Binding Series}" />
     </Grid>
 </UserControl>
