@@ -8,6 +8,6 @@ namespace DomainModel.Services
 {
     public interface IMediaService
     {
-        Task<string> SearchMedia(string keyWord); 
+        Task<List<string>> SearchMedia(string keyWord); 
     }
 }

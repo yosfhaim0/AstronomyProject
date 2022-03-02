@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Gui.Views"
-    xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
@@ -48,7 +47,42 @@
                 </Button.Style>
             </Button>
         </Grid>
-        <TextBlock Grid.Row="1" Text="{Binding Content}" />
-        <lvc:CartesianChart Grid.Row="2" Series="{Binding Series}" />
+        <!--<TextBlock Grid.Row="1" Text="{Binding Content}" />-->
+        <ListBox
+                Grid.Row="1"
+                ItemsSource="{Binding Content}"
+                ScrollViewer.CanContentScroll="True"
+                ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                SelectedItem="{Binding SelectedImage}"
+                Style="{StaticResource MaterialDesignNavigationListBox}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+
+                <DataTemplate>
+                    <Grid>
+                        <materialDesign:Card
+                                Padding="4"
+                               
+                                UniformCornerRadius="14">
+                            <ProgressBar
+                                    IsIndeterminate="True"
+                                    
+                                    Value="50" />
+                        </materialDesign:Card>
+                        <materialDesign:Card >
+                            <web:ChromiumWebBrowser
+                                    Width="240"
+                                    Height="120"
+                                    Address="{Binding Content}"
+                                    IsEnabled="False" />
+                        </materialDesign:Card>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </UserControl>

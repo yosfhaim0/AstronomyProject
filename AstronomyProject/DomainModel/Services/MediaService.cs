@@ -19,13 +19,28 @@ namespace DomainModel.Services
             _imaggaAutoTaging = imaggaAutoTaging;
 
         }
-        
 
-        public async Task<string> SearchMedia(string keyWord)
+
+        public async Task<List<string>> SearchMedia(string keyWord)
         {
-            var imgs=await _unitOfWork.MediaSearchRepository.Search(keyWord);
-            return imgs;
+            var imgs = await _unitOfWork.MediaSearchRepository.Search(keyWord);
+            return RootToString(imgs);
         }
 
+        private List<string> RootToString(Models.Dtos.Root imgs)
+        {
+            var a = imgs.collection.items;
+            List<string> result = new List<string>();
+            foreach (var item in a)
+            {
+                if (item.links != null)
+                    foreach (var link in item.links)
+                    {
+                        if (link != null)
+                            result.Add(link.href);
+                    }
+            }
+            return result;
+        }
     }
 }

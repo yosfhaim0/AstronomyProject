@@ -95,11 +95,12 @@ namespace ApiRequests.Nasa
             }
         }
 
-        public async Task<string> SearchImage(string keyWord)
+        public async Task<Models.Dtos.Root> SearchImage(string keyWord)
         {
             var query = $"{GET_IMAGE_LIB_BASE}/search?q={keyWord}";
             var content = await client.GetAsync(query);
-            return content;
+            var result = JsonConvert.DeserializeObject<Models.Dtos.Root>(content);
+            return result;
         }
 
 
@@ -173,17 +174,6 @@ namespace ApiRequests.Nasa
                 result.Add(item.href);
             }
             return result;
-        }
-
-        public async Task Get()
-        {
-            var a = await GetSatellites();
-            var s = new List<string>();
-            foreach (var i in a)
-            {
-                s.Add(await SearchImage(i.Name));
-            }
-            var c=0;
         }
 
 

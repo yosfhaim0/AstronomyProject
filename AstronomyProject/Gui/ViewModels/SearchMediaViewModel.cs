@@ -39,7 +39,7 @@ namespace Gui.ViewModels
             set { SetProperty(ref _content, value); }
         }
 
-        private bool _isLoading;
+        private bool _isLoading=false;
         public bool IsLoading
         {
             get { return _isLoading; }
@@ -53,7 +53,7 @@ namespace Gui.ViewModels
                 if (!string.IsNullOrEmpty(SearchWord))
                 {
                     IsLoading = true;
-                    Content = await _mediaService.SearchMedia(SearchWord);
+                    Content = (await _mediaService.SearchMedia(SearchWord))[0];
                     IsLoading = false;
                 }
             }, 
@@ -62,15 +62,7 @@ namespace Gui.ViewModels
                 return !IsLoading;
             });
 
-        public IEnumerable<ISeries> Series { get; set; } = new ObservableCollection<ISeries>
-        {
-            new StepLineSeries<double?>
-            {
-                Values = new ObservableCollection<double?> { 2, 1, 3, 4, 3, 4, 6 },
-                Fill = null
-            }
-        };
-
+  
 
     }
 }
