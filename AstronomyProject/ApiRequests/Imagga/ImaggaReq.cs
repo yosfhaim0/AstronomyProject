@@ -25,7 +25,7 @@ namespace ApiRequests.Imagga
         /// </summary>
         /// <param name="imageUrl">Local or remote location</param>
         /// <returns>json file</returns>
-        public List<Tag> autoTagging(String imageUrl)
+        public List<Tag> AutoTagging(string imageUrl)
         {
             try
             {
@@ -39,7 +39,9 @@ namespace ApiRequests.Imagga
                 request.AddHeader("Authorization", String.Format("Basic {0}", basicAuthValue));
 
                 IRestResponse response = client.Execute(request);
-                return (JsonConvert.DeserializeObject<Root>(response.Content)).result.tags;
+
+                var result = (JsonConvert.DeserializeObject<Root>(response.Content)).result.tags;
+                return result;
                 
             }
             catch (Exception)

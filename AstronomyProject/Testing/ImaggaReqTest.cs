@@ -25,7 +25,7 @@ namespace Testing
 
         private void p(string t)
         {
-           var x = i.autoTagging(@"https://apod.nasa.gov/apod/image/2203/DuelingBands_Dai_960.jpg");
+           var x = i.AutoTagging(@"https://apod.nasa.gov/apod/image/2203/DuelingBands_Dai_960.jpg");
             var y = 0;
         }
         private void o(string t)

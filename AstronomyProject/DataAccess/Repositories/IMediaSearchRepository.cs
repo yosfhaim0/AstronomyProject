@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DomainModel.Services
+namespace DataAccess.Repositories
 {
-    public interface IMediaService
+    public interface IMediaSearchRepository
     {
-        Task<string> SearchMedia(string keyWord); 
+        Task<string> Search(string searchWord);
     }
 }

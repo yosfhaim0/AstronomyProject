@@ -14,6 +14,7 @@ namespace DataAccess.UnitOfWork
 
         public INearAsteroidRepository NearAstroidRepository { get; }
 
+        public IMediaSearchRepository MediaSearchRepository { get; }
         Task Complete();
     }
 }

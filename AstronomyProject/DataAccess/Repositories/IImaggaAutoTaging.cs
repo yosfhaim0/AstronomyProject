@@ -6,8 +6,5 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
-    internal class IImaggaAutoTaging
-    {
-        
-    }
+   
 }

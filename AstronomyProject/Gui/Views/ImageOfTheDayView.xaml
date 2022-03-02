@@ -133,9 +133,6 @@
                         </Style>
                     </materialDesign:Card.Style>
                     <!--<Image
-                        x:Name="image"
-                        Width="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"
-                        Height="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
                         Source="{Binding Url}" />-->
                     <web:ChromiumWebBrowser
                         Width="Auto"

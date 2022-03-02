@@ -28,6 +28,8 @@ namespace Models
         [MaxLength(1000)]
         public string Title { get; set; }
 
+        //public string 
+
         [Required]
         [MaxLength(30)]
         [Column(TypeName = "varchar(10)")]

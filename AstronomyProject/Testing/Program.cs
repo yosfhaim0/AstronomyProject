@@ -18,7 +18,7 @@ namespace Testing
         static async Task Main(string[] args)
         {
             //await _nasaTest.TestSatellaitGet();
-            //await _nasaTest.GetImageTest();
+            await _nasaTest.GetImageTest();
             //await _nasaTest.GetMediaTest();
             //await _fireBaseTest.PushImage();
             //await _fireBaseTest.DeleteImage();
@@ -27,7 +27,7 @@ namespace Testing
             //await _nasaTest.GetImageOfTheDayTest();
             //await imaggaReqTest.getJson();
             //await _nasaTest.GetAstroid();
-            await _nasaTest.GetAsteroidById(54245556);
+            //await _nasaTest.GetAsteroidById(54245556);
 
 
         }

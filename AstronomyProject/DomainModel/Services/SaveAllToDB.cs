@@ -22,4 +22,14 @@ namespace DomainModel.Services
             await _unitOfWork.Complete();
         }
     }
+    public interface IImaggaAutoTagingService
+    {
+
+    }
+
+    public class ImaggaAutoTagingService : IImaggaAutoTagingService
+    {
+
+
+    }
 }

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.UnitOfWork
 {
-    public class UnitOfWork : IUnitOfWork  
+    public class UnitOfWork : IUnitOfWork
     {
         readonly AstronomyContext _context;
 
@@ -28,11 +28,14 @@ namespace DataAccess.UnitOfWork
 
             ImageOfTheDayRepository = new ImageOfTheDayRepository(_context, nasaApi, firebase);
             NearAstroidRepository = new NearAsteroidRepository(_context, nasaApi);
+            MediaSearchRepository = new MediaSearchRepository(nasaApi);
         }
 
         public IImageOfTheDayRepository ImageOfTheDayRepository { get; }
 
         public INearAsteroidRepository NearAstroidRepository { get; }
+
+        public IMediaSearchRepository MediaSearchRepository { get; }
 
         public async Task Complete()
         {

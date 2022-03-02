@@ -31,7 +31,12 @@ namespace DataAccess.Repositories
                 return isExist.First();
             }
 
+            
+
             var imgDto = await _nasaApi.GetImageOfTheDay();
+
+            //var imagIdFor = ""Guid.NewGuid().ToString();
+            //await _firebase.Insert(imgDto.Url, imgDto.Title);
 
             var result = imgDto.CopyPropertiesToNew(typeof(ImageOfTheDay)) as ImageOfTheDay;
 

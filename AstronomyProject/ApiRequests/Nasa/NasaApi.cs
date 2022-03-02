@@ -95,7 +95,7 @@ namespace ApiRequests.Nasa
             }
         }
 
-        public async Task<string> GetImageBy(string keyWord)
+        public async Task<string> SearchImage(string keyWord)
         {
             var query = $"{GET_IMAGE_LIB_BASE}/search?q={keyWord}";
             var content = await client.GetAsync(query);
@@ -181,7 +181,7 @@ namespace ApiRequests.Nasa
             var s = new List<string>();
             foreach (var i in a)
             {
-                s.Add(await GetImageBy(i.Name));
+                s.Add(await SearchImage(i.Name));
             }
             var c=0;
         }

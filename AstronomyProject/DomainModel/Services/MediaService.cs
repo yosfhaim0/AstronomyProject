@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DataAccess.UnitOfWork;
+using DomainModel.DbFactory;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,14 +10,22 @@ namespace DomainModel.Services
 {
     public class MediaService : IMediaService
     {
-        public MediaService()
+        readonly IUnitOfWork _unitOfWork;
+        IImaggaAutoTagingService _imaggaAutoTaging;
+
+        public MediaService(IDbFactory dbFactory, IImaggaAutoTagingService imaggaAutoTaging)
         {
+            _unitOfWork = dbFactory.GetDataAccess();
+            _imaggaAutoTaging = imaggaAutoTaging;
 
         }
+        
 
-        public Task<object> SearchMedia(string keyWord)
+        public async Task<string> SearchMedia(string keyWord)
         {
-            return null;
+            var imgs=await _unitOfWork.MediaSearchRepository.Search(keyWord);
+            return imgs;
         }
+
     }
 }
