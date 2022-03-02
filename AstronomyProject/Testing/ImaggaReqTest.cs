@@ -18,14 +18,15 @@ namespace Testing
 
         public async Task getJson()
         {
-            var t = await b.Get("5.jpg");
-            p(t);
-
+            // var t = await b.Get("apod.nasa.gov/apod/image/2203/DuelingBands_Dai_960.jpg");
+            //p(t);
+            p("");
         }
 
         private void p(string t)
         {
-            //o(i.autoTagging(@t));
+           var x = i.autoTagging(@"https://apod.nasa.gov/apod/image/2203/DuelingBands_Dai_960.jpg");
+            var y = 0;
         }
         private void o(string t)
         {

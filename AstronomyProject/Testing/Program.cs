@@ -25,8 +25,8 @@ namespace Testing
             //var v=await _fireBaseTest.get("1.jpg");
 
             //await _nasaTest.GetImageOfTheDayTest();
-            //await imaggaReqTest.getJson();
-            await _nasaTest.GetAstroid();
+            await imaggaReqTest.getJson();
+            //await _nasaTest.GetAstroid();
 
 
 
