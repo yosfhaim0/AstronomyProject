@@ -47,5 +47,14 @@ namespace DataAccess.Repositories
         {
             await Context.Set<TModel>().AddRangeAsync(models);
         }
+
+        public async Task<int> Count(Expression<Func<TModel, bool>> predicate = null)
+        {
+            if(predicate == null)
+            {
+                return await Context.Set<TModel>().CountAsync();
+            }
+            return await Context.Set<TModel>().CountAsync(predicate);
+        }
     }
 }

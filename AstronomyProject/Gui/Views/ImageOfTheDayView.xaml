@@ -51,8 +51,8 @@
         </Grid.RowDefinitions>
         <GroupBox
             Grid.Row="0"
-            materialDesign:ColorZoneAssist.Background="Black"
-            materialDesign:ColorZoneAssist.Foreground="White"
+            materialDesign:ColorZoneAssist.Background="#fffafa"
+            materialDesign:ColorZoneAssist.Foreground="Black"
             materialDesign:ColorZoneAssist.Mode="Custom"
             DataContext="{Binding SelectedImage}"
             Header="{Binding Title}"
@@ -61,13 +61,15 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon
-                            Width="30"
-                            Height="30"
+                            Width="28"
+                            Height="28"
                             VerticalAlignment="Center"
                             Kind="ImageArea" />
                         <TextBlock
                             VerticalAlignment="Center"
-                            Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                            FontFamily="Consoles"
+                            FontSize="18"
+                            FontWeight="DemiBold"
                             Text="{Binding}" />
                     </StackPanel>
                 </DataTemplate>
@@ -98,6 +100,7 @@
                     Grid.Row="0"
                     Grid.Column="0"
                     HorizontalAlignment="Center"
+                    FontSize="15"
                     Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
                     Text="{Binding Date, StringFormat=dd/MM/yyyy}" />
                 <TextBox
@@ -108,7 +111,7 @@
                     Background="Transparent"
                     BorderThickness="0"
                     FontFamily="{StaticResource MaterialDesignFont}"
-                    FontSize="14"
+                    FontSize="15"
                     IsReadOnly="True"
                     Text="{Binding Explanation}"
                     TextWrapping="Wrap" />
@@ -130,22 +133,10 @@
                         </Style>
                     </materialDesign:Card.Style>
                     <!--<Image
-                        Width="Auto"
-                        Height="Auto"
-                        Source="{Binding Url}">
-                        <Image.Style>
-                            <Style TargetType="Image">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding MediaType}" Value="image">
-                                        <Setter Property="Visibility" Value="Visible" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding MediaType}" Value="video">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Image.Style>
-                    </Image>-->
+                        x:Name="image"
+                        Width="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"
+                        Height="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
+                        Source="{Binding Url}" />-->
                     <web:ChromiumWebBrowser
                         Width="Auto"
                         Height="Auto"

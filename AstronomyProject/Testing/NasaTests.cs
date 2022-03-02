@@ -56,5 +56,15 @@ namespace Testing
             Console.WriteLine(output);
         }
 
+        public async Task GetAsteroidById(int id)
+        {
+            var a = await _nasaClient.GetAstroidById(id.ToString());
+            Console.WriteLine(a);
+            foreach(var d in a.CloseApproachs)
+            {
+                Console.WriteLine($"{d.CloseApproachDate}");
+            }
+        }
+
     }
 }
