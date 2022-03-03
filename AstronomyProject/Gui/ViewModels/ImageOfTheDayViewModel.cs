@@ -61,6 +61,12 @@ namespace Gui.ViewModels
                 SelectedImage = Gallery[index];
             });
 
+        private DelegateCommand _goToTodayImage;
+        public DelegateCommand GoToTodayImage => _goToTodayImage ??= new DelegateCommand(
+            () =>
+            {
+                SelectedImage = Gallery.FirstOrDefault(i => i.Date.Date == DateTime.Today.Date);
+            });
 
         DelegateCommand _load;
         public DelegateCommand Load => _load ??= new DelegateCommand(
@@ -77,5 +83,7 @@ namespace Gui.ViewModels
                 Gallery.AddRange(gallery);
                 IsLoading = false;
             });
+
+
     }
 }

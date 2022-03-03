@@ -59,19 +59,33 @@
             Style="{StaticResource MaterialDesignCardGroupBox}">
             <GroupBox.HeaderTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
                         <materialDesign:PackIcon
+                            Grid.Column="0"
                             Width="28"
                             Height="28"
                             VerticalAlignment="Center"
                             Kind="ImageArea" />
                         <TextBlock
+                            Grid.Column="1"
                             VerticalAlignment="Center"
                             FontFamily="Consoles"
                             FontSize="18"
                             FontWeight="DemiBold"
                             Text="{Binding}" />
-                    </StackPanel>
+                        <Button
+                            Grid.Column="2"
+                            Width="150"
+                            HorizontalAlignment="Right"
+                            Command="{Binding ElementName=GalleryView, Path=DataContext.GoToTodayImage}"
+                            Content="Show tody image"
+                            Style="{StaticResource MaterialDesignFlatButton}" />
+                    </Grid>
                 </DataTemplate>
             </GroupBox.HeaderTemplate>
 
