@@ -32,14 +32,24 @@ namespace Gui.ViewModels
             set { SetProperty(ref _searchWord, value); }
         }
 
-        private string _content;
-        public string Content
+        private string _selectedImage;
+        public string SelectedImage
+        {
+            get { return _selectedImage ?? Content?.FirstOrDefault(); }
+            set
+            {
+                SetProperty(ref _selectedImage, value);
+            }
+        }
+
+        private List<string> _content;
+        public List<string> Content
         {
             get { return _content; }
             set { SetProperty(ref _content, value); }
         }
 
-        private bool _isLoading;
+        private bool _isLoading = false;
         public bool IsLoading
         {
             get { return _isLoading; }
@@ -56,20 +66,12 @@ namespace Gui.ViewModels
                     Content = await _mediaService.SearchMedia(SearchWord);
                     IsLoading = false;
                 }
-            }, 
+            },
             () =>
             {
                 return !IsLoading;
             });
 
-        public IEnumerable<ISeries> Series { get; set; } = new ObservableCollection<ISeries>
-        {
-            new StepLineSeries<double?>
-            {
-                Values = new ObservableCollection<double?> { 2, 1, 3, 4, 3, 4, 6 },
-                Fill = null
-            }
-        };
 
 
     }
