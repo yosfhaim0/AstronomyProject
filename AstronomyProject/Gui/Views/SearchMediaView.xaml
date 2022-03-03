@@ -7,7 +7,9 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
-    xmlns:web="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+    xmlns:web="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf" 
+    xmlns:viewmodels="clr-namespace:Gui.ViewModels" 
+    d:DataContext="{d:DesignInstance Type=viewmodels:SearchMediaViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     prism:ViewModelLocator.AutoWireViewModel="True"
@@ -48,41 +50,30 @@
             </Button>
         </Grid>
         <!--<TextBlock Grid.Row="1" Text="{Binding Content}" />-->
-        <ListBox
+        <ItemsControl
                 Grid.Row="1"
                 ItemsSource="{Binding Content}"
                 ScrollViewer.CanContentScroll="True"
-                ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                SelectedItem="{Binding SelectedImage}"
-                Style="{StaticResource MaterialDesignNavigationListBox}">
-            <ListBox.ItemsPanel>
+                ScrollViewer.HorizontalScrollBarVisibility="Auto">
+            <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel IsItemsHost="True" />
+                    <WrapPanel IsItemsHost="True" MaxWidth="720"/>
                 </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
 
                 <DataTemplate>
                     <Grid>
-                        <materialDesign:Card
-                                Padding="4"
-                               
-                                UniformCornerRadius="14">
-                            <ProgressBar
-                                    IsIndeterminate="True"
-                                    
-                                    Value="50" />
-                        </materialDesign:Card>
                         <materialDesign:Card >
-                            <web:ChromiumWebBrowser
+                            <Image
                                     Width="240"
                                     Height="120"
-                                    Address="{Binding Content}"
+                                    Source="{Binding}"
                                     IsEnabled="False" />
                         </materialDesign:Card>
                     </Grid>
                 </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </UserControl>

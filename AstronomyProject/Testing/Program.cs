@@ -18,14 +18,14 @@ namespace Testing
         static async Task Main(string[] args)
         {
             //await _nasaTest.TestSatellaitGet();
-            await _nasaTest.GetImageTest();
+            //await _nasaTest.GetImageTest();
             //await _nasaTest.GetMediaTest();
             //await _fireBaseTest.PushImage();
             //await _fireBaseTest.DeleteImage();
             //var v=await _fireBaseTest.get("1.jpg");
 
             //await _nasaTest.GetImageOfTheDayTest();
-            //await imaggaReqTest.getJson();
+            await imaggaReqTest.getJson();
             //await _nasaTest.GetAstroid();
             //await _nasaTest.GetAsteroidById(54245556);
 

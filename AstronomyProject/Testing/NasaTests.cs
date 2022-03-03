@@ -23,8 +23,8 @@ namespace Testing
         }
         public async Task GetTest()
         {
-            await _nasaClient.Get();
-            Console.WriteLine();
+            //await _nasaClient.Get();
+           // Console.WriteLine();
         }
 
         public async Task TestSatellaitGet()

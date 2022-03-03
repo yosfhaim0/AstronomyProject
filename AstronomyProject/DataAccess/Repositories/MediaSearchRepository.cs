@@ -18,6 +18,9 @@ namespace DataAccess.Repositories
         public async Task<Models.Dtos.Root> Search(string searchWord)
         {
             return await _nasaApi.SearchImage(searchWord);
+            // get from nasa
+            // get from db
+            // get from firbase
         }
     }
 }

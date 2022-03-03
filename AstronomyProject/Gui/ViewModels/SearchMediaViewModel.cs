@@ -32,14 +32,24 @@ namespace Gui.ViewModels
             set { SetProperty(ref _searchWord, value); }
         }
 
-        private string _content;
-        public string Content
+        private string _selectedImage;
+        public string SelectedImage
+        {
+            get { return _selectedImage ?? Content?.FirstOrDefault(); }
+            set
+            {
+                SetProperty(ref _selectedImage, value);
+            }
+        }
+
+        private List<string> _content;
+        public List<string> Content
         {
             get { return _content; }
             set { SetProperty(ref _content, value); }
         }
 
-        private bool _isLoading=false;
+        private bool _isLoading = false;
         public bool IsLoading
         {
             get { return _isLoading; }
@@ -53,16 +63,16 @@ namespace Gui.ViewModels
                 if (!string.IsNullOrEmpty(SearchWord))
                 {
                     IsLoading = true;
-                    Content = (await _mediaService.SearchMedia(SearchWord))[0];
+                    Content = await _mediaService.SearchMedia(SearchWord);
                     IsLoading = false;
                 }
-            }, 
+            },
             () =>
             {
                 return !IsLoading;
             });
 
-  
+
 
     }
 }

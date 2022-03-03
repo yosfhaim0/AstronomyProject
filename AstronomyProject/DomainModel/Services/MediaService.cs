@@ -24,6 +24,7 @@ namespace DomainModel.Services
         public async Task<List<string>> SearchMedia(string keyWord)
         {
             var imgs = await _unitOfWork.MediaSearchRepository.Search(keyWord);
+            // no data from db or firebase => call nasa => call imagga => save relevt data to db
             return RootToString(imgs);
         }
 
@@ -31,13 +32,18 @@ namespace DomainModel.Services
         {
             var a = imgs.collection.items;
             List<string> result = new List<string>();
+            var temp = true;
             foreach (var item in a)
             {
                 if (item.links != null)
                     foreach (var link in item.links)
                     {
                         if (link != null)
-                            result.Add(link.href);
+                        {
+                            temp = link.href.ToString().EndsWith(".jpg");
+                            if (temp)
+                                result.Add(link.href);
+                        }
                     }
             }
             return result;
