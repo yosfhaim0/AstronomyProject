@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Gui.ViewModels
 {
-    public class QueriesViewModel : BindableBase
+    public class QueriesViewModel : ViewModelBase
     {
 
     }

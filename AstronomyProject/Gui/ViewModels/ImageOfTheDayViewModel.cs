@@ -14,20 +14,13 @@ using Tools;
 
 namespace Gui.ViewModels
 {
-    public class ImageOfTheDayViewModel : BindableBase
+    public class ImageOfTheDayViewModel : ViewModelBase
     {
         readonly IGalleryImageOfTheDayService _gallery;
 
         public ImageOfTheDayViewModel(IGalleryImageOfTheDayService gallery)
         {
             _gallery = gallery;
-        }
-
-        private bool _isLoading;
-        public bool IsLoading
-        {
-            get { return _isLoading; }
-            set { SetProperty(ref _isLoading, value); }
         }
 
         public ObservableCollection<ImageOfTheDay> Gallery { get; set; } = new();

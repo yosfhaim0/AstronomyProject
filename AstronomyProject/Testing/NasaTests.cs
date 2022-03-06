@@ -21,10 +21,11 @@ namespace Testing
             var result = await _nasaClient.GetMediaBy("as11-40-5874");
             Console.WriteLine(result);
         }
-        public async Task GetTest()
+        public Task GetTest()
         {
             //await _nasaClient.Get();
-           // Console.WriteLine();
+            // Console.WriteLine();
+            return null;
         }
 
         public async Task TestSatellaitGet()

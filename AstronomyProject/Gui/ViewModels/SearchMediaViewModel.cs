@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Gui.ViewModels
 {
-    public class SearchMediaViewModel : BindableBase
+    public class SearchMediaViewModel : ViewModelBase
     {
 
         readonly IMediaService _mediaService;
@@ -47,13 +47,6 @@ namespace Gui.ViewModels
         {
             get { return _content; }
             set { SetProperty(ref _content, value); }
-        }
-
-        private bool _isLoading = false;
-        public bool IsLoading
-        {
-            get { return _isLoading; }
-            set { SetProperty(ref _isLoading, value); }
         }
 
         private DelegateCommand _searchCommand;

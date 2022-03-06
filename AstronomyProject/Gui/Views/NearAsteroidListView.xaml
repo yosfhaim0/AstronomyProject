@@ -19,12 +19,11 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
-        <!--<ProgressBar IsIndeterminate="{Binding IsLoading}" />
-        <DataGrid ItemsSource="{Binding PotentiallyHazardous}" />-->
+        <local:LoadingBar IsLoading="{Binding IsLoading}" />
+
         <lvc:PieChart
             LegendPosition="Right"
             Series="{Binding Series}"
             Total="{Binding TotalAsteroids}" />
-
     </Grid>
 </UserControl>

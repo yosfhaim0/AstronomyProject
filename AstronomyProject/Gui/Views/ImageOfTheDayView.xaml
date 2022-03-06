@@ -19,28 +19,6 @@
             <i:InvokeCommandAction Command="{Binding Load}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <UserControl.Resources>
-        <Style x:Key="LoadingBarStyleTrigger" TargetType="materialDesign:Card">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding ElementName=GalleryView, Path=DataContext.IsLoading}" Value="True">
-                    <Setter Property="Visibility" Value="Visible" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding ElementName=GalleryView, Path=DataContext.IsLoading}" Value="False">
-                    <Setter Property="Visibility" Value="Collapsed" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="LoadingListBoxItemStyleTrigger" TargetType="materialDesign:Card">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding ElementName=GalleryView, Path=DataContext.IsLoading}" Value="True">
-                    <Setter Property="Visibility" Value="Collapsed" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding ElementName=GalleryView, Path=DataContext.IsLoading}" Value="False">
-                    <Setter Property="Visibility" Value="Visible" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -98,18 +76,14 @@
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <materialDesign:Card
+                <local:LoadingBar
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
-                    Padding="4"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Center"
-                    Style="{StaticResource LoadingBarStyleTrigger}"
-                    UniformCornerRadius="14">
-                    <ProgressBar IsIndeterminate="True" />
-                </materialDesign:Card>
+                    IsLoading="{Binding IsLoading}" />
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="0"
@@ -146,8 +120,6 @@
                             </Style.Triggers>
                         </Style>
                     </materialDesign:Card.Style>
-                    <!--<Image
-                        Source="{Binding Url}" />-->
                     <web:ChromiumWebBrowser
                         Width="Auto"
                         Height="Auto"
@@ -192,22 +164,13 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
-                            <materialDesign:Card
-                                Padding="4"
-                                Style="{StaticResource LoadingBarStyleTrigger}"
-                                UniformCornerRadius="14">
-                                <ProgressBar
-                                    IsIndeterminate="True"
-                                    Style="{StaticResource MaterialDesignCircularProgressBar}"
-                                    Value="50" />
-                            </materialDesign:Card>
-                            <materialDesign:Card Style="{StaticResource LoadingListBoxItemStyleTrigger}">
+                            <Viewbox>
                                 <web:ChromiumWebBrowser
                                     Width="240"
                                     Height="120"
                                     Address="{Binding Url}"
                                     IsEnabled="False" />
-                            </materialDesign:Card>
+                            </Viewbox>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

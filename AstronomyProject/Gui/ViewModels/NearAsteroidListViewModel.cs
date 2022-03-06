@@ -13,7 +13,7 @@ using LiveChartsCore;
 
 namespace Gui.ViewModels
 {
-    public class NearAsteroidListViewModel : BindableBase
+    public class NearAsteroidListViewModel : ViewModelBase
     {
         readonly INearAsteroidService _nearAsteroidService;
 
@@ -74,13 +74,6 @@ namespace Gui.ViewModels
             };
             Series.Clear();
             Series.AddRange(sec);
-        }
-
-        private bool _isLoading;
-        public bool IsLoading
-        {
-            get { return _isLoading; }
-            set { SetProperty(ref _isLoading, value); }
         }
     }
 }
