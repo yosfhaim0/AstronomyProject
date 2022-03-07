@@ -77,7 +77,6 @@
             </Button>
 
         </Grid>
-
         <materialDesign:Card Grid.Row="1">
             <TabControl
                 Width="auto"
@@ -95,6 +94,44 @@
                 </TabItem>
                 <TabItem Width="auto" Header="Relative velocity">
                     <lvc:CartesianChart Series="{Binding SpeedInfo}" />
+                </TabItem>
+                <TabItem Width="auto" Header="By diameter">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Row="0" Grid.Column="0" Margin="5" materialDesign:HintAssist.Hint="Enter diameter" Text="{Binding Diameter,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignOutlinedTextBox}">
+                            <TextBox.InputBindings>
+                                <KeyBinding
+                                    Command="{Binding FilterByDiameter}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBox}}}"
+                                    Gesture="Return" />
+                            </TextBox.InputBindings>
+                        </TextBox>
+                        <Button Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" ToolTip="Filter by diameter" Command="{Binding FilterByDiameter}" Style="{StaticResource MaterialDesignIconButton}" >
+                            <materialDesign:PackIcon Kind="FilterList"/>
+                        </Button>
+                        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" IsReadOnly="True" ItemsSource="{Binding AsteroidsGreterThen}" AutoGenerateColumns="False" Style="{StaticResource MaterialDesignDataGrid}" SelectedItem="{Binding SelectedAstroeid}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Name" Width="auto" Binding="{Binding Name}" />
+                                <DataGridTextColumn Header="Absolute Magnitude H" Width="auto" Binding="{Binding AbsoluteMagnitudeH}" />
+                                <!--<DataGridCheckBoxColumn Header="Potentially Hazardous?" Width="auto" Binding="{Binding IsPotentiallyHazardousAsteroid}"  />
+                                <DataGridCheckBoxColumn Header="Sentry Object?" Width="auto" Binding="{Binding IsSentryObject}"  />-->
+                                <DataGridTextColumn Header="Estimated Diameter Max" Width="auto" Binding="{Binding EstimatedDiameterMax}"  />
+                                <DataGridTextColumn Header="Estimated Diameter Min" Width="auto" Binding="{Binding EstimatedDiameterMin}"  />
+                                <!--<DataGridComboBoxColumn Header="Close Approachs" Width="auto" ItemsSource="{Binding CloseApproachs}"  />-->
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <DataGrid Grid.Row="1" Grid.Column="2" Width="auto" ItemsSource="{Binding CloseApproach}" AutoGenerateColumns="True">
+                            
+                        </DataGrid>
+                    </Grid>
                 </TabItem>
             </TabControl>
         </materialDesign:Card>

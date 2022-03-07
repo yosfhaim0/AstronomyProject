@@ -25,8 +25,8 @@ namespace Gui.ViewModels
         private DateTime? _fromDate;
         public DateTime? FromDate
         {
-            get => _fromDate; 
-            set => SetProperty(ref _fromDate, value); 
+            get => _fromDate;
+            set => SetProperty(ref _fromDate, value);
         }
 
         private DateTime? _toDate;
@@ -45,7 +45,6 @@ namespace Gui.ViewModels
                 .SearchNearAsteroids(FromDate.Value, ToDate.Value);
                 NearAsteroids.Clear();
                 NearAsteroids.AddRange(asteroids);
-                TotalAsteroids = NearAsteroids.Count;
                 LoadPieSeries();
                 LoadSpeedSerise();
                 IsLoading = false;
@@ -56,11 +55,37 @@ namespace Gui.ViewModels
 
         public ObservableCollection<NearAsteroid> NearAsteroids { get; set; } = new();
 
-        private int _totalAsteroids;
-        public int TotalAsteroids
+        private double _diameter;
+        public double Diameter
         {
-            get => _totalAsteroids; 
-            set => SetProperty(ref _totalAsteroids, value); 
+            get => _diameter;
+            set => SetProperty(ref _diameter, value);
+        }
+
+        public ObservableCollection<NearAsteroid> AsteroidsGreterThen { get; set; } = new();
+
+        DelegateCommand _filterByDiameter;
+        public DelegateCommand FilterByDiameter => _filterByDiameter ??= new DelegateCommand(
+             () =>
+            {
+                AsteroidsGreterThen.Clear();
+                AsteroidsGreterThen.AddRange(NearAsteroids.Where(a => a.EstimatedDiameterMin >= Diameter));
+
+            });
+
+
+        private NearAsteroid _selectedAstroeid = new();
+        public NearAsteroid SelectedAstroeid
+        {
+            get => _selectedAstroeid;
+            set => SetProperty(ref _selectedAstroeid, value);
+        }
+
+        private ObservableCollection<CloseApproach> _closeApproach = new();
+        public ObservableCollection<CloseApproach> CloseApproach
+        {
+            get => _closeApproach;
+            set => SetProperty(ref _closeApproach, new(SelectedAstroeid?.CloseApproachs ?? new()));
         }
 
         private void LoadPieSeries()
@@ -89,9 +114,9 @@ namespace Gui.ViewModels
         }
 
         private void LoadSpeedSerise()
-        {         
+        {
             var series = new List<ISeries>();
-            foreach(var a in NearAsteroids)
+            foreach (var a in NearAsteroids)
             {
                 series.Add(new ColumnSeries<double>
                 {

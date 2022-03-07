@@ -11,6 +11,14 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     WindowState="Maximized"
     mc:Ignorable="d">
+    <Window.Resources>
+        <Style
+            x:Key="MenuButtonsStyle"
+            BasedOn="{StaticResource MaterialDesignFlatButton}"
+            TargetType="Button">
+            <Setter Property="Foreground" Value="Black" />
+        </Style>
+    </Window.Resources>
     <DockPanel Margin="10">
         <materialDesign:ColorZone
             Padding="5"
@@ -64,19 +72,19 @@
                             Command="{Binding NavigateCommand}"
                             CommandParameter="ImageOfTheDayView"
                             Content="Image of the day from NASA"
-                            Style="{StaticResource MaterialDesignFlatButton}" />
+                            Style="{StaticResource MenuButtonsStyle}" />
                         <Button
                             Grid.Row="1"
                             Command="{Binding NavigateCommand}"
                             CommandParameter="SearchMediaView"
                             Content="Search Media"
-                            Style="{StaticResource MaterialDesignFlatButton}" />
+                            Style="{StaticResource MenuButtonsStyle}" />
                         <Button
                             Grid.Row="2"
                             Command="{Binding NavigateCommand}"
-                            CommandParameter="NearAsteroidListView"
+                            CommandParameter="NearAsteroidsView"
                             Content="Near Asteroids"
-                            Style="{StaticResource MaterialDesignFlatButton}" />
+                            Style="{StaticResource MenuButtonsStyle}" />
                     </Grid>
                 </materialDesign:ColorZone>
             </materialDesign:DrawerHost.LeftDrawerContent>
