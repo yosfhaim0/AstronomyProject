@@ -10,7 +10,7 @@ namespace DomainModel.Services
 {
     public interface INearAsteroidService
     {
-        Task<IEnumerable<NearAsteroid>> GetPotentiallyHazardous();
+        Task<IEnumerable<NearAsteroid>> SearchNearAsteroids(DateTime? from, DateTime? to);
 
         Task<int> CountBy(Expression<Func<NearAsteroid, bool>> predicate);
     }

@@ -18,9 +18,9 @@ namespace Gui.Views
     /// <summary>
     /// Interaction logic for NearAsteroidListView.xaml
     /// </summary>
-    public partial class NearAsteroidListView : UserControl
+    public partial class NearAsteroidsView : UserControl
     {
-        public NearAsteroidListView()
+        public NearAsteroidsView()
         {
             InitializeComponent();
         }

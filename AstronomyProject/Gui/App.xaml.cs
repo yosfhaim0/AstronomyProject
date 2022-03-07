@@ -38,7 +38,7 @@ namespace Gui
             containerRegistry.RegisterForNavigation<ImageOfTheDayView>(nameof(ImageOfTheDayView));
             containerRegistry.RegisterForNavigation<HomeView>(nameof(HomeView));
             containerRegistry.RegisterForNavigation<SearchMediaView>(nameof(SearchMediaView));
-            containerRegistry.RegisterForNavigation<NearAsteroidListView>(nameof(NearAsteroidListView));
+            containerRegistry.RegisterForNavigation<NearAsteroidsView>(nameof(NearAsteroidsView));
             #endregion
         }
 

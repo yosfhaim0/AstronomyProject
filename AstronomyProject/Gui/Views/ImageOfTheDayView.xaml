@@ -83,7 +83,7 @@
                     Grid.ColumnSpan="2"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Center"
-                    IsLoading="{Binding IsLoading}" />
+                    IsLoading="{Binding ElementName=GalleryView, Path=DataContext.IsLoading}" />
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="0"

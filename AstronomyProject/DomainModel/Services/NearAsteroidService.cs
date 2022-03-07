@@ -19,17 +19,30 @@ namespace DomainModel.Services
             _unitOfWork = dbFactory.GetDataAccess();
         }
 
-        public async Task<IEnumerable<NearAsteroid>> GetPotentiallyHazardous()
-        {
-            var astroids = await
-                _unitOfWork.NearAstroidRepository
-                .ClosestApproachDateToEarth(DateTime.Now.AddDays(-3), DateTime.Now);
-            return astroids;
-        }
-
         public async Task<int> CountBy(Expression<Func<NearAsteroid, bool>> predicate)
         {
-            return await _unitOfWork.NearAstroidRepository.Count(predicate);
+            return await _unitOfWork
+                .NearAstroidRepository
+                .Count(predicate);
+        }
+
+        public async Task<IEnumerable<NearAsteroid>> SearchNearAsteroids(DateTime? from, DateTime? to)
+        {
+            if(from == null || to == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if ((to.Value - from.Value).Days > 7)
+            {
+                throw new ArgumentOutOfRangeException("The maximum is 7 days");
+            }
+
+            var astroids = await
+                _unitOfWork.NearAstroidRepository
+                .ClosestApproachDateToEarth(from.Value, to.Value);
+            
+            return astroids;
         }
     }
 }
