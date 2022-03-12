@@ -43,10 +43,13 @@ namespace Gui.ViewModels
                 IsLoading = true;
                 var asteroids = await _nearAsteroidService
                 .SearchNearAsteroids(FromDate.Value, ToDate.Value);
+                
                 NearAsteroids.Clear();
                 NearAsteroids.AddRange(asteroids);
+                
                 AsteroidsGreterThen.Clear();
                 AsteroidsGreterThen.AddRange(asteroids);
+                
                 LoadPieSeries();
                 LoadSpeedSerise();
                 IsLoading = false;
@@ -83,7 +86,7 @@ namespace Gui.ViewModels
             set
             {
                 SetProperty(ref _selectedAstroeid, value);
-                CloseApproach = new(_selectedAstroeid.CloseApproachs);
+                CloseApproach = new(_selectedAstroeid?.CloseApproachs);
             }
         }
 

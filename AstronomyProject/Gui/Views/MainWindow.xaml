@@ -19,7 +19,7 @@
             <Setter Property="Foreground" Value="Black" />
         </Style>
     </Window.Resources>
-    <DockPanel Margin="10">
+    <DockPanel Margin="10" LastChildFill="True">
         <materialDesign:ColorZone
             Padding="5"
             materialDesign:ShadowAssist.ShadowDepth="Depth2"

@@ -20,5 +20,9 @@ namespace Models.Configurations
 
         public string CurrentConnectionStrings { get => ConnectionStrings[Admin]; }
 
+        public string ImaggaApiKey { get; set; }
+
+        public string ImaggaApiSecret { get; set; }
+
     }
 }

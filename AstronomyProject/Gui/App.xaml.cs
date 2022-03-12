@@ -29,16 +29,14 @@ namespace Gui
             #region Register services from the domain model
             containerRegistry.Register<IGalleryImageOfTheDayService, GalleryImageOfTheDayService>();
             containerRegistry.Register<INearAsteroidService, NearAsteroidService>();
-            containerRegistry.RegisterSingleton<SaveAllToDB>();
             containerRegistry.Register<IMediaService, MediaService>();
-            containerRegistry.Register<IImaggaAutoTagingService, ImaggaAutoTagingService>();
             #endregion
 
             #region Register views for navigation
-            containerRegistry.RegisterForNavigation<ImageOfTheDayView>(nameof(ImageOfTheDayView));
-            containerRegistry.RegisterForNavigation<HomeView>(nameof(HomeView));
-            containerRegistry.RegisterForNavigation<SearchMediaView>(nameof(SearchMediaView));
-            containerRegistry.RegisterForNavigation<NearAsteroidsView>(nameof(NearAsteroidsView));
+            containerRegistry.RegisterForNavigation<ImageOfTheDayView>();
+            containerRegistry.RegisterForNavigation<HomeView>();
+            containerRegistry.RegisterForNavigation<SearchMediaView>();
+            containerRegistry.RegisterForNavigation<NearAsteroidsView>();
             #endregion
         }
 

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public class ImaggaTag
+    public record ImaggaTag
     {
         public int Id { get; set; }
 

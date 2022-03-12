@@ -14,7 +14,7 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     FontFamily="{DynamicResource MaterialDesignFont}"
     mc:Ignorable="d">
-    <Grid Margin="5">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
@@ -23,7 +23,10 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="10">
+        <Grid
+            Grid.Row="0"
+            Margin="0,0,0,7"
+            HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="auto" />
@@ -35,11 +38,15 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <TextBlock
+            <materialDesign:Card
                 Grid.Row="0"
                 Grid.Column="0"
-                Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                Text="Find near asteroids between:" />
+                Padding="10,0">
+                <TextBlock
+                    VerticalAlignment="Center"
+                    Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                    Text="Find near asteroids between:" />
+            </materialDesign:Card>
 
             <DatePicker
                 Grid.Column="1"
@@ -98,15 +105,21 @@
                 <TabItem Width="auto" Header="By diameter">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBox Grid.Row="0" Grid.Column="0" Margin="5" materialDesign:HintAssist.Hint="Enter diameter" Text="{Binding Diameter,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignOutlinedTextBox}">
+                        <TextBox
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="5"
+                            materialDesign:HintAssist.Hint="Enter diameter"
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            Text="{Binding Diameter, UpdateSourceTrigger=PropertyChanged}">
                             <TextBox.InputBindings>
                                 <KeyBinding
                                     Command="{Binding FilterByDiameter}"
@@ -114,23 +127,52 @@
                                     Gesture="Return" />
                             </TextBox.InputBindings>
                         </TextBox>
-                        <Button Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" ToolTip="Filter by diameter" Command="{Binding FilterByDiameter}" Style="{StaticResource MaterialDesignIconButton}" >
-                            <materialDesign:PackIcon Kind="FilterList"/>
+                        <Button
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            Command="{Binding FilterByDiameter}"
+                            Style="{StaticResource MaterialDesignIconButton}"
+                            ToolTip="Filter by diameter">
+                            <materialDesign:PackIcon Kind="FilterList" />
                         </Button>
-                        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" IsReadOnly="True" ItemsSource="{Binding AsteroidsGreterThen}" AutoGenerateColumns="False" Style="{StaticResource MaterialDesignDataGrid}" SelectedItem="{Binding SelectedAstroeid}">
+                        <DataGrid
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            AutoGenerateColumns="False"
+                            IsReadOnly="True"
+                            ItemsSource="{Binding AsteroidsGreterThen}"
+                            SelectedItem="{Binding SelectedAstroeid}"
+                            Style="{StaticResource MaterialDesignDataGrid}">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Name" Width="auto" Binding="{Binding Name}" />
-                                <DataGridTextColumn Header="Absolute Magnitude H" Width="auto" Binding="{Binding AbsoluteMagnitudeH}" />
+                                <DataGridTextColumn
+                                    Width="auto"
+                                    Binding="{Binding Name}"
+                                    Header="Name" />
+                                <DataGridTextColumn
+                                    Width="auto"
+                                    Binding="{Binding AbsoluteMagnitudeH}"
+                                    Header="Absolute Magnitude H" />
                                 <!--<DataGridCheckBoxColumn Header="Potentially Hazardous?" Width="auto" Binding="{Binding IsPotentiallyHazardousAsteroid}"  />
                                 <DataGridCheckBoxColumn Header="Sentry Object?" Width="auto" Binding="{Binding IsSentryObject}"  />-->
-                                <DataGridTextColumn Header="Estimated Diameter Max" Width="auto" Binding="{Binding EstimatedDiameterMax}"  />
-                                <DataGridTextColumn Header="Estimated Diameter Min" Width="auto" Binding="{Binding EstimatedDiameterMin}"  />
+                                <DataGridTextColumn
+                                    Width="auto"
+                                    Binding="{Binding EstimatedDiameterMax}"
+                                    Header="Estimated Diameter Max" />
+                                <DataGridTextColumn
+                                    Width="auto"
+                                    Binding="{Binding EstimatedDiameterMin}"
+                                    Header="Estimated Diameter Min" />
                                 <!--<DataGridComboBoxColumn Header="Close Approachs" Width="auto" ItemsSource="{Binding CloseApproachs}"  />-->
                             </DataGrid.Columns>
                         </DataGrid>
-                        <DataGrid Grid.Row="1" Grid.Column="2" Width="auto" ItemsSource="{Binding CloseApproach}" AutoGenerateColumns="True">
-                            
-                        </DataGrid>
+                        <DataGrid
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Width="auto"
+                            AutoGenerateColumns="True"
+                            ItemsSource="{Binding CloseApproach}" />
                     </Grid>
                 </TabItem>
             </TabControl>

@@ -13,7 +13,6 @@ namespace Testing
     {
         static readonly NasaTests _nasaTest = new();
         static readonly FireBaseTest _fireBaseTest = new();
-        static readonly ImaggaReqTest imaggaReqTest = new();
 
         static async Task Main(string[] args)
         {
@@ -24,8 +23,7 @@ namespace Testing
             //await _fireBaseTest.DeleteImage();
             //var v=await _fireBaseTest.get("1.jpg");
 
-            //await _nasaTest.GetImageOfTheDayTest();
-            await imaggaReqTest.getJson();
+            await _nasaTest.GetImageOfTheDayTest();
             //await _nasaTest.GetAstroid();
             //await _nasaTest.GetAsteroidById(54245556);
 
