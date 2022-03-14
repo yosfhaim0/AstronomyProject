@@ -13,3 +13,18 @@ Final project
 השתמשנו בAPI של NASA , Imagga, FireBase .
 Firebase = We used the storage of the service called Firebase storage
 IMGA = artificial intelligence service for automatic image tags 
+
+
+
+![alt text](https://github.com/yosfhaim0/AstronomyProject/blob/main/AstronomyProject/Testing/%D7%A6%D7%99%D7%9C%D7%95%D7%9D%20%D7%9E%D7%A1%D7%9A%202022-03-14%20215009.png?raw=true)
+
+
+![alt text](https://github.com/yosfhaim0/AstronomyProject/blob/main/AstronomyProject/Testing/%D7%A6%D7%99%D7%9C%D7%95%D7%9D%20%D7%9E%D7%A1%D7%9A%202022-03-14%20215240.png?raw=true)
+
+
+
+![alt text](https://github.com/yosfhaim0/AstronomyProject/blob/main/AstronomyProject/Testing/%D7%A6%D7%99%D7%9C%D7%95%D7%9D%20%D7%9E%D7%A1%D7%9A%202022-03-14%20215256.png?raw=true)
+
+
+
+![alt text](https://github.com/yosfhaim0/AstronomyProject/blob/main/AstronomyProject/Testing/%D7%A6%D7%99%D7%9C%D7%95%D7%9D%20%D7%9E%D7%A1%D7%9A%202022-03-14%20215315.png?raw=true)
