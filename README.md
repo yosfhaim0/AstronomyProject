@@ -13,6 +13,7 @@ Final project
 השתמשנו בAPI של NASA , Imagga, FireBase .
 Firebase = We used the storage of the service called Firebase storage
 IMGA = artificial intelligence service for automatic image tags 
+עיצוב material design
 
 
 
