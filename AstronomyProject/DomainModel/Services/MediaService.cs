@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Models;
 using Models.Configurations;
+using ApiRequests.WordAssociations;
 
 namespace DomainModel.Services
 {
@@ -17,10 +18,15 @@ namespace DomainModel.Services
 
         readonly ImaggaApi _imagga;
 
+        readonly WordAssociationsApi _wordAssociations;
+
         public MediaService(IDbFactory dbFactory, MyConfigurations configurations)
         {
             _unitOfWork = dbFactory.GetDataAccess();
+            
             _imagga = new ImaggaApi(configurations.ImaggaApiKey, configurations.ImaggaApiSecret);
+            
+            _wordAssociations = new(configurations.WordAssociationsApiKey);
         }
 
 
@@ -31,25 +37,26 @@ namespace DomainModel.Services
             
             var imags = RootToString(imgsTemp);
 
-            var result = new List<string>();
+            return imags;
 
-            List<Task<Tuple<string, List<ImaggaTag>>>> tasks = new();
-            foreach(var im in imags)
-            {
-                tasks.Add(TagImage(im));
-            }
-            
-            var imageAndtags = await Task.WhenAll(tasks);
-            
-            var reletedWords = GetReletedWords(
-                imageAndtags.Select(t => t.Item2), searchWord);
-            
-            result.AddRange(from t in imageAndtags
-                            where IsImageReletedToSearchWord(reletedWords, t.Item2)
-                            select t.Item1);
+            //var result = new List<string>();
 
-            // no data from db or firebase => call nasa => call imagga => save relevt data to db
-            return result;
+            //List<Task<Tuple<string, List<ImaggaTag>>>> tasks = new();
+            //foreach(var im in imags)
+            //{
+            //    tasks.Add(TagImage(im));
+            //}
+            
+            //var imageAndtags = await Task.WhenAll(tasks);
+            
+            //var reletedWords = await GetWordAssociations(searchWord);
+            
+            //result.AddRange(from t in imageAndtags
+            //                where IsImageReletedToSearchWord(reletedWords, t.Item2)
+            //                select t.Item1);
+
+            //// no data from db or firebase => call nasa => call imagga => save relevt data to db
+            //return result;
         }
 
         private async Task<Tuple<string, List<ImaggaTag>>> TagImage(string imageUrl)
@@ -61,23 +68,24 @@ namespace DomainModel.Services
             return new(imageUrl, tags);
         }
 
-        private List<string> GetReletedWords(IEnumerable<List<ImaggaTag>> tags, string searchWord)
+        private async Task<List<Association>> GetWordAssociations(string searchWord)
         {
-            List<string> result = new();
-            foreach(var tag in tags)
-            {
-                if (tag != null && tag.Where(t => t.Tag.Contains(searchWord)).Any())
-                {
-                    result.AddRange(tag.Select(t => t.Tag));
-                }
-            }
-            return result;
+            return await _wordAssociations.GetAssociations(searchWord);
         }
 
-        private bool IsImageReletedToSearchWord(List<string> reletedWords, List<ImaggaTag> tags)
+        private bool IsImageReletedToSearchWord(List<Association> associations, List<ImaggaTag> tags)
         {
-            var tagsWords = tags.Select(t => t.Tag);
-            if(tagsWords.Intersect(reletedWords).Any())
+            if(tags == null)
+            {
+                return false;
+            }
+
+            var tagsWords = tags.Select(t => t.Tag.ToLower());
+            var associationsWords = from a in associations
+                                    //where a.Pos == Pos.Noun
+                                    select a.Word.ToLower();
+            var inter = tagsWords.Intersect(associationsWords);
+            if (inter.Any())
             {
                 return  true;
             }

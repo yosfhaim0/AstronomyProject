@@ -10,13 +10,7 @@ using System.Threading.Tasks;
 namespace ApiRequests.Imagga
 {
     public class ImaggaApi
-    {
-        /// <summary>
-        /// This is my personal details on the server
-        /// </summary>
-        private const string API_KEY = "acc_f7861a318066621";
-        private const string API_SECRET = "6eac13c97907f0f65afd406365102c10";
-        
+    {   
         private readonly string _apiKey;
         private readonly string _apiSecret;
 

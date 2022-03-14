@@ -24,5 +24,7 @@ namespace Models.Configurations
 
         public string ImaggaApiSecret { get; set; }
 
+        public string WordAssociationsApiKey { get; set; }
+
     }
 }
