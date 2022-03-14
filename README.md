@@ -1,19 +1,22 @@
 # AstronomyProject
 Final project
 
-פרויקט סיום בקורס "הנדסת מערכות חלונות"
-הפרויקט מציג ממשק חלונות מרהיב שבו אפשר למצוא פיצרים של תמונת היום בNASA , חיפוש תמונות במקורות של NASA, מידע על אסטרואידים קרובים לכדור הארץ ופרטים על אותם אסטרואידים(קוטר, מהירות, מסוכן\לא מסוכן) 
+**Noam suosan & yosef haim amrusi**
 
-התוכנית נכתבה בסביבת הפיתוח: visual studio
+Final project in the "Windows Systems Engineering" course
+The project presents a spectacular window interface where you can find features "image of the day" (NASA), search for images in **NASA** sources, information about close asteroids to Earth and details about those asteroids (diameter, speed, dangerous / not dangerous)
 
+The program was written in the visual studio environment 
 
+**Detailed description:**
 
-תיאור מפורט:
+We used the API of NASA, Imagga, FireBase.
 
-השתמשנו בAPI של NASA , Imagga, FireBase .
-Firebase = We used the storage of the service called Firebase storage
-IMGA = artificial intelligence service for automatic image tags 
-עיצוב material design
+**Firebase** = For storage of the images we used Firebase storage
+
+**IMGA** = artificial intelligence service for automatic image taging 
+
+Material design
 
 
 
