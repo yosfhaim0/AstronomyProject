@@ -14,6 +14,11 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     FontFamily="{DynamicResource MaterialDesignFont}"
     mc:Ignorable="d">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding Load}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -23,10 +28,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid
-            Grid.Row="0"
-            Margin="0,0,0,7"
-            HorizontalAlignment="Center">
+        <Grid Grid.Row="0" Margin="0,0,0,7">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="auto" />
@@ -102,7 +104,7 @@
                 <TabItem Width="auto" Header="Relative velocity">
                     <lvc:CartesianChart Series="{Binding SpeedInfo}" />
                 </TabItem>
-                <TabItem Width="auto" Header="By diameter">
+                <TabItem Width="auto" Header="Close approachs">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
@@ -117,7 +119,8 @@
                             Grid.Row="0"
                             Grid.Column="0"
                             Margin="5"
-                            materialDesign:HintAssist.Hint="Enter diameter"
+                            materialDesign:HintAssist.HelperTextFontSize="16"
+                            materialDesign:HintAssist.Hint="All greater then diameter..."
                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
                             Text="{Binding Diameter, UpdateSourceTrigger=PropertyChanged}">
                             <TextBox.InputBindings>
@@ -136,43 +139,47 @@
                             ToolTip="Filter by diameter">
                             <materialDesign:PackIcon Kind="FilterList" />
                         </Button>
-                        <DataGrid
+                        <GroupBox
                             Grid.Row="1"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
-                            AutoGenerateColumns="False"
-                            IsReadOnly="True"
-                            ItemsSource="{Binding AsteroidsGreterThen}"
-                            SelectedItem="{Binding SelectedAstroeid}"
-                            Style="{StaticResource MaterialDesignDataGrid}">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn
-                                    Width="auto"
-                                    Binding="{Binding Name}"
-                                    Header="Name" />
-                                <DataGridTextColumn
-                                    Width="auto"
-                                    Binding="{Binding AbsoluteMagnitudeH}"
-                                    Header="Absolute Magnitude H" />
-                                <!--<DataGridCheckBoxColumn Header="Potentially Hazardous?" Width="auto" Binding="{Binding IsPotentiallyHazardousAsteroid}"  />
-                                <DataGridCheckBoxColumn Header="Sentry Object?" Width="auto" Binding="{Binding IsSentryObject}"  />-->
-                                <DataGridTextColumn
-                                    Width="auto"
-                                    Binding="{Binding EstimatedDiameterMax}"
-                                    Header="Estimated Diameter Max" />
-                                <DataGridTextColumn
-                                    Width="auto"
-                                    Binding="{Binding EstimatedDiameterMin}"
-                                    Header="Estimated Diameter Min" />
-                                <!--<DataGridComboBoxColumn Header="Close Approachs" Width="auto" ItemsSource="{Binding CloseApproachs}"  />-->
-                            </DataGrid.Columns>
-                        </DataGrid>
-                        <DataGrid
+                            Margin="5"
+                            materialDesign:ColorZoneAssist.Mode="Dark"
+                            Header="Asteroids"
+                            Style="{StaticResource MaterialDesignCardGroupBox}">
+                            <DataGrid
+                                AutoGenerateColumns="False"
+                                IsReadOnly="True"
+                                ItemsSource="{Binding AsteroidsGreterThen}"
+                                SelectedItem="{Binding SelectedAstroeid}"
+                                Style="{StaticResource MaterialDesignDataGrid}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                                    <DataGridTextColumn Binding="{Binding AbsoluteMagnitudeH}" Header="Absolute&#x0a;Magnitude H" />
+                                    <DataGridTextColumn Binding="{Binding EstimatedDiameterMax, StringFormat={}{0:#.0.0.0}}" Header="Estimated&#x0a;Diameter Max" />
+                                    <DataGridTextColumn Binding="{Binding EstimatedDiameterMin, StringFormat={}{0:#.0.0.0}}" Header="Estimated&#x0a;Diameter Min" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </GroupBox>
+
+                        <GroupBox
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Margin="5"
+                            materialDesign:ColorZoneAssist.Mode="Dark"
+                            Header="Relative velocity by date (kilometers per second)"
+                            Style="{StaticResource MaterialDesignCardGroupBox}">
+                            <lvc:CartesianChart Series="{Binding CloseApproachSeries}" XAxes="{Binding XAxesDateTime}" />
+                        </GroupBox>
+
+
+                        <!--<DataGrid
                             Grid.Row="1"
                             Grid.Column="2"
                             Width="auto"
                             AutoGenerateColumns="True"
-                            ItemsSource="{Binding CloseApproach}" />
+                            ItemsSource="{Binding CloseApproach}" />-->
+                        <!--<local:DateTimeChartView Grid.Row="1" Grid.Column="2" />-->
                     </Grid>
                 </TabItem>
             </TabControl>

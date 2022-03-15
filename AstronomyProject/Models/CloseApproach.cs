@@ -26,5 +26,7 @@ namespace Models
         [MaxLength(50)]
         [Required]
         public string OrbitingBody { get; set; }
+
+        public int NearAsteroidId { get; set; }
     }
 }

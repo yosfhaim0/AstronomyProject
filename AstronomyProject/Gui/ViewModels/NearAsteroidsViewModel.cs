@@ -10,6 +10,8 @@ using Prism.Commands;
 using Prism.Mvvm;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore;
+using LiveChartsCore.Defaults;
+using LiveChartsCore.Kernel.Sketches;
 
 namespace Gui.ViewModels
 {
@@ -21,6 +23,25 @@ namespace Gui.ViewModels
         {
             _nearAsteroidService = nearAsteroidService;
         }
+
+        DelegateCommand _load;
+        public DelegateCommand Load => _load ??= new DelegateCommand(
+            async () =>
+            {
+                if (NearAsteroids.Any())
+                {
+                    return;
+                }
+                IsLoading = true;
+                var asteroids = await _nearAsteroidService.GetNearAsteroids();
+                NearAsteroids.Clear();
+                NearAsteroids.AddRange(asteroids);
+                AsteroidsGreterThen.Clear();
+                AsteroidsGreterThen.AddRange(asteroids);
+                LoadPieSeries();
+                LoadSpeedSerise();
+                IsLoading = false;
+            });
 
         private DateTime? _fromDate;
         public DateTime? FromDate
@@ -43,13 +64,13 @@ namespace Gui.ViewModels
                 IsLoading = true;
                 var asteroids = await _nearAsteroidService
                 .SearchNearAsteroids(FromDate.Value, ToDate.Value);
-                
+
                 NearAsteroids.Clear();
                 NearAsteroids.AddRange(asteroids);
-                
+
                 AsteroidsGreterThen.Clear();
                 AsteroidsGreterThen.AddRange(asteroids);
-                
+
                 LoadPieSeries();
                 LoadSpeedSerise();
                 IsLoading = false;
@@ -85,8 +106,10 @@ namespace Gui.ViewModels
             get => _selectedAstroeid;
             set
             {
+                if (value == null) return;
                 SetProperty(ref _selectedAstroeid, value);
                 CloseApproach = new(_selectedAstroeid?.CloseApproachs);
+                LoadCloseApproachSeries();
             }
         }
 
@@ -140,10 +163,50 @@ namespace Gui.ViewModels
             SpeedInfo.AddRange(series);
         }
 
+        private void LoadCloseApproachSeries()
+        {
+            var series = new List<ISeries>
+            {
+                new ColumnSeries<DateTimePoint>
+                {
+                    Values =
+                    new ObservableCollection<DateTimePoint>(from c in CloseApproach
+                                                            select new DateTimePoint(c.CloseApproachDate, c.RelativeVelocity))
+                }
+            };
+
+            CloseApproachSeries.Clear();
+            CloseApproachSeries.AddRange(series);
+        }
+
+        public ObservableCollection<ISeries> CloseApproachSeries { get; set; } = new();
+
+        public ObservableCollection<ICartesianAxis> XAxesDateTime { get; set; } = new()
+        {
+            new Axis
+            {
+                Labeler = value => new DateTime((long)value).ToString("dd/MM/yyyy"),
+                LabelsRotation = 15,
+
+                // in this case we want our columns with a width of 1 day, we can get that number
+                // using the following syntax
+                UnitWidth = TimeSpan.FromDays(1).Ticks, // mark
+
+                // The MinStep property forces the separator to be greater than 1 day.
+                MinStep = TimeSpan.FromDays(1).Ticks // mark
+
+                // if the difference between our points is in hours then we would:
+                // UnitWidth = TimeSpan.FromHours(1).Ticks,
+
+                // since all the months and years have a different number of days
+                // we can use the average, it would not cause any visible error in the user interface
+                //Months: TimeSpan.FromDays(30.4375).Ticks
+                //Years: TimeSpan.FromDays(365.25).Ticks
+            }
+        };
+
         public ObservableCollection<ISeries> SpeedInfo { get; set; } = new();
 
-
-        public ObservableCollection<Axis> XAxes { get; set; } = new();
 
         //public List<Axis> YAxes { get; set; } = new List<Axis>
         //{
@@ -163,5 +226,4 @@ namespace Gui.ViewModels
         //    }
         //};
     }
-
 }

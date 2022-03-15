@@ -24,7 +24,7 @@ namespace DomainModel.Services
         {
             _unitOfWork = dbFactory.GetDataAccess();
             
-            _imagga = new ImaggaApi(configurations.ImaggaApiKey, configurations.ImaggaApiSecret);
+            _imagga = new ImaggaApi(configurations.ImaggaKey.ImaggaApiKey, configurations.ImaggaKey.ImaggaApiSecret);
             
             _wordAssociations = new(configurations.WordAssociationsApiKey);
         }

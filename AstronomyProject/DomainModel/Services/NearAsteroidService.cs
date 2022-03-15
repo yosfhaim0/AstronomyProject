@@ -26,7 +26,7 @@ namespace DomainModel.Services
                 .Count(predicate);
         }
 
-        public async Task<IEnumerable<NearAsteroid>> SearchNearAsteroids(DateTime? from, DateTime? to)
+        public async Task<IEnumerable<NearAsteroid>> SearchNearAsteroids(DateTime? from, DateTime? to = null)
         {
             if(from == null || to == null)
             {
@@ -38,11 +38,26 @@ namespace DomainModel.Services
                 throw new ArgumentOutOfRangeException("The maximum is 7 days");
             }
 
+            if (to == null)
+            {
+                to = from.Value.AddDays(7);
+            }
+
             var astroids = await
                 _unitOfWork.NearAstroidRepository
-                .ClosestApproachDateToEarth(from.Value, to.Value);
-            
+                .ClosestApproachBetweenDates(from.Value, to.Value);
+
+            await _unitOfWork.Complete();
+
             return astroids;
+        }
+
+        public async Task<IEnumerable<NearAsteroid>> GetNearAsteroids(Expression<Func<NearAsteroid, bool>> predicate = null)
+        {
+            var result = await _unitOfWork
+                .NearAstroidRepository.GetNearAsteroids(predicate);
+            await _unitOfWork.Complete();
+            return result;
         }
     }
 }
