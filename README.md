@@ -1,5 +1,5 @@
 # AstronomyProject
-Final project
+desktop application / final project
 
 **Noam suosan & yosef haim amrusi**
 
@@ -15,11 +15,15 @@ The program was written in the visual studio environment
 
   **IMGA** = artificial intelligence service for automatic image taging 
 
-  **EntetyFreamwork**
+ ORM: **EntetyFreamwork**
 
-  **SqlSever**
+ DB:   **SqlSever**
 
+ Design Pattern:
+ 
   **MVVM**
+
+  **3layers**
 
   **dependency injection**
 
