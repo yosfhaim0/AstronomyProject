@@ -1,34 +1,40 @@
-# AstronomyProject
-Final project
+# Astronomy Project
+desktop application / final project
 
-**Noam suosan & yosef haim amrusi**
+**Noam Shushan & Yosef Haim Amrusi**
 
-Final project in the "Windows Systems Engineering" course
-The project presents a spectacular window interface where you can find features "image of the day" (NASA), search for images in **NASA** sources, information about close asteroids to Earth and details about those asteroids (diameter, speed, dangerous / not dangerous)
+Final project in the "Windows Systems Engineering" course.
 
-The program was written in the visual studio environment 
+The project presents a spectacular window interface where we recieve, proccess and present information from NASA's API.
 
-**Detailed description:**
+We dislplay features such as "Picture of the day" and charted data about close approach asteroids (miss distance, diameter, relative velocity, dangerous / not dangerous)  
 
-We used the API of NASA, Imagga, FireBase.
+# Technologies:
 
-**Firebase** = For storage of the images we used Firebase storage
+* **Frontend** - WPF for desktop application
+* **Backend** - C#
+* **Database** - SqlServer with **EntityFreamwork** as ORM
+* **Firebase** - For storing images
+* **Imagga** - AI service for automatic image taging
+* Asynchronous and parallel programming
 
-**IMGA** = artificial intelligence service for automatic image taging 
+We use Design Patterns such as:
+* **MVVM**
+* **Multilayer architecture**
+* **Dependency Injection**
+* **Generic Repository & Unit Of Work**
+* **Factory**
 
-Material design
+ Some pictures to demonstrate:
 
-
-
-![alt text](https://github.com/yosfhaim0/AstronomyProject/blob/main/AstronomyProject/Testing/%D7%A6%D7%99%D7%9C%D7%95%D7%9D%20%D7%9E%D7%A1%D7%9A%202022-03-14%20215009.png?raw=true)
-
-
-![alt text](https://github.com/yosfhaim0/AstronomyProject/blob/main/AstronomyProject/Testing/%D7%A6%D7%99%D7%9C%D7%95%D7%9D%20%D7%9E%D7%A1%D7%9A%202022-03-14%20215240.png?raw=true)
-
-
-
-![alt text](https://github.com/yosfhaim0/AstronomyProject/blob/main/AstronomyProject/Testing/%D7%A6%D7%99%D7%9C%D7%95%D7%9D%20%D7%9E%D7%A1%D7%9A%202022-03-14%20215256.png?raw=true)
+![צילום מסך 2022-03-14 215009](https://user-images.githubusercontent.com/73117474/158272107-85da667c-a7e9-4562-bb4f-dd560f7bf024.png)
 
 
+![צילום מסך 2022-03-14 215240](https://user-images.githubusercontent.com/73117474/158272123-533bb9fa-1471-4e8e-8aab-a3882749497c.png)
 
-![alt text](https://github.com/yosfhaim0/AstronomyProject/blob/main/AstronomyProject/Testing/%D7%A6%D7%99%D7%9C%D7%95%D7%9D%20%D7%9E%D7%A1%D7%9A%202022-03-14%20215315.png?raw=true)
+
+![צילום מסך 2022-03-14 215256](https://user-images.githubusercontent.com/73117474/158272139-f8331ec8-978b-4c82-aff4-19b28a9df994.png)
+
+
+
+![צילום מסך 2022-03-14 215315](https://user-images.githubusercontent.com/73117474/158272151-6c6de61a-ab9f-4312-b3b4-569af192cb99.png)
