@@ -11,7 +11,6 @@ namespace ApiRequests.WordAssociations
     {
         [JsonProperty("response")]
         public List<AssociationsResponse> Response { get; set; }
-
     }
 
     class AssociationsResponse
