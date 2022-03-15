@@ -34,3 +34,6 @@ We use Design Patterns such as:
 
 
 ![image](https://user-images.githubusercontent.com/40955004/158478876-3a2518c3-80bb-4aec-842c-e870fb99ae91.png)
+
+![image](https://user-images.githubusercontent.com/40955004/158479307-423dbcd8-df38-4cfe-a1b3-1974ed404163.png)
+
