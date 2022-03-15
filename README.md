@@ -33,8 +33,4 @@ We use Design Patterns such as:
 ![צילום מסך 2022-03-14 215240](https://user-images.githubusercontent.com/73117474/158272123-533bb9fa-1471-4e8e-8aab-a3882749497c.png)
 
 
-![צילום מסך 2022-03-14 215256](https://user-images.githubusercontent.com/73117474/158272139-f8331ec8-978b-4c82-aff4-19b28a9df994.png)
-
-
-
-![צילום מסך 2022-03-14 215315](https://user-images.githubusercontent.com/73117474/158272151-6c6de61a-ab9f-4312-b3b4-569af192cb99.png)
+![image](https://user-images.githubusercontent.com/40955004/158478876-3a2518c3-80bb-4aec-842c-e870fb99ae91.png)
