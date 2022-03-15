@@ -28,6 +28,8 @@ The program was written in the visual studio environment
   **dependency injection**
 
   **Repositry**
+  
+  **multithreading**
 
 # Few pictures to illustrate:
 
