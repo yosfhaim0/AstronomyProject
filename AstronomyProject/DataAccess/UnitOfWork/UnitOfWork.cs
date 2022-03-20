@@ -18,10 +18,9 @@ namespace DataAccess.UnitOfWork
     {
         readonly AstronomyContext _context;
 
-        public UnitOfWork(MyConfigurations configurations)
+        public UnitOfWork(MyConfigurations configurations, AstronomyContext context)
         {
-            var dbContexFactory = new DbContextFactory(configurations.CurrentConnectionStrings);
-            _context = dbContexFactory.CreateAstronomyContext();
+            _context = context;
 
             var nasaApi = new NasaApi(configurations.CurrentNasaApiKey);
             var firebase = new FireBase(configurations.FirebaseConnection);

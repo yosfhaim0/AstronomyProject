@@ -12,6 +12,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Gui.Views;
+using DataAccess.DbContexts;
+using DataAccess.UnitOfWork;
 
 namespace Gui
 {
@@ -23,13 +25,15 @@ namespace Gui
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterInstance(GetConfigurations());
-
-            containerRegistry.RegisterSingleton<IDbFactory, DbFactory>();
+            
+            containerRegistry.RegisterSingleton<DbContextFactory>();
+            containerRegistry.RegisterSingleton<IAstronomyContext, AstronomyContext>(); 
+            containerRegistry.RegisterSingleton<IUnitOfWork, UnitOfWork>();
 
             #region Register services from the domain model
-            containerRegistry.Register<IGalleryImageOfTheDayService, GalleryImageOfTheDayService>();
-            containerRegistry.Register<INearAsteroidService, NearAsteroidService>();
-            containerRegistry.Register<IMediaService, MediaService>();
+            containerRegistry.RegisterSingleton<IGalleryImageOfTheDayService, GalleryImageOfTheDayService>();
+            containerRegistry.RegisterSingleton<INearAsteroidService, NearAsteroidService>();
+            containerRegistry.RegisterSingleton<IMediaService, MediaService>();
             #endregion
 
             #region Register views for navigation

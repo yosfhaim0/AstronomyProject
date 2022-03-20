@@ -39,7 +39,7 @@ namespace DataAccess.Repositories
         {
             try
             {
-                var result = await AstronomyContext.NearAsteroids
+                var asteroids = await AstronomyContext.NearAsteroids
                     .Include(a => a.CloseApproachs)
                     .Where(a => a.CloseApproachs.Any(c =>
                      c.CloseApproachDate.Date <= endDate.Date
@@ -48,12 +48,12 @@ namespace DataAccess.Repositories
 
                 if (!await IsDbContainCloseApproach(startDate, endDate))
                 {
-                    await GetNewAsteroidsFromNasa(startDate, endDate, result);
+                    await GetNewAsteroidsFromNasa(startDate, endDate, asteroids);
                 }
 
-                await FillAsteroidsWithCloseApprochData(result, endDate);
+                //await FillAsteroidsWithCloseApprochData(asteroids, endDate);
 
-                return result;
+                return asteroids;
             }
             catch (Exception)
             {
@@ -62,52 +62,67 @@ namespace DataAccess.Repositories
             }
         }
 
-        private async Task FillAsteroidsWithCloseApprochData(List<NearAsteroid> result, DateTime endDate = default)
+        public async Task FillAsteroidsWithCloseApprochData(List<NearAsteroid> asteroids, DateTime endDate = default)
         {
-            var tasks = new List<Task<GetNearAsteroidNasaDto>>();
-            foreach (var a in result)
-            {
-                if((endDate != default && !await IsDbContainCloseApproachById(endDate, a.Id))
-                    || !await IsAsteroidFill(a.Id))
-                {
-                    tasks.Add(_naseApi.GetAstroidById(a.Id.ToString()));
-                }
-            }
-            
-            var newAst = await Task.WhenAll(tasks);
+            var newAstroidsFromNasa = await GetCloseApprochDataFromNasa(asteroids, endDate);
 
-            var tasks2 = new List<Task>();
-            foreach(var astFromNasa in newAst)
+            await InsertNewCloseApprochsToDb(asteroids, endDate, newAstroidsFromNasa);
+        }
+
+        private async Task InsertNewCloseApprochsToDb(List<NearAsteroid> asteroids, DateTime endDate, GetNearAsteroidNasaDto[] newAstroidsFromNasa)
+        {
+            var tasks = new List<Task>();
+            foreach (var astFromNasa in newAstroidsFromNasa)
             {
-                var ast = astFromNasa.CopyPropertiesToNew(typeof(NearAsteroid)) as NearAsteroid;
-                var currAst = result.Find(a => a.Id == ast.Id);
+                var currAst = asteroids.Find(a => a.Id == astFromNasa.Id);
+                if (currAst == null)
+                {
+                    continue;
+                }
+
                 var isNotFill = !await IsAsteroidFill(currAst.Id);
 
                 var newCA = new List<CloseApproach>();
                 if (isNotFill)
                 {
-                    newCA = ast.CloseApproachs;
-                } 
-                else if(endDate != default)
-                {
-                    newCA = (from c in ast.CloseApproachs
-                            where c.CloseApproachDate.Date > endDate.Date
-                            select c).ToList();
+                    newCA = astFromNasa.CloseApproachs
+                        .Except(currAst.CloseApproachs)
+                        .ToList();
                 }
-                            
-                if (isNotFill)
-                    newCA = newCA.Except(currAst.CloseApproachs).ToList();
-
+                else if (endDate != default)
+                {   // Get the new observations of close approachs
+                    newCA = (from c in astFromNasa.CloseApproachs
+                             where c.CloseApproachDate.Date >= endDate.Date
+                             select c)
+                             .ToList();
+                }
                 if (!newCA.Any())
                 {
                     continue;
                 }
-                
+
                 currAst.CloseApproachs.AddRange(newCA);
-                
-                tasks2.Add(AstronomyContext.CloseApproachs.AddRangeAsync(newCA));
+
+                tasks.Add(AstronomyContext.CloseApproachs.AddRangeAsync(newCA));
             }
-            await Task.WhenAll(tasks2);
+            await Task.WhenAll(tasks);
+        }
+
+        private async Task<GetNearAsteroidNasaDto[]> GetCloseApprochDataFromNasa(List<NearAsteroid> asteroids, DateTime endDate)
+        {
+            var tasks = new List<Task<GetNearAsteroidNasaDto>>();
+            foreach (var a in asteroids)
+            {
+                bool isDbContainCloseApproach = endDate != default && await IsDbContainCloseApproachById(endDate, a.Id);
+                bool isAsteroidFill = await IsAsteroidFill(a.Id);
+                if (!isDbContainCloseApproach || !isAsteroidFill)
+                {
+                    tasks.Add(_naseApi.GetAstroidById(a.Id.ToString()));
+                }
+            }
+
+            var newAst = await Task.WhenAll(tasks);
+            return newAst;
         }
 
         private async Task GetNewAsteroidsFromNasa(DateTime startDate, DateTime endDate, List<NearAsteroid> result)

@@ -10,16 +10,16 @@ namespace DomainModel.DbFactory
 {
     public class DbFactory : IDbFactory
     {
-        readonly MyConfigurations _configurations;
+        readonly IUnitOfWork _unitOfWork;
 
         public DbFactory(MyConfigurations configurations)
         {
-            _configurations = configurations;
+            //_unitOfWork = new UnitOfWork(configurations);
         }
 
         public IUnitOfWork GetDataAccess()
         {
-            return new UnitOfWork(_configurations);
+            return _unitOfWork;
         }
     }
 }

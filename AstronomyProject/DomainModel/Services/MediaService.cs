@@ -20,9 +20,9 @@ namespace DomainModel.Services
 
         readonly WordAssociationsApi _wordAssociations;
 
-        public MediaService(IDbFactory dbFactory, MyConfigurations configurations)
+        public MediaService(IUnitOfWork unitOfWork, MyConfigurations configurations)
         {
-            _unitOfWork = dbFactory.GetDataAccess();
+            _unitOfWork = unitOfWork;
             
             _imagga = new ImaggaApi(configurations.ImaggaKey.ImaggaApiKey, configurations.ImaggaKey.ImaggaApiSecret);
             
