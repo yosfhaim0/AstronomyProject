@@ -47,6 +47,13 @@ namespace DomainModel.Services
                 _unitOfWork.NearAstroidRepository
                 .ClosestApproachBetweenDates(from.Value, to.Value);
 
+
+            foreach (var a in astroids)
+            {
+                a.CloseApproachs.RemoveAll(c => c.CloseApproachDate < from.Value
+                && c.CloseApproachDate > to.Value);
+            }
+
             await _unitOfWork.Complete();
 
             return astroids;

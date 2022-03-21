@@ -12,12 +12,12 @@ namespace DataAccess.DbContexts
     public class AstronomyContext : DbContext
     {
         public DbSet<ImageOfTheDay> ImageOfTheDayGallery { get; set; }
-        
+
         public DbSet<NearAsteroid> NearAsteroids { get; set; }
 
         public DbSet<CloseApproach> CloseApproachs { get; set; }
 
-        public AstronomyContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
+        public AstronomyContext(DbContextOptions options) : base(options)
         {
 
         }

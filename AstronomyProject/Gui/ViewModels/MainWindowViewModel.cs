@@ -25,7 +25,9 @@ namespace Gui.ViewModels
         private void Navigate(string navigatePath)
         {
             if (!string.IsNullOrEmpty(navigatePath))
+            {
                 _regionManager.RequestNavigate("ContentRegion", navigatePath);
+            }     
         }
     }
 }

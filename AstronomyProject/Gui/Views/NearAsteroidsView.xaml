@@ -14,6 +14,11 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     FontFamily="{DynamicResource MaterialDesignFont}"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <DataTemplate x:Key="HeaderForTabItem" DataType="TabItem.Header">
+            <TextBlock FontSize="12" />
+        </DataTemplate>
+    </UserControl.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding Load}" />
@@ -40,15 +45,14 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <materialDesign:Card
+
+            <TextBlock
                 Grid.Row="0"
                 Grid.Column="0"
-                Padding="10,0">
-                <TextBlock
-                    VerticalAlignment="Center"
-                    Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                    Text="Find near asteroids between:" />
-            </materialDesign:Card>
+                Padding="10,0"
+                VerticalAlignment="Center"
+                Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                Text="Find near asteroids between:" />
 
             <DatePicker
                 Grid.Column="1"
@@ -86,24 +90,15 @@
             </Button>
 
         </Grid>
-        <materialDesign:Card Grid.Row="1">
+        <materialDesign:Card
+            Grid.Row="1"
+            Width="auto"
+            Height="auto">
             <TabControl
-                Width="auto"
-                Height="auto"
                 materialDesign:ColorZoneAssist.Mode="Dark"
                 materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
                 SnapsToDevicePixels="True"
-                Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
                 TabStripPlacement="Top">
-                <TabItem
-                    Width="auto"
-                    Margin="5,0"
-                    Header="Risk information">
-                    <lvc:PieChart LegendPosition="Right" Series="{Binding RiskInformation}" />
-                </TabItem>
-                <TabItem Width="auto" Header="Relative velocity">
-                    <lvc:CartesianChart Series="{Binding SpeedInfo}" />
-                </TabItem>
                 <TabItem Width="auto" Header="Close approachs">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -115,21 +110,62 @@
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBox
+                        <materialDesign:ColorZone
                             Grid.Row="0"
                             Grid.Column="0"
                             Margin="5"
-                            materialDesign:HintAssist.HelperTextFontSize="16"
-                            materialDesign:HintAssist.Hint="All greater then diameter..."
-                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                            Text="{Binding Diameter, UpdateSourceTrigger=PropertyChanged}">
-                            <TextBox.InputBindings>
-                                <KeyBinding
-                                    Command="{Binding FilterByDiameter}"
-                                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBox}}}"
-                                    Gesture="Return" />
-                            </TextBox.InputBindings>
-                        </TextBox>
+                            Padding="8,4,8,4"
+                            materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                            CornerRadius="2"
+                            Mode="Standard">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox
+                                    x:Name="tbDiameter"
+                                    Grid.Column="0"
+                                    MinWidth="200"
+                                    materialDesign:HintAssist.IsFloating="True"
+                                    materialDesign:ValidationAssist.Suppress="True"
+                                    BorderThickness="0"
+                                    FontSize="16"
+                                    Text="{Binding Diameter, UpdateSourceTrigger=PropertyChanged}">
+                                    <materialDesign:HintAssist.Hint>
+                                        <TextBlock FontSize="14" Text="All greater then diameter..." />
+                                    </materialDesign:HintAssist.Hint>
+                                    <TextBox.InputBindings>
+                                        <KeyBinding
+                                            Command="{Binding FilterByDiameter}"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBox}}}"
+                                            Gesture="Return" />
+                                    </TextBox.InputBindings>
+                                </TextBox>
+                                <Button
+                                    Grid.Column="1"
+                                    Style="{StaticResource MaterialDesignToolButton}"
+                                    ToolTip="Clear and show all">
+                                    <materialDesign:PackIcon
+                                        Margin="8,0,0,0"
+                                        Kind="ClearBox"
+                                        Opacity=".56" />
+
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Click">
+                                            <i:ChangePropertyAction
+                                                PropertyName="Text"
+                                                TargetName="tbDiameter"
+                                                Value="0" />
+                                        </i:EventTrigger>
+                                        <i:EventTrigger EventName="Click">
+                                            <i:InvokeCommandAction Command="{Binding FilterByDiameter}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+                            </Grid>
+                        </materialDesign:ColorZone>
+
                         <Button
                             Grid.Row="0"
                             Grid.Column="1"
@@ -145,12 +181,35 @@
                             Grid.ColumnSpan="2"
                             Margin="5"
                             materialDesign:ColorZoneAssist.Mode="Dark"
-                            Header="Asteroids"
                             Style="{StaticResource MaterialDesignCardGroupBox}">
+                            <GroupBox.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        Margin="0,0,10,0"
+                                        Foreground="White"
+                                        Text="Asteroids" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Right"
+                                        Foreground="White"
+                                        Text="Total Amount: " />
+                                    <TextBlock
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Right"
+                                        Foreground="White"
+                                        Text="{Binding TotalCount}" />
+                                </Grid>
+                            </GroupBox.Header>
                             <DataGrid
                                 AutoGenerateColumns="False"
                                 IsReadOnly="True"
-                                ItemsSource="{Binding AsteroidsGreterThen}"
+                                ItemsSource="{Binding Asteroids}"
                                 SelectedItem="{Binding SelectedAstroeid}"
                                 Style="{StaticResource MaterialDesignDataGrid}">
                                 <DataGrid.Columns>
@@ -161,27 +220,55 @@
                                 </DataGrid.Columns>
                             </DataGrid>
                         </GroupBox>
-
-                        <GroupBox
-                            Grid.Row="1"
-                            Grid.Column="2"
-                            Margin="5"
-                            materialDesign:ColorZoneAssist.Mode="Dark"
-                            Header="Relative velocity by date (kilometers per second)"
-                            Style="{StaticResource MaterialDesignCardGroupBox}">
-                            <lvc:CartesianChart Series="{Binding CloseApproachSeries}" XAxes="{Binding XAxesDateTime}" />
-                        </GroupBox>
-
-
-                        <!--<DataGrid
-                            Grid.Row="1"
+                        <materialDesign:Card
+                            Grid.Row="0"
+                            Grid.RowSpan="2"
                             Grid.Column="2"
                             Width="auto"
-                            AutoGenerateColumns="True"
-                            ItemsSource="{Binding CloseApproach}" />-->
-                        <!--<local:DateTimeChartView Grid.Row="1" Grid.Column="2" />-->
+                            Height="auto"
+                            Margin="5">
+                            <TabControl
+                                materialDesign:ColorZoneAssist.Mode="Light"
+                                materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
+                                Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
+                                TabStripPlacement="Top">
+                                <TabItem
+                                    Width="auto"
+                                    HorizontalAlignment="Center"
+                                    Header="Relative velocity&#x0a;(kilometers per second)">
+                                    <lvc:CartesianChart Series="{Binding RelativeVelocitySeries}" XAxes="{Binding RelativeVelocityXAxesDateTime}" />
+                                </TabItem>
+                                <TabItem
+                                    Width="auto"
+                                    HorizontalAlignment="Center"
+                                    Header="Miss distance&#x0a;(kilometers)">
+                                    <lvc:CartesianChart Series="{Binding MissDistanceSeries}" XAxes="{Binding MissDistanceXAxesDateTime}" />
+                                </TabItem>
+                                <TabItem Width="auto" Header="Orbiting Body">
+                                    <lvc:PieChart Series="{Binding OrbitingBodySeries}" />
+                                </TabItem>
+                            </TabControl>
+                        </materialDesign:Card>
                     </Grid>
                 </TabItem>
+                <TabItem
+                    Width="auto"
+                    Margin="5,0"
+                    Header="Risk information">
+                    <lvc:PieChart LegendPosition="Right" Series="{Binding RiskInformation}" />
+                </TabItem>
+                <TabControl.Style>
+                    <Style BasedOn="{StaticResource MaterialDesignNavigatilRailTabControl}" TargetType="TabControl">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsLoading}" Value="False">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TabControl.Style>
             </TabControl>
         </materialDesign:Card>
 

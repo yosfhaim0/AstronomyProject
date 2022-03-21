@@ -22,7 +22,7 @@ namespace DomainModel.Services
 
         public MediaService(IDbFactory dbFactory, MyConfigurations configurations)
         {
-            _unitOfWork = dbFactory.GetDataAccess();
+            _unitOfWork = dbFactory.GetDataAccess(); ;
             
             _imagga = new ImaggaApi(configurations.ImaggaKey.ImaggaApiKey, configurations.ImaggaKey.ImaggaApiSecret);
             
@@ -33,27 +33,27 @@ namespace DomainModel.Services
         public async Task<List<string>> SearchMedia(string keyWord)
         {
             var searchWord = keyWord.ToLower();
-            var imgsTemp = await _unitOfWork.MediaSearchRepository.Search(searchWord);
-            
-            var imags = RootToString(imgsTemp);
+            var imags = await _unitOfWork.MediaSearchRepository.Search(searchWord);
 
-            return imags;
+            return imags.ToList();
 
             //var result = new List<string>();
 
             //List<Task<Tuple<string, List<ImaggaTag>>>> tasks = new();
-            //foreach(var im in imags)
+            //foreach (var im in imags)
             //{
             //    tasks.Add(TagImage(im));
             //}
-            
-            //var imageAndtags = await Task.WhenAll(tasks);
-            
+
+            //var imageAndTags = await Task.WhenAll(tasks);
+
             //var reletedWords = await GetWordAssociations(searchWord);
-            
-            //result.AddRange(from t in imageAndtags
-            //                where IsImageReletedToSearchWord(reletedWords, t.Item2)
-            //                select t.Item1);
+
+            //var res = (from t in imageAndTags
+            //           where IsImageReletedToSearchWord(reletedWords, t.Item2)
+            //           select t.Item1).ToList();
+
+            //result.AddRange(res);
 
             //// no data from db or firebase => call nasa => call imagga => save relevt data to db
             //return result;
@@ -82,10 +82,11 @@ namespace DomainModel.Services
 
             var tagsWords = tags.Select(t => t.Tag.ToLower());
             var associationsWords = from a in associations
+                                    orderby a.Weight descending
                                     //where a.Pos == Pos.Noun
                                     select a.Word.ToLower();
-            var inter = tagsWords.Intersect(associationsWords);
-            if (inter.Any())
+            var inter = tagsWords.Intersect(associationsWords.Take(25));
+            if (inter.Count() > 1)
             {
                 return  true;
             }
@@ -93,7 +94,7 @@ namespace DomainModel.Services
             return false;
         }
 
-        private List<string> RootToString(Models.Dtos.Root imgs)
+        private List<string> RootToString(Models.Dtos.MediaDto imgs)
         {
             var a = imgs.collection.items;
             List<string> result = new List<string>();

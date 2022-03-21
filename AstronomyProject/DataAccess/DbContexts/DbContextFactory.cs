@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Models.Configurations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,17 +10,17 @@ namespace DataAccess.DbContexts
 {
     public class DbContextFactory
     {
-        private readonly string _connctionStrings;
+        readonly string _connectionStrings;
 
-        public DbContextFactory(string connctionStrings)
+        public DbContextFactory(string connectionStrings)
         {
-            _connctionStrings = connctionStrings;
+            _connectionStrings = connectionStrings;
         }
 
         public AstronomyContext CreateAstronomyContext()
         {
-            DbContextOptions options = new DbContextOptionsBuilder()
-                .UseSqlServer(_connctionStrings)
+            var options = new DbContextOptionsBuilder()
+                .UseSqlServer(_connectionStrings)
                 .Options;
 
             return new AstronomyContext(options);

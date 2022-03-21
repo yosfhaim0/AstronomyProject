@@ -20,8 +20,8 @@ namespace DataAccess.UnitOfWork
 
         public UnitOfWork(MyConfigurations configurations)
         {
-            var dbContexFactory = new DbContextFactory(configurations.CurrentConnectionStrings);
-            _context = dbContexFactory.CreateAstronomyContext();
+            _context = new DbContextFactory(configurations.CurrentConnectionStrings)
+                .CreateAstronomyContext();
 
             var nasaApi = new NasaApi(configurations.CurrentNasaApiKey);
             var firebase = new FireBase(configurations.FirebaseConnection);
