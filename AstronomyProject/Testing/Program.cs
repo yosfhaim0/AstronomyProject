@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using RestSharp;
+using DomainModel.Services;
 
 namespace Testing
 {
@@ -23,7 +24,10 @@ namespace Testing
             //await _fireBaseTest.DeleteImage();
             //var v=await _fireBaseTest.get("1.jpg");
 
-            await _nasaTest.GetImageOfTheDayTest();
+            //await _nasaTest.GetImageOfTheDayTest();
+            EightPlanets a = new();
+            var c= a.GetEightPlanetsInfo();
+            var t = 0;
             //await _nasaTest.GetAstroid();
             //await _nasaTest.GetAsteroidById(54245556);
 
