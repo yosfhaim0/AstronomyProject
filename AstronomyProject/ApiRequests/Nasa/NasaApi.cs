@@ -4,13 +4,9 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Tools;
-//DhNaairgwfYK2IQNrSuY9KIOHV4SDMxR40YJYQ54
-//my api (yosef haim)
-
-// tytdjk9rjM9VFGudlmOf7tnLyMYeOTFZjRp36YjU
-// noam api
 namespace ApiRequests.Nasa
 {
     public class NasaApi
@@ -95,11 +91,20 @@ namespace ApiRequests.Nasa
             }
         }
 
-        public async Task<Models.Dtos.Root> SearchImage(string keyWord)
+        public async Task<IEnumerable<string>> SearchImage(string keyWord)
         {
             var query = $"{GET_IMAGE_LIB_BASE}/search?q={keyWord}";
+            
             var content = await client.GetAsync(query);
-            var result = JsonConvert.DeserializeObject<Models.Dtos.Root>(content);
+            
+            var root = JsonConvert.DeserializeObject<MediaDto>(content);
+            
+            var result = from i in root.collection.items
+                         where i.links != null
+                         from img in i.links
+                         where img.href != null && img.href.EndsWith(".jpg")
+                         select img.href; 
+            
             return result;
         }
 

@@ -34,26 +34,37 @@ namespace Gui.ViewModels
                     return;
                 }
                 IsLoading = true;
-                var asteroids = await _nearAsteroidService.GetNearAsteroids();
-                
+                var asteroids = await _nearAsteroidService
+                .SearchNearAsteroids(FromDate.Value, ToDate.Value);
+
+
                 OnLoading(asteroids);
                 
                 IsLoading = false;
             });
 
-        private DateTime? _fromDate;
+        private DateTime? _fromDate = DateTime.Today.AddDays(-3);
         public DateTime? FromDate
         {
             get => _fromDate;
             set => SetProperty(ref _fromDate, value);
         }
 
-        private DateTime? _toDate;
+        private DateTime? _toDate = DateTime.Today;
         public DateTime? ToDate
         {
             get => _toDate;
             set => SetProperty(ref _toDate, value);
         }
+
+        private int _totalCount;
+
+        public int TotalCount
+        {
+            get => _totalCount; 
+            set => SetProperty(ref _totalCount, value); 
+        }
+
 
         DelegateCommand _searchBetweenDates;
         public DelegateCommand SearchBetweenDates => _searchBetweenDates ??= new DelegateCommand(
@@ -73,13 +84,13 @@ namespace Gui.ViewModels
             _allAsteroids.Clear();
             _allAsteroids.AddRange(asteroids);
 
+            TotalCount = _allAsteroids.Count;
+
             Asteroids.Clear();
             Asteroids.AddRange(asteroids);
 
-            LoadPieSeries();
+            SetRiskInfoSeries();
         }
-
-        public ObservableCollection<ISeries> RiskInformation { get; set; } = new();
 
         private List<NearAsteroid> _allAsteroids = new();
 
@@ -114,8 +125,9 @@ namespace Gui.ViewModels
                 if (value == null) return;
                 SetProperty(ref _selectedAstroeid, value);
                 CloseApproach = new(_selectedAstroeid?.CloseApproachs);
-                LoadRelativeVelocitySeries();
-                LoadMissDistanceSeries();
+                SetRelativeVelocitySeries();
+                SetMissDistanceSeries();
+                SetOrbitingBodySeries();
             }
         }
 
@@ -126,24 +138,26 @@ namespace Gui.ViewModels
             set => SetProperty(ref _closeApproach, value);
         }
 
-        private void LoadPieSeries()
+        public ObservableCollection<ISeries> RiskInformation { get; set; } = new();
+
+        private void SetRiskInfoSeries()
         {
             var sec = new ObservableCollection<ISeries>
             {
                 new PieSeries<int>
                 {
                     Name = "Sentry objects",
-                    Values = new int[]{ _allAsteroids.Where(x => x.IsSentryObject).Count() }
+                    Values = new int[]{ _allAsteroids.Count(x => x.IsSentryObject) }
                 },
                 new PieSeries<int>
                 {
                     Name = "Potentially hazardous",
-                    Values = new int[]{ _allAsteroids.Where(x => x.IsPotentiallyHazardousAsteroid).Count() }
+                    Values = new int[]{ _allAsteroids.Count(x => x.IsPotentiallyHazardousAsteroid) }
                 },
                 new PieSeries<int>
                 {
                     Name = "Not dangerous at all",
-                    Values = new int[]{ _allAsteroids.Where(x => !x.IsPotentiallyHazardousAsteroid && !x.IsSentryObject).Count() }
+                    Values = new int[]{ _allAsteroids.Count(x => !x.IsPotentiallyHazardousAsteroid && !x.IsSentryObject) }
                 },
 
             };
@@ -151,7 +165,28 @@ namespace Gui.ViewModels
             RiskInformation.AddRange(sec);
         }
 
-        private void LoadRelativeVelocitySeries()
+        public ObservableCollection<ISeries> OrbitingBodySeries { get; set; } = new();
+
+        private void SetOrbitingBodySeries()
+        {
+            var groupByOB = from c in CloseApproach
+                            group c by c.OrbitingBody into ob
+                            select ob;
+            var series = new List<ISeries>();
+            foreach (var c in groupByOB)
+            {
+                series.Add(new PieSeries<int>
+                {
+                    Values = new ObservableCollection<int> { c.Count() },
+                    Name = c.Key,
+                    InnerRadius = 70
+                });
+            }
+            OrbitingBodySeries.Clear();
+            OrbitingBodySeries.AddRange(series);
+        }
+
+        private void SetRelativeVelocitySeries()
         {
             var series = new List<ISeries>
             {
@@ -180,7 +215,7 @@ namespace Gui.ViewModels
             }
         };
 
-        private void LoadMissDistanceSeries()
+        private void SetMissDistanceSeries()
         {
             var series = new List<ISeries>
             {
@@ -218,23 +253,5 @@ namespace Gui.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext) { }
 
-
-        //public List<Axis> YAxes { get; set; } = new List<Axis>
-        //{
-        //    new()
-        //    {
-        //        // Now the Y axis we will display labels as currency
-        //        // LiveCharts provides some common formatters
-        //        // in this case we are using the currency formatter.
-        //        Labeler = Labelers.Currency
-
-        //        // you could also build your own currency formatter
-        //        // for example:
-        //        // Labeler = (value) => value.ToString("C")
-
-        //        // But the one that LiveCharts provides creates shorter labels when
-        //        // the amount is in millions or trillions
-        //    }
-        //};
     }
 }

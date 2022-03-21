@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.DbContexts
 {
-    public class AstronomyContext : DbContext, IAstronomyContext
+    public class AstronomyContext : DbContext
     {
         public DbSet<ImageOfTheDay> ImageOfTheDayGallery { get; set; }
 
@@ -17,7 +17,7 @@ namespace DataAccess.DbContexts
 
         public DbSet<CloseApproach> CloseApproachs { get; set; }
 
-        public AstronomyContext(DbContextFactory contextFactory) : base(contextFactory.Options)
+        public AstronomyContext(DbContextOptions options) : base(options)
         {
 
         }

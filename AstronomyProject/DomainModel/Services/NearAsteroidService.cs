@@ -14,9 +14,9 @@ namespace DomainModel.Services
     {
         readonly IUnitOfWork _unitOfWork;
 
-        public NearAsteroidService(IUnitOfWork unitOfWork)
+        public NearAsteroidService(IDbFactory dbFactory)
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWork = dbFactory.GetDataAccess();
         }
 
         public async Task<int> CountBy(Expression<Func<NearAsteroid, bool>> predicate)
@@ -47,9 +47,13 @@ namespace DomainModel.Services
                 _unitOfWork.NearAstroidRepository
                 .ClosestApproachBetweenDates(from.Value, to.Value);
 
-            await _unitOfWork.Complete();
-            await _unitOfWork.NearAstroidRepository
-                .FillAsteroidsWithCloseApprochData(astroids.ToList(), to.Value);
+
+            foreach (var a in astroids)
+            {
+                a.CloseApproachs.RemoveAll(c => c.CloseApproachDate < from.Value
+                && c.CloseApproachDate > to.Value);
+            }
+
             await _unitOfWork.Complete();
 
             return astroids;

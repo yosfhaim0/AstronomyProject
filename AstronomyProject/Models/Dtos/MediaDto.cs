@@ -26,9 +26,6 @@ namespace Models.Dtos
     public class Link
     {
         public string href { get; set; }
-        public string rel { get; set; }
-        public string render { get; set; }
-        public string prompt { get; set; }
     }
 
     public class Item
@@ -38,21 +35,12 @@ namespace Models.Dtos
         public List<Link> links { get; set; }
     }
 
-    public class Metadata
-    {
-        public int total_hits { get; set; }
-    }
-
     public class Collection
     {
-        public string version { get; set; }
-        public string href { get; set; }
         public List<Item> items { get; set; }
-        public Metadata metadata { get; set; }
-        public List<Link> links { get; set; }
     }
 
-    public class Root
+    public class MediaDto
     {
         public Collection collection { get; set; }
     }

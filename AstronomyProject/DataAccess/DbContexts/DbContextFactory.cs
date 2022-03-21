@@ -10,13 +10,20 @@ namespace DataAccess.DbContexts
 {
     public class DbContextFactory
     {
-        public DbContextFactory(MyConfigurations configurations)
+        readonly string _connectionStrings;
+
+        public DbContextFactory(string connectionStrings)
         {
-            Options = new DbContextOptionsBuilder()
-                .UseSqlServer(configurations.CurrentConnectionStrings)
-                .Options;
+            _connectionStrings = connectionStrings;
         }
 
-        public DbContextOptions Options { get; init; }
+        public AstronomyContext CreateAstronomyContext()
+        {
+            var options = new DbContextOptionsBuilder()
+                .UseSqlServer(_connectionStrings)
+                .Options;
+
+            return new AstronomyContext(options);
+        }
     }
 }

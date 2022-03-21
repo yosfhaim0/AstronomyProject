@@ -26,9 +26,7 @@ namespace Gui
         {
             containerRegistry.RegisterInstance(GetConfigurations());
             
-            containerRegistry.RegisterSingleton<DbContextFactory>();
-            containerRegistry.RegisterSingleton<IAstronomyContext, AstronomyContext>(); 
-            containerRegistry.RegisterSingleton<IUnitOfWork, UnitOfWork>();
+            containerRegistry.RegisterSingleton<IDbFactory ,DbFactory>();
 
             #region Register services from the domain model
             containerRegistry.RegisterSingleton<IGalleryImageOfTheDayService, GalleryImageOfTheDayService>();

@@ -47,7 +47,7 @@ namespace Models.Dtos
             if (Result != null)
             {
                 tags.AddRange(Result.tags.OrderByDescending(t => t.confidence)
-                    .Take(20)
+                    .Take(10)
                     .Select(t => new ImaggaTag
                     {
                         Confidence = t.confidence,

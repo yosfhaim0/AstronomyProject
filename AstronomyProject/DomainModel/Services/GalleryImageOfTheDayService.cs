@@ -13,9 +13,9 @@ namespace DomainModel.Services
     {
         readonly IUnitOfWork _unitOfWork;
 
-        public GalleryImageOfTheDayService(IUnitOfWork unitOfWork)
+        public GalleryImageOfTheDayService(IDbFactory dbFactory)
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWork = dbFactory.GetDataAccess();
         }
 
         public async Task<ImageOfTheDay> GetTodayImage()

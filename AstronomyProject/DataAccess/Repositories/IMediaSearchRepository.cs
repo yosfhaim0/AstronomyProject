@@ -9,6 +9,6 @@ namespace DataAccess.Repositories
 {
     public interface IMediaSearchRepository
     {
-        Task<Models.Dtos.Root> Search(string searchWord);
+        Task<IEnumerable<string>> Search(string searchWord);
     }
 }

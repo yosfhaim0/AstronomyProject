@@ -14,7 +14,7 @@ namespace DomainModel.DbFactory
 
         public DbFactory(MyConfigurations configurations)
         {
-            //_unitOfWork = new UnitOfWork(configurations);
+            _unitOfWork = new UnitOfWork(configurations);
         }
 
         public IUnitOfWork GetDataAccess()

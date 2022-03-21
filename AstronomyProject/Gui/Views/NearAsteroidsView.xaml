@@ -181,8 +181,31 @@
                             Grid.ColumnSpan="2"
                             Margin="5"
                             materialDesign:ColorZoneAssist.Mode="Dark"
-                            Header="Asteroids"
                             Style="{StaticResource MaterialDesignCardGroupBox}">
+                            <GroupBox.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        Margin="0,0,10,0"
+                                        Foreground="White"
+                                        Text="Asteroids" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Right"
+                                        Foreground="White"
+                                        Text="Total Amount: " />
+                                    <TextBlock
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Right"
+                                        Foreground="White"
+                                        Text="{Binding TotalCount}" />
+                                </Grid>
+                            </GroupBox.Header>
                             <DataGrid
                                 AutoGenerateColumns="False"
                                 IsReadOnly="True"
@@ -212,14 +235,17 @@
                                 <TabItem
                                     Width="auto"
                                     HorizontalAlignment="Center"
-                                    Header="Relative velocity by date (kilometers per second)">
+                                    Header="Relative velocity&#x0a;(kilometers per second)">
                                     <lvc:CartesianChart Series="{Binding RelativeVelocitySeries}" XAxes="{Binding RelativeVelocityXAxesDateTime}" />
                                 </TabItem>
                                 <TabItem
                                     Width="auto"
                                     HorizontalAlignment="Center"
-                                    Header="Miss distance by date (kilometers)">
+                                    Header="Miss distance&#x0a;(kilometers)">
                                     <lvc:CartesianChart Series="{Binding MissDistanceSeries}" XAxes="{Binding MissDistanceXAxesDateTime}" />
+                                </TabItem>
+                                <TabItem Width="auto" Header="Orbiting Body">
+                                    <lvc:PieChart Series="{Binding OrbitingBodySeries}" />
                                 </TabItem>
                             </TabControl>
                         </materialDesign:Card>
