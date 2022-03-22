@@ -15,9 +15,10 @@
     FontFamily="{DynamicResource MaterialDesignFont}"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <DataTemplate x:Key="HeaderForTabItem" DataType="TabItem.Header">
-            <TextBlock FontSize="12" />
-        </DataTemplate>
+        <Style x:Key="GroupBoxHeaders" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="14" />
+        </Style>
     </UserControl.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -95,7 +96,7 @@
             Width="auto"
             Height="auto">
             <TabControl
-                materialDesign:ColorZoneAssist.Mode="Dark"
+                materialDesign:ColorZoneAssist.Mode="Light"
                 materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
                 SnapsToDevicePixels="True"
                 TabStripPlacement="Top">
@@ -192,17 +193,17 @@
                                     <TextBlock
                                         Grid.Column="0"
                                         Margin="0,0,10,0"
-                                        Foreground="White"
+                                        Style="{StaticResource GroupBoxHeaders}"
                                         Text="Asteroids" />
                                     <TextBlock
                                         Grid.Column="1"
                                         HorizontalAlignment="Right"
-                                        Foreground="White"
+                                        Style="{StaticResource GroupBoxHeaders}"
                                         Text="Total Amount: " />
                                     <TextBlock
                                         Grid.Column="2"
                                         HorizontalAlignment="Right"
-                                        Foreground="White"
+                                        Style="{StaticResource GroupBoxHeaders}"
                                         Text="{Binding TotalCount}" />
                                 </Grid>
                             </GroupBox.Header>
@@ -220,13 +221,24 @@
                                 </DataGrid.Columns>
                             </DataGrid>
                         </GroupBox>
-                        <materialDesign:Card
+                        <GroupBox
                             Grid.Row="0"
                             Grid.RowSpan="2"
                             Grid.Column="2"
                             Width="auto"
                             Height="auto"
-                            Margin="5">
+                            Margin="5"
+                            materialDesign:ColorZoneAssist.Mode="Dark"
+                            Style="{StaticResource MaterialDesignCardGroupBox}">
+                            <GroupBox.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock
+                                        Margin="0,0,4,0"
+                                        Style="{StaticResource GroupBoxHeaders}"
+                                        Text="All Close approaches of asteroid:" />
+                                    <TextBlock Style="{StaticResource GroupBoxHeaders}" Text="{Binding SelectedAstroeid.Name}" />
+                                </StackPanel>
+                            </GroupBox.Header>
                             <TabControl
                                 materialDesign:ColorZoneAssist.Mode="Light"
                                 materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
@@ -236,19 +248,60 @@
                                     Width="auto"
                                     HorizontalAlignment="Center"
                                     Header="Relative velocity&#x0a;(kilometers per second)">
-                                    <lvc:CartesianChart Series="{Binding RelativeVelocitySeries}" XAxes="{Binding RelativeVelocityXAxesDateTime}" />
+                                    <lvc:CartesianChart
+                                        LegendPosition="Top"
+                                        Series="{Binding RelativeVelocitySeries}"
+                                        XAxes="{Binding XAxesDateTime}" />
                                 </TabItem>
                                 <TabItem
                                     Width="auto"
                                     HorizontalAlignment="Center"
                                     Header="Miss distance&#x0a;(kilometers)">
-                                    <lvc:CartesianChart Series="{Binding MissDistanceSeries}" XAxes="{Binding MissDistanceXAxesDateTime}" />
+                                    <lvc:CartesianChart
+                                        LegendPosition="Top"
+                                        Series="{Binding MissDistanceSeries}"
+                                        XAxes="{Binding XAxesDateTime}" />
                                 </TabItem>
                                 <TabItem Width="auto" Header="Orbiting Body">
-                                    <lvc:PieChart Series="{Binding OrbitingBodySeries}" />
+                                    <lvc:PieChart LegendPosition="Top" Series="{Binding OrbitingBodySeries}" />
+                                </TabItem>
+                                <TabItem
+                                    Width="auto"
+                                    Height="auto"
+                                    Header="Details">
+                                    <GroupBox materialDesign:ColorZoneAssist.Mode="Custom" Style="{StaticResource MaterialDesignGroupBox}">
+                                        <GroupBox.Header>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock
+                                                    Grid.Column="0"
+                                                    Margin="0,0,4,0"
+                                                    FontSize="14"
+                                                    Text="Total Amount:" />
+                                                <TextBlock
+                                                    Grid.Column="1"
+                                                    FontSize="14"
+                                                    Text="{Binding CloseApproach.Count}" />
+                                            </Grid>
+                                        </GroupBox.Header>
+                                        <DataGrid
+                                            AutoGenerateColumns="False"
+                                            IsReadOnly="True"
+                                            ItemsSource="{Binding CloseApproach}">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Binding="{Binding CloseApproachDate, StringFormat=dd/MM/yyyy}" Header="Date" />
+                                                <DataGridTextColumn Binding="{Binding OrbitingBody}" Header="Orbiting Body" />
+                                                <DataGridTextColumn Binding="{Binding RelativeVelocity, StringFormat={}{0:#.0.0.0}}" Header="Relative velocity&#x0a;(kilometers per second)" />
+                                                <DataGridTextColumn Binding="{Binding MissDistance, StringFormat={}{0:#.0.0.0}}" Header="Miss distance&#x0a;(kilometers)" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </GroupBox>
                                 </TabItem>
                             </TabControl>
-                        </materialDesign:Card>
+                        </GroupBox>
                     </Grid>
                 </TabItem>
                 <TabItem

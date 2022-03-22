@@ -142,7 +142,7 @@ namespace Gui.ViewModels
 
         private void SetRiskInfoSeries()
         {
-            var sec = new ObservableCollection<ISeries>
+            var series = new ObservableCollection<ISeries>
             {
                 new PieSeries<int>
                 {
@@ -162,23 +162,32 @@ namespace Gui.ViewModels
 
             };
             RiskInformation.Clear();
-            RiskInformation.AddRange(sec);
+            RiskInformation.AddRange(series);
+        }
+
+        private IEnumerable<CloseApproachGroupByOrbitingBody> GroupByOrbitingBody()
+        {
+            return from c in CloseApproach
+                   group c by c.OrbitingBody into ob
+                   select new CloseApproachGroupByOrbitingBody
+                   {
+                       OrbitingBody = ob.Key,
+                       Values = ob.AsEnumerable()
+                   };
         }
 
         public ObservableCollection<ISeries> OrbitingBodySeries { get; set; } = new();
 
         private void SetOrbitingBodySeries()
         {
-            var groupByOB = from c in CloseApproach
-                            group c by c.OrbitingBody into ob
-                            select ob;
+            var groupByOB = GroupByOrbitingBody();
             var series = new List<ISeries>();
             foreach (var c in groupByOB)
             {
                 series.Add(new PieSeries<int>
                 {
-                    Values = new ObservableCollection<int> { c.Count() },
-                    Name = c.Key,
+                    Values = new ObservableCollection<int> { c.Values.Count() },
+                    Name = c.OrbitingBody,
                     InnerRadius = 70
                 });
             }
@@ -186,61 +195,55 @@ namespace Gui.ViewModels
             OrbitingBodySeries.AddRange(series);
         }
 
+        public ObservableCollection<ISeries> RelativeVelocitySeries { get; set; } = new();
+
         private void SetRelativeVelocitySeries()
         {
-            var series = new List<ISeries>
+            var groupByOB = GroupByOrbitingBody();
+            var series = new List<ISeries>();
+            foreach (var c in groupByOB)
             {
-                new ColumnSeries<DateTimePoint>
+                series.Add(new ColumnSeries<DateTimePoint>
                 {
-                    Values =
-                    new ObservableCollection<DateTimePoint>(from c in CloseApproach
-                                                            select new DateTimePoint(c.CloseApproachDate, c.RelativeVelocity))
-                }
-            };
+                    Values = new ObservableCollection<DateTimePoint>(from r in c.Values
+                                                                     select new DateTimePoint(r.CloseApproachDate, r.RelativeVelocity)),
+                    Name = $"{c.OrbitingBody}: {c.Values.Count()}"
+                });
+            }
 
             RelativeVelocitySeries.Clear();
             RelativeVelocitySeries.AddRange(series);
         }
 
-        public ObservableCollection<ISeries> RelativeVelocitySeries { get; set; } = new();
-
-        public ObservableCollection<ICartesianAxis> RelativeVelocityXAxesDateTime { get; set; } = new()
-        {
-            new Axis
-            {
-                Labeler = value => new DateTime((long)value).ToString("dd/MM/yyyy"),
-                LabelsRotation = 15,
-                UnitWidth = TimeSpan.FromDays(1).Ticks,
-                MinStep = TimeSpan.FromDays(1).Ticks
-            }
-        };
+        public ObservableCollection<ISeries> MissDistanceSeries { get; set; } = new();
 
         private void SetMissDistanceSeries()
         {
-            var series = new List<ISeries>
+            var groupByOB = GroupByOrbitingBody();
+            var series = new List<ISeries>();
+            foreach (var c in groupByOB)
             {
-                new ColumnSeries<DateTimePoint>
+                series.Add(new ColumnSeries<DateTimePoint>
                 {
-                    Values =
-                    new ObservableCollection<DateTimePoint>(from c in CloseApproach
-                                                            select new DateTimePoint(c.CloseApproachDate, c.MissDistance))
-                }
-            };
+                    Values = new ObservableCollection<DateTimePoint>(from m in c.Values
+                                                                     select new DateTimePoint(m.CloseApproachDate, m.MissDistance)),
+                    Name = $"{c.OrbitingBody}: {c.Values.Count()}"
+                });
+            }
 
             MissDistanceSeries.Clear();
             MissDistanceSeries.AddRange(series);
         }
 
-        public ObservableCollection<ISeries> MissDistanceSeries { get; set; } = new();
-
-        public ObservableCollection<ICartesianAxis> MissDistanceXAxesDateTime { get; set; } = new()
+        public ObservableCollection<ICartesianAxis> XAxesDateTime { get; set; } = new()
         {
             new Axis
             {
                 Labeler = value => new DateTime((long)value).ToString("dd/MM/yyyy"),
                 LabelsRotation = 15,
+                TextSize= 15,
                 UnitWidth = TimeSpan.FromDays(1).Ticks,
-                MinStep = TimeSpan.FromDays(1).Ticks
+                MinStep = TimeSpan.FromDays(1).Ticks, 
             }
         };
 
@@ -253,5 +256,12 @@ namespace Gui.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext) { }
 
+    }
+
+    class CloseApproachGroupByOrbitingBody
+    {
+        public string OrbitingBody { get; set; }
+
+        public IEnumerable<CloseApproach> Values { get; set; }
     }
 }
