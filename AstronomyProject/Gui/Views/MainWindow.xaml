@@ -66,6 +66,7 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
+                           
                         </Grid.RowDefinitions>
                         <Button
                             Grid.Row="0"
@@ -84,6 +85,12 @@
                             Command="{Binding NavigateCommand}"
                             CommandParameter="NearAsteroidsView"
                             Content="Near Asteroids"
+                            Style="{StaticResource MenuButtonsStyle}" />
+                        <Button
+                            Grid.Row="3"
+                            Command="{Binding NavigateCommand}"
+                            CommandParameter="EightPlanetsView"
+                            Content="Eight Planets"
                             Style="{StaticResource MenuButtonsStyle}" />
                     </Grid>
                 </materialDesign:ColorZone>
