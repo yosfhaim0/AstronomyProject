@@ -50,8 +50,12 @@ namespace DomainModel.Services
 
             foreach (var a in astroids)
             {
-                a.CloseApproachs.RemoveAll(c => c.CloseApproachDate < from.Value
+                var del = a.CloseApproachs.RemoveAll(c => c.CloseApproachDate < from.Value
                 && c.CloseApproachDate > to.Value);
+                if(del > 0)
+                {
+                    Console.WriteLine("");
+                }
             }
 
             await _unitOfWork.Complete();
