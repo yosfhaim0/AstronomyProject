@@ -1,16 +1,48 @@
 ﻿<UserControl x:Class="Gui.Views.EightPlanetsView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
-             xmlns:local="clr-namespace:Gui.Views"
-             mc:Ignorable="d" 
-             Width="auto"
-             Height="auto"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:Gui.Views"
+    xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    Width="auto"
+    Height="auto"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    FontFamily="{DynamicResource MaterialDesignFont}"
+    mc:Ignorable="d"
              >
+    <UserControl.Resources>
+        <DataTemplate x:Key="HeaderForTabItem" DataType="TabItem.Header">
+            <TextBlock FontSize="12" />
+        </DataTemplate>
+    </UserControl.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding Load}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
-        <lvc:CartesianChart Series="{Binding Series}" XAxes="{Binding XAxes}" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TabControl Grid.Row="0" Style="{StaticResource MaterialDesignNavigatilRailTabControl}" >
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="cumper"/>
+                </TabItem.Header>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    
+                    <TextBlock Text="on its on"></TextBlock>
+                </TabItem.Header>
+            </TabItem>
+        </TabControl>
+        <lvc:CartesianChart Grid.Row="1" Series="{Binding Series}" XAxes="{Binding XAxes}" />
         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Center"/>
     </Grid>
 </UserControl>

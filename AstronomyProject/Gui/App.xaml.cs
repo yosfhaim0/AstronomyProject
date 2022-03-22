@@ -39,6 +39,8 @@ namespace Gui
             containerRegistry.RegisterForNavigation<HomeView>();
             containerRegistry.RegisterForNavigation<SearchMediaView>();
             containerRegistry.RegisterForNavigation<NearAsteroidsView>();
+            containerRegistry.RegisterForNavigation<EightPlanetsView>();
+
             #endregion
         }
 
