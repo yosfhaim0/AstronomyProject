@@ -14,6 +14,7 @@ using System.Windows;
 using Gui.Views;
 using DataAccess.DbContexts;
 using DataAccess.UnitOfWork;
+using Prism.Regions;
 
 namespace Gui
 {

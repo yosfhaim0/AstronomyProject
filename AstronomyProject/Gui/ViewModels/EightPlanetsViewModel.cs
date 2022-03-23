@@ -49,22 +49,11 @@ namespace Gui.ViewModels
             {
                 Series.Add(new ColumnSeries<Double>
                 {
-                    Values = f(c),
+                    //Values = f(c),
                     Name = c.name,
                     //DataLabelsPaint = new SolidColorPaint()
                 });
             }
-        }
-
-        private IEnumerable<double> f(Planet c)
-        {
-            PropertyInfo[] properties = typeof(c).GetProperties();
-            foreach (PropertyInfo property in properties)
-            {
-                if property.g
-            }
-
-
         }
 
         Random rnd = new Random();
