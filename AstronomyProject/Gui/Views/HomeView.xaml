@@ -50,6 +50,7 @@
             Grid.ColumnSpan="3"
             HorizontalAlignment="Center"
             FontWeight="Regular"
+            Foreground="#333d4a"
             Style="{StaticResource MaterialDesignHeadline2TextBlock}"
             Text="Exploring the space" />
 
@@ -58,7 +59,7 @@
             Grid.Column="0"
             Grid.ColumnSpan="3"
             Margin="10,20,10,10"
-            FontSize="20"
+            FontSize="22"
             Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
             Text="This project collects data from NASA, analyzes them and presents them conveniently to the user" />
 
@@ -69,6 +70,7 @@
             <local:BulletedItem BulletText="Search for astronomy media" />
             <local:BulletedItem BulletText="Find near asteroids and analyze there data with visual charts" />
             <local:BulletedItem BulletText="View a data profile for the eight planets" />
+            <local:BulletedItem BulletText="View image of the day by nasa" />
         </StackPanel>
         <materialDesign:Card
             Grid.Row="4"
@@ -105,7 +107,6 @@
                             </i:Interaction.Triggers>
                             Click here
                         </Hyperlink>
-
                     </TextBlock>
                     <TextBlock Text="By:&#x0a;- Noam Shushan&#x0a;- Yosef Haim Amrosy" />
                 </StackPanel>

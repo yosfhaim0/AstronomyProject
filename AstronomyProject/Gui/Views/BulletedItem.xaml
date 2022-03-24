@@ -19,7 +19,7 @@
                 </BulletDecorator.Bullet>
                 <TextBlock Margin="5,0,0,0">
                     <TextBlock
-                        FontSize="16"
+                        FontSize="18"
                         Style="{StaticResource MaterialDesignBody1TextBlock}"
                         Text="{Binding BulletText}" />
                 </TextBlock>

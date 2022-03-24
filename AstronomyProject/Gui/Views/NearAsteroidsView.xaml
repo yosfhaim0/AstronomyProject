@@ -16,8 +16,15 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <Style x:Key="GroupBoxHeaders" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Foreground" Value="WhiteSmoke" />
             <Setter Property="FontSize" Value="14" />
+        </Style>
+        <Style
+            x:Key="TabItemsForCloseApr"
+            BasedOn="{StaticResource MaterialDesignNavigationRailTabItem}"
+            TargetType="TabItem">
+            <Setter Property="MaxHeight" Value="50" />
+            <Setter Property="Width" Value="auto" />
         </Style>
     </UserControl.Resources>
     <i:Interaction.Triggers>
@@ -36,6 +43,7 @@
 
         <Grid Grid.Row="0" Margin="0,0,0,7">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="auto" />
@@ -89,6 +97,83 @@
                 Style="{StaticResource MaterialDesignIconButton}">
                 <materialDesign:PackIcon Kind="DatabaseSearchOutline" />
             </Button>
+            <Grid
+                Grid.Column="5"
+                Margin="10,0,0,0"
+                HorizontalAlignment="Right">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <materialDesign:ColorZone
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Margin="5"
+                    Padding="8,4,8,4"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                    CornerRadius="2"
+                    Mode="Standard">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox
+                            x:Name="tbDiameter"
+                            Grid.Column="0"
+                            MinWidth="200"
+                            materialDesign:HintAssist.IsFloating="True"
+                            materialDesign:ValidationAssist.Suppress="True"
+                            BorderThickness="0"
+                            FontSize="16"
+                            Text="{Binding Diameter, UpdateSourceTrigger=PropertyChanged}">
+                            <materialDesign:HintAssist.Hint>
+                                <TextBlock FontSize="14" Text="All greater then diameter..." />
+                            </materialDesign:HintAssist.Hint>
+                            <TextBox.InputBindings>
+                                <KeyBinding
+                                    Command="{Binding FilterByDiameter}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBox}}}"
+                                    Gesture="Return" />
+                            </TextBox.InputBindings>
+                        </TextBox>
+                        <Button
+                            Grid.Column="1"
+                            Style="{StaticResource MaterialDesignToolButton}"
+                            ToolTip="Clear and show all">
+                            <materialDesign:PackIcon
+                                Margin="8,0,0,0"
+                                Kind="ClearBox"
+                                Opacity=".56" />
+
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:ChangePropertyAction
+                                        PropertyName="Text"
+                                        TargetName="tbDiameter"
+                                        Value="0" />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="Click">
+                                    <i:InvokeCommandAction Command="{Binding FilterByDiameter}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </Grid>
+                </materialDesign:ColorZone>
+
+                <Button
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    Command="{Binding FilterByDiameter}"
+                    Style="{StaticResource MaterialDesignIconButton}"
+                    ToolTip="Filter by diameter">
+                    <materialDesign:PackIcon Kind="FilterList" />
+                </Button>
+            </Grid>
 
         </Grid>
         <materialDesign:Card
@@ -96,93 +181,33 @@
             Width="auto"
             Height="auto">
             <TabControl
-                materialDesign:ColorZoneAssist.Mode="Light"
+                materialDesign:ColorZoneAssist.Background="WhiteSmoke"
+                materialDesign:ColorZoneAssist.Mode="Custom"
                 materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
+                Background="#132446"
                 SnapsToDevicePixels="True"
                 TabStripPlacement="Top">
-                <TabItem Width="auto" Header="Close approachs">
+                <TabItem Width="auto" Height="auto">
+                    <TabItem.Header>
+                        <TextBlock
+                            FontSize="15"
+                            Foreground="#333d4a"
+                            Style="{StaticResource MaterialDesignButtonTextBlock}"
+                            Text="Close approachs" />
+                    </TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <materialDesign:ColorZone
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            Margin="5"
-                            Padding="8,4,8,4"
-                            materialDesign:ShadowAssist.ShadowDepth="Depth1"
-                            CornerRadius="2"
-                            Mode="Standard">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <TextBox
-                                    x:Name="tbDiameter"
-                                    Grid.Column="0"
-                                    MinWidth="200"
-                                    materialDesign:HintAssist.IsFloating="True"
-                                    materialDesign:ValidationAssist.Suppress="True"
-                                    BorderThickness="0"
-                                    FontSize="16"
-                                    Text="{Binding Diameter, UpdateSourceTrigger=PropertyChanged}">
-                                    <materialDesign:HintAssist.Hint>
-                                        <TextBlock FontSize="14" Text="All greater then diameter..." />
-                                    </materialDesign:HintAssist.Hint>
-                                    <TextBox.InputBindings>
-                                        <KeyBinding
-                                            Command="{Binding FilterByDiameter}"
-                                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBox}}}"
-                                            Gesture="Return" />
-                                    </TextBox.InputBindings>
-                                </TextBox>
-                                <Button
-                                    Grid.Column="1"
-                                    Style="{StaticResource MaterialDesignToolButton}"
-                                    ToolTip="Clear and show all">
-                                    <materialDesign:PackIcon
-                                        Margin="8,0,0,0"
-                                        Kind="ClearBox"
-                                        Opacity=".56" />
-
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="Click">
-                                            <i:ChangePropertyAction
-                                                PropertyName="Text"
-                                                TargetName="tbDiameter"
-                                                Value="0" />
-                                        </i:EventTrigger>
-                                        <i:EventTrigger EventName="Click">
-                                            <i:InvokeCommandAction Command="{Binding FilterByDiameter}" />
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                </Button>
-                            </Grid>
-                        </materialDesign:ColorZone>
-
-                        <Button
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            HorizontalAlignment="Left"
-                            Command="{Binding FilterByDiameter}"
-                            Style="{StaticResource MaterialDesignIconButton}"
-                            ToolTip="Filter by diameter">
-                            <materialDesign:PackIcon Kind="FilterList" />
-                        </Button>
                         <GroupBox
-                            Grid.Row="1"
+                            Grid.Row="0"
                             Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Margin="5"
-                            materialDesign:ColorZoneAssist.Mode="Dark"
-                            Style="{StaticResource MaterialDesignCardGroupBox}">
+                            Margin="8"
+                            Style="{StaticResource GroupBoxMainThem}">
                             <GroupBox.Header>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -223,82 +248,77 @@
                         </GroupBox>
                         <GroupBox
                             Grid.Row="0"
-                            Grid.RowSpan="2"
-                            Grid.Column="2"
-                            Width="auto"
-                            Height="auto"
-                            Margin="5"
-                            materialDesign:ColorZoneAssist.Mode="Dark"
-                            Style="{StaticResource MaterialDesignCardGroupBox}">
+                            Grid.Column="1"
+                            Margin="8"
+                            Style="{StaticResource GroupBoxMainThem}">
                             <GroupBox.Header>
-                                <StackPanel Orientation="Horizontal">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
                                     <TextBlock
+                                        Grid.Column="0"
                                         Margin="0,0,4,0"
+                                        HorizontalAlignment="Left"
                                         Style="{StaticResource GroupBoxHeaders}"
                                         Text="All Close approaches of asteroid:" />
-                                    <TextBlock Style="{StaticResource GroupBoxHeaders}" Text="{Binding SelectedAstroeid.Name}" />
-                                </StackPanel>
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Left"
+                                        Style="{StaticResource GroupBoxHeaders}"
+                                        Text="{Binding SelectedAstroeid.Name}" />
+                                    <TextBlock
+                                        Grid.Column="2"
+                                        Margin="0,0,4,0"
+                                        HorizontalAlignment="Right"
+                                        Style="{StaticResource GroupBoxHeaders}"
+                                        Text="Total Amount:" />
+                                    <TextBlock
+                                        Grid.Column="3"
+                                        HorizontalAlignment="Right"
+                                        Style="{StaticResource GroupBoxHeaders}"
+                                        Text="{Binding CloseApproach.Count}" />
+                                </Grid>
                             </GroupBox.Header>
                             <TabControl
                                 materialDesign:ColorZoneAssist.Mode="Light"
                                 materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
+                                SnapsToDevicePixels="True"
                                 Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
                                 TabStripPlacement="Top">
                                 <TabItem
-                                    Width="auto"
                                     HorizontalAlignment="Center"
-                                    Header="Relative velocity&#x0a;(kilometers per second)">
+                                    Header="Relative velocity&#x0a;(kilometers per second)"
+                                    Style="{StaticResource TabItemsForCloseApr}">
                                     <lvc:CartesianChart
                                         LegendPosition="Top"
                                         Series="{Binding RelativeVelocitySeries}"
                                         XAxes="{Binding XAxesDateTime}" />
                                 </TabItem>
                                 <TabItem
-                                    Width="auto"
                                     HorizontalAlignment="Center"
-                                    Header="Miss distance&#x0a;(kilometers)">
+                                    Header="Miss distance&#x0a;(kilometers)"
+                                    Style="{StaticResource TabItemsForCloseApr}">
                                     <lvc:CartesianChart
                                         LegendPosition="Top"
                                         Series="{Binding MissDistanceSeries}"
                                         XAxes="{Binding XAxesDateTime}" />
                                 </TabItem>
-                                <TabItem Width="auto" Header="Orbiting Body">
-                                    <lvc:PieChart LegendPosition="Top" Series="{Binding OrbitingBodySeries}" />
-                                </TabItem>
-                                <TabItem
-                                    Width="auto"
-                                    Height="auto"
-                                    Header="Details">
-                                    <GroupBox materialDesign:ColorZoneAssist.Mode="Custom" Style="{StaticResource MaterialDesignGroupBox}">
-                                        <GroupBox.Header>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="auto" />
-                                                    <ColumnDefinition Width="auto" />
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock
-                                                    Grid.Column="0"
-                                                    Margin="0,0,4,0"
-                                                    FontSize="14"
-                                                    Text="Total Amount:" />
-                                                <TextBlock
-                                                    Grid.Column="1"
-                                                    FontSize="14"
-                                                    Text="{Binding CloseApproach.Count}" />
-                                            </Grid>
-                                        </GroupBox.Header>
-                                        <DataGrid
-                                            AutoGenerateColumns="False"
-                                            IsReadOnly="True"
-                                            ItemsSource="{Binding CloseApproach}">
-                                            <DataGrid.Columns>
-                                                <DataGridTextColumn Binding="{Binding CloseApproachDate, StringFormat=dd/MM/yyyy}" Header="Date" />
-                                                <DataGridTextColumn Binding="{Binding OrbitingBody}" Header="Orbiting Body" />
-                                                <DataGridTextColumn Binding="{Binding RelativeVelocity, StringFormat={}{0:#.0.0.0}}" Header="Relative velocity&#x0a;(kilometers per second)" />
-                                                <DataGridTextColumn Binding="{Binding MissDistance, StringFormat={}{0:#.0.0.0}}" Header="Miss distance&#x0a;(kilometers)" />
-                                            </DataGrid.Columns>
-                                        </DataGrid>
-                                    </GroupBox>
+                                <TabItem Header="Details" Style="{StaticResource TabItemsForCloseApr}">
+                                    <DataGrid
+                                        AutoGenerateColumns="False"
+                                        IsReadOnly="True"
+                                        ItemsSource="{Binding CloseApproach}">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Binding="{Binding CloseApproachDate, StringFormat=dd/MM/yyyy}" Header="Date" />
+                                            <DataGridTextColumn Binding="{Binding OrbitingBody}" Header="Orbiting Body" />
+                                            <DataGridTextColumn Binding="{Binding RelativeVelocity, StringFormat={}{0:#.0.0.0}}" Header="Relative velocity&#x0a;(kilometers per second)" />
+                                            <DataGridTextColumn Binding="{Binding MissDistance, StringFormat={}{0:#.0.0.0}}" Header="Miss distance&#x0a;(kilometers)" />
+                                        </DataGrid.Columns>
+                                    </DataGrid>
                                 </TabItem>
                             </TabControl>
                         </GroupBox>
@@ -306,8 +326,15 @@
                 </TabItem>
                 <TabItem
                     Width="auto"
-                    Margin="5,0"
-                    Header="Risk information">
+                    Height="auto"
+                    Margin="15">
+                    <TabItem.Header>
+                        <TextBlock
+                            FontSize="15"
+                            Foreground="#333d4a"
+                            Style="{StaticResource MaterialDesignButtonTextBlock}"
+                            Text="Risk information" />
+                    </TabItem.Header>
                     <lvc:PieChart LegendPosition="Right" Series="{Binding RiskInformation}" />
                 </TabItem>
                 <TabControl.Style>
