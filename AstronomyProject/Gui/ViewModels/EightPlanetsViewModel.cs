@@ -49,13 +49,7 @@ namespace Gui.ViewModels
                     Name = p.Name,
 
 
-            foreach (var c in PlanetList)
-            {
-                Series.Add(new ColumnSeries<Double>
-                {
-                    //Values = f(c),
-                    Name = c.name,
-                    //DataLabelsPaint = new SolidColorPaint()
+                    //DataLabelsPaint = new SolidColorPaint(randSKColor)
                 });
             }
 
@@ -83,6 +77,7 @@ namespace Gui.ViewModels
 
 
         //}
+
 
         Random rnd = new Random();
         public List<ISeries> Series { get; set; }

@@ -9,6 +9,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:web="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
     Width="auto"
     Height="auto"
     prism:ViewModelLocator.AutoWireViewModel="True"
@@ -72,7 +73,16 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <Viewbox>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Background="WhiteSmoke"
+                                        Text="{Binding Name}"
+                                        TextAlignment="Center" />
+                                    <Viewbox Grid.Row="1">
                                         <web:ChromiumWebBrowser
                                             Width="240"
                                             Height="120"
@@ -112,7 +122,7 @@
                                         FontSize="18"
                                         FontWeight="DemiBold"
                                         Text="{Binding}" />
-                                  
+
                                 </Grid>
                             </DataTemplate>
                         </GroupBox.HeaderTemplate>
@@ -141,7 +151,21 @@
                                 FontSize="15"
                                 Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
                                 Text="{Binding Date, StringFormat=dd/MM/yyyy}" />-->
-                            <TextBox
+                            <StackPanel
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Id: " />
+                                    <TextBlock Text="{Binding Id}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Id: " />
+                                    <TextBlock Text="{Binding Id}" />
+                                </StackPanel>
+
+                            </StackPanel>
+                            <!--<TextBox
                                 Grid.Row="1"
                                 Grid.Column="0"
                                 MaxWidth="400"
@@ -152,13 +176,14 @@
                                 FontSize="15"
                                 IsReadOnly="True"
                                 Text="{Binding Explanation}"
-                                TextWrapping="Wrap" />
+                                TextWrapping="Wrap" />-->
                             <materialDesign:Card
                                 Grid.Row="0"
                                 Grid.RowSpan="2"
                                 Grid.Column="1"
                                 Margin="10,0">
-                                <materialDesign:Card.Style>
+
+                                <!--<materialDesign:Card.Style>
                                     <Style TargetType="materialDesign:Card">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ElementName=GalleryView, Path=DataContext.IsLoading}" Value="True">
@@ -169,11 +194,10 @@
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </materialDesign:Card.Style>
+                                </materialDesign:Card.Style>-->
                                 <web:ChromiumWebBrowser
-                                    Width="Auto"
-                                    Height="Auto"
-                                    HorizontalAlignment="Stretch"
+                                    Width="auto"
+                                    Height="auto"
                                     Address="{Binding Url}"
                                     ToolTip="Nasa Picture Of The Day" />
                             </materialDesign:Card>
