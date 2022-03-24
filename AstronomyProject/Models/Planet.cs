@@ -30,5 +30,7 @@ namespace Models
         public int numberOfMoons { get; set; }
         public bool hasRingSystem { get; set; }
         public bool hasGlobalMagneticField { get; set; }
+
+        public string url { get; set; }
     }
 }

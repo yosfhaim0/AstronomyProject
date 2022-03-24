@@ -24,13 +24,14 @@ namespace Testing
             //await _fireBaseTest.DeleteImage();
             //var v=await _fireBaseTest.get("1.jpg");
 
+            var c=await _fireBaseTest.get("d");
             //await _nasaTest.GetImageOfTheDayTest();
-            EightPlanets a = new();
-            var c= a.GetEightPlanetsInfo();
-            var t = 0;
+            //EightPlanets a = new();
+            //var c= a.GetEightPlanetsInfo();
+            //var t = 0;
             //await _nasaTest.GetAstroid();
             //await _nasaTest.GetAsteroidById(54245556);
-
+            var t = 0;
 
         }
         // This examples is using RestSharp as a REST client - http://restsharp.org

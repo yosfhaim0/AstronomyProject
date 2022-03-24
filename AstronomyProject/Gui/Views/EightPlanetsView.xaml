@@ -8,6 +8,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:web="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
     Width="auto"
     Height="auto"
     prism:ViewModelLocator.AutoWireViewModel="True"
@@ -19,30 +20,184 @@
             <TextBlock FontSize="12" />
         </DataTemplate>
     </UserControl.Resources>
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding Load}" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TabControl Grid.Row="0" Style="{StaticResource MaterialDesignNavigatilRailTabControl}" >
+        <TabControl TabStripPlacement="Top" Grid.Row="0" Style="{StaticResource MaterialDesignNavigatilRailTabControl}" >
             <TabItem>
                 <TabItem.Header>
                     <TextBlock Text="cumper"/>
                 </TabItem.Header>
+
+                <lvc:CartesianChart Grid.Row="1" XAxes="{Binding XAxes}" Series="{Binding Series}" LegendPosition="Right" IsManipulationEnabled="False"/>
+
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    
                     <TextBlock Text="on its on"></TextBlock>
                 </TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <GroupBox
+            Grid.Row="0"
+            materialDesign:ColorZoneAssist.Background="#fffafa"
+            materialDesign:ColorZoneAssist.Foreground="Black"
+            materialDesign:ColorZoneAssist.Mode="Custom"
+            DataContext="{Binding SelectedPlanet}"
+            Header="hhjjjj"
+            Style="{StaticResource MaterialDesignCardGroupBox}">
+                        <GroupBox.HeaderTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <materialDesign:PackIcon
+                            Grid.Column="0"
+                            Width="28"
+                            Height="28"
+                            VerticalAlignment="Center"
+                            Kind="ImageArea" />
+                                    <TextBlock
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            FontFamily="Consoles"
+                            FontSize="18"
+                            FontWeight="DemiBold"
+                            Text="{Binding}" />
+                                    <!--<Button
+                            Grid.Column="2"
+                            Width="150"
+                            HorizontalAlignment="Right"
+                            Command="{Binding ElementName=GalleryView, Path=DataContext.GoToTodayImage}"
+                            Content="Show today image"
+                            Style="{StaticResource MaterialDesignFlatButton}" />-->
+                                </Grid>
+                            </DataTemplate>
+                        </GroupBox.HeaderTemplate>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <local:LoadingBar
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    IsLoading="{Binding ElementName=GalleryView, Path=DataContext.IsLoading}" />
+                            <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    HorizontalAlignment="Center"
+                    FontSize="15"
+                    Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
+                    Text="{Binding Date, StringFormat=dd/MM/yyyy}" />
+                            <TextBox
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    MaxWidth="400"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    FontFamily="{StaticResource MaterialDesignFont}"
+                    FontSize="15"
+                    IsReadOnly="True"
+                    Text="{Binding Explanation}"
+                    TextWrapping="Wrap" />
+                            <materialDesign:Card
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="1"
+                    Margin="10,0">
+                                <materialDesign:Card.Style>
+                                    <Style TargetType="materialDesign:Card">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=GalleryView, Path=DataContext.IsLoading}" Value="True">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=GalleryView, Path=DataContext.IsLoading}" Value="False">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </materialDesign:Card.Style>
+                                <web:ChromiumWebBrowser
+                        Width="Auto"
+                        Height="Auto"
+                        HorizontalAlignment="Stretch"
+                        Address="{Binding Url}"
+                        ToolTip="Nasa Picture Of The Day" />
+                            </materialDesign:Card>
+                        </Grid>
+                    </GroupBox>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <ListBox
+                Grid.Column="1"
+                ItemsSource="{Binding PlanetList}"
+                ScrollViewer.CanContentScroll="True"
+                ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                SelectedItem="{Binding SelectedPlanet}"
+                Style="{StaticResource MaterialDesignNavigationListBox}">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel IsItemsHost="True" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Viewbox>
+                                            <web:ChromiumWebBrowser
+                                    Width="240"
+                                    Height="120"
+                                    Address="{Binding Url}"
+                                    IsEnabled="False" />
+                                        </Viewbox>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+                        <!--<Button
+                Grid.Column="2"
+                Margin="5,0,0,0"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Command="{Binding MoveNext}"
+                Content="{materialDesign:PackIcon Kind=ArrowRight,
+                                                  Size=55}"
+                Foreground="#70757a"
+                Style="{StaticResource MaterialDesignIconButton}" />-->
+                    </Grid>
+                </Grid>
             </TabItem>
         </TabControl>
-        <lvc:CartesianChart Grid.Row="1" Series="{Binding Series}" XAxes="{Binding XAxes}" />
-        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Center"/>
+       
     </Grid>
 </UserControl>

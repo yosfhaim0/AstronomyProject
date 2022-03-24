@@ -16,6 +16,7 @@ using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using LiveChartsCore.Measure;
 using System.Reflection;
+using LiveChartsCore.Kernel.Sketches;
 
 namespace Gui.ViewModels
 {
@@ -23,49 +24,49 @@ namespace Gui.ViewModels
     {
         readonly EightPlanets _eightPlanetsInfo;
         List<Planet> PlanetList;
+        public Planet SelectedPlanet { get; set; }
         public EightPlanetsViewModel(EightPlanets eightPlanetsInfo)
         {
             _eightPlanetsInfo = eightPlanetsInfo;
             PlanetList = _eightPlanetsInfo.GetEightPlanetsInfo();
-            //Series.Add(new RowSeries<Double>
-            //{
-            //    Values = PlanetList.Select(x => x.distanceFromSun),
-            //    Stroke = null,
-            //    Name = PlanetList.Select(x => x.distanceFromSun),
-
-            //    DataLabelsPaint = new SolidColorPaint(new SKColor(45, 45, 45)),
-            //    DataLabelsSize = 14,
-            //    DataLabelsPosition = DataLabelsPosition.Start
-            //});
-            //Series = new List<ISeries>
-            //{
-            //    new ColumnSeries<Double>
-            //    {
-            //        Values = PlanetList.Select(x=>x.distanceFromSun)
-            //    }
-            //};
-
-            foreach (var c in PlanetList)
+            Series = new();
+            foreach (var p in PlanetList)
             {
-                Series.Add(new ColumnSeries<Double>
+
+                Series.Add(new ColumnSeries<double>
                 {
-                    Values = f(c),
-                    Name = c.name,
-                    //DataLabelsPaint = new SolidColorPaint()
+                    Values = new ObservableCollection<double> { p.distanceFromSun },
+                    Name = p.name,
+
+
+                    //DataLabelsPaint = new SolidColorPaint(randSKColor)
                 });
             }
-        }
 
-        private IEnumerable<double> f(Planet c)
-        {
-            PropertyInfo[] properties = typeof(c).GetProperties();
-            foreach (PropertyInfo property in properties)
+            XAxes = new()
             {
-                if property.g
-            }
+                new Axis
+                {
+                    Labeler = value => PlanetList.FirstOrDefault(x => x.distanceFromSun == value)?.name,
+                    TextSize = 15,
 
+                }
+            };
 
         }
+        public ObservableCollection<ICartesianAxis> XAxes { get; set; }
+
+
+        //private IEnumerable<double> f(Planet c)
+        //{
+        //    PropertyInfo[] properties = typeof(c).GetProperties();
+        //    foreach (PropertyInfo property in properties)
+        //    {
+        //        if property.g
+        //    }
+
+
+        //}
 
         Random rnd = new Random();
         public List<ISeries> Series { get; set; }
