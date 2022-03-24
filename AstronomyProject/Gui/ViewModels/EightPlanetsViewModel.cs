@@ -49,7 +49,13 @@ namespace Gui.ViewModels
                     Name = p.Name,
 
 
-                    //DataLabelsPaint = new SolidColorPaint(randSKColor)
+            foreach (var c in PlanetList)
+            {
+                Series.Add(new ColumnSeries<Double>
+                {
+                    //Values = f(c),
+                    Name = c.name,
+                    //DataLabelsPaint = new SolidColorPaint()
                 });
             }
 

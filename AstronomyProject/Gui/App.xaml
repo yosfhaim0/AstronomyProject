@@ -1,14 +1,35 @@
-﻿<prism:PrismApplication x:Class="Gui.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Gui"
-             xmlns:prism="http://prismlibrary.com/" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+﻿<prism:PrismApplication
+    x:Class="Gui.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Gui"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:prism="http://prismlibrary.com/">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="Lime" />
+                <materialDesign:BundledTheme
+                    BaseTheme="Light"
+                    PrimaryColor="DeepPurple"
+                    SecondaryColor="Lime" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Style
+                x:Key="GroupBoxMainThem"
+                BasedOn="{StaticResource MaterialDesignCardGroupBox}"
+                TargetType="GroupBox">
+                <Setter Property="materialDesign:ColorZoneAssist.Background" Value="#333d4a" />
+                <Setter Property="materialDesign:ColorZoneAssist.Foreground" Value="WhiteSmoke" />
+                <Setter Property="materialDesign:ColorZoneAssist.Mode" Value="Custom" />
+            </Style>
+            <Style
+                x:Key="GroupBoxMainInvertThem"
+                BasedOn="{StaticResource MaterialDesignCardGroupBox}"
+                TargetType="GroupBox">
+                <Setter Property="materialDesign:ColorZoneAssist.Background" Value="WhiteSmoke" />
+                <Setter Property="materialDesign:ColorZoneAssist.Foreground" Value="#333d4a" />
+                <Setter Property="materialDesign:ColorZoneAssist.Mode" Value="Custom" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </prism:PrismApplication>

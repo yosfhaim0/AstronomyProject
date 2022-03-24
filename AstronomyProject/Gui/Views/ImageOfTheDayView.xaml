@@ -8,6 +8,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:web="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
     Name="GalleryView"
     Width="auto"
@@ -29,12 +30,9 @@
         </Grid.RowDefinitions>
         <GroupBox
             Grid.Row="0"
-            materialDesign:ColorZoneAssist.Background="#fffafa"
-            materialDesign:ColorZoneAssist.Foreground="Black"
-            materialDesign:ColorZoneAssist.Mode="Custom"
             DataContext="{Binding SelectedImage}"
             Header="{Binding Title}"
-            Style="{StaticResource MaterialDesignCardGroupBox}">
+            Style="{StaticResource GroupBoxMainInvertThem}">
             <GroupBox.HeaderTemplate>
                 <DataTemplate>
                     <Grid>
@@ -60,9 +58,12 @@
                             Grid.Column="2"
                             Width="150"
                             HorizontalAlignment="Right"
+                            Background="#333d4a"
                             Command="{Binding ElementName=GalleryView, Path=DataContext.GoToTodayImage}"
                             Content="Show today image"
-                            Style="{StaticResource MaterialDesignFlatButton}" />
+                            Foreground="WhiteSmoke"
+                            Style="{StaticResource MaterialDesignPaperButton}"
+                            ToolTip="{Binding Source={x:Static sys:DateTime.Now}, StringFormat=dd/MM/yyyy}" />
                     </Grid>
                 </DataTemplate>
             </GroupBox.HeaderTemplate>
@@ -146,8 +147,9 @@
                 Command="{Binding MovePrev}"
                 Content="{materialDesign:PackIcon Kind=ArrowLeft,
                                                   Size=55}"
-                Foreground="#70757a"
-                Style="{StaticResource MaterialDesignIconButton}" />
+                Foreground="#333d4a"
+                Style="{StaticResource MaterialDesignIconButton}"
+                ToolTip="Move prev" />
 
             <ListBox
                 Grid.Column="1"
@@ -184,8 +186,9 @@
                 Command="{Binding MoveNext}"
                 Content="{materialDesign:PackIcon Kind=ArrowRight,
                                                   Size=55}"
-                Foreground="#70757a"
-                Style="{StaticResource MaterialDesignIconButton}" />
+                Foreground="#333d4a"
+                Style="{StaticResource MaterialDesignIconButton}"
+                ToolTip="Move next" />
         </Grid>
     </Grid>
 </UserControl>

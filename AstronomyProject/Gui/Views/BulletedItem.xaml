@@ -1,0 +1,29 @@
+﻿<UserControl
+    x:Class="Gui.Views.BulletedItem"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Gui.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Grid>
+        <ItemsControl>
+            <BulletDecorator Width="Auto" Margin="10,0,0,0">
+                <BulletDecorator.Bullet>
+                    <Ellipse
+                        Width="5"
+                        Height="5"
+                        Fill="Black"
+                        Stroke="Black"
+                        StrokeThickness="1" />
+                </BulletDecorator.Bullet>
+                <TextBlock Margin="5,0,0,0">
+                    <TextBlock
+                        FontSize="18"
+                        Style="{StaticResource MaterialDesignBody1TextBlock}"
+                        Text="{Binding BulletText}" />
+                </TextBlock>
+            </BulletDecorator>
+        </ItemsControl>
+    </Grid>
+</UserControl>
