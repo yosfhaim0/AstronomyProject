@@ -23,20 +23,30 @@ namespace Gui.ViewModels
     public class EightPlanetsViewModel : ViewModelBase
     {
         readonly EightPlanets _eightPlanetsInfo;
-        List<Planet> PlanetList;
-        public Planet SelectedPlanet { get; set; }
+        public ObservableCollection<Planet> PlanetList { get; set; } = new();
+
+
+
+        private Planet _selectedPlanet;
+        public Planet SelectedPlanet
+        {
+            get { return _selectedPlanet ?? PlanetList?.FirstOrDefault(); }
+            set
+            {
+                SetProperty(ref _selectedPlanet, value);
+            }
+        }
         public EightPlanetsViewModel(EightPlanets eightPlanetsInfo)
         {
             _eightPlanetsInfo = eightPlanetsInfo;
-            PlanetList = _eightPlanetsInfo.GetEightPlanetsInfo();
+            PlanetList.AddRange(_eightPlanetsInfo.GetEightPlanetsInfo());
             Series = new();
             foreach (var p in PlanetList)
             {
-
                 Series.Add(new ColumnSeries<double>
                 {
-                    Values = new ObservableCollection<double> { p.distanceFromSun },
-                    Name = p.name,
+                    Values = new ObservableCollection<double> { p.DistanceFromSun },
+                    Name = p.Name,
 
 
                     //DataLabelsPaint = new SolidColorPaint(randSKColor)
@@ -47,7 +57,7 @@ namespace Gui.ViewModels
             {
                 new Axis
                 {
-                    Labeler = value => PlanetList.FirstOrDefault(x => x.distanceFromSun == value)?.name,
+                    Labeler = value => PlanetList.FirstOrDefault(x => x.DistanceFromSun == value)?.Name,
                     TextSize = 15,
 
                 }

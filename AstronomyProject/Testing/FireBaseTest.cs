@@ -32,7 +32,7 @@ namespace Testing
             List<string> vs = new List<string>();
             foreach(var i in b.GetEightPlanetsInfo())
             {
-                vs.Add(await a.Get(i.name+".jpg"));
+                vs.Add(await a.Get(i.Name+".jpg")+i.Name);
             }
             return vs;
         }
