@@ -26,7 +26,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <TabControl
             Grid.Row="0"
@@ -34,16 +34,30 @@
             TabStripPlacement="Top">
             <TabItem>
                 <TabItem.Header>
-                    <TextBlock Text="cumper" />
+                    <TextBlock Text="compare" />
                 </TabItem.Header>
-
-                <lvc:CartesianChart
-                    Grid.Row="1"
-                    IsManipulationEnabled="False"
-                    LegendPosition="Right"
-                    Series="{Binding Series}"
-                    XAxes="{Binding XAxes}" />
-
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300" />
+                        <ColumnDefinition Width="300" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="500" />
+                    </Grid.RowDefinitions>
+                    <ListBox
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        ItemsSource="{Binding PropNames}"
+                        SelectedItem="{Binding SelectedProp}" />
+                    <local:DateTimeChartView Grid.Row="0" Grid.Column="1" />
+                    <!--<lvc:CartesianChart
+                        Grid.Column="1"
+                        Height="auto"
+                        IsManipulationEnabled="False"
+                        LegendPosition="Right"
+                        Series="{Binding Series}"
+                        XAxes="{Binding XAxes}" />-->
+                </Grid>
             </TabItem>
             <TabItem>
                 <TabItem.Header>
@@ -136,14 +150,14 @@
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <local:LoadingBar
+                            <!--<local:LoadingBar
                                 Grid.Row="0"
                                 Grid.RowSpan="2"
                                 Grid.Column="0"
                                 Grid.ColumnSpan="2"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
-                                IsLoading="{Binding ElementName=GalleryView, Path=DataContext.IsLoading}" />
+                                IsLoading="{Binding ElementName=GalleryView, Path=DataContext.IsLoading}" />-->
                             <!--<TextBlock
                                 Grid.Row="0"
                                 Grid.Column="0"
@@ -163,6 +177,8 @@
                                     <TextBlock Text="Id: " />
                                     <TextBlock Text="{Binding Id}" />
                                 </StackPanel>
+                                <local:FieldItem FieldName="Name" FieldValue="{Binding Name}" />
+                                <local:FieldItem FieldName="Mass" FieldValue="{Binding Mass}" />
 
                             </StackPanel>
                             <!--<TextBox
@@ -195,11 +211,11 @@
                                         </Style.Triggers>
                                     </Style>
                                 </materialDesign:Card.Style>-->
-                                <web:ChromiumWebBrowser
+                                <Image
                                     Width="auto"
                                     Height="auto"
-                                    Address="{Binding Url}"
-                                    ToolTip="Nasa Picture Of The Day" />
+                                    Source="{Binding Url}"
+                                    ToolTip="{Binding Name}" />
                             </materialDesign:Card>
                         </Grid>
                     </GroupBox>

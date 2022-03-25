@@ -103,7 +103,7 @@ namespace ApiRequests.Nasa
                          where i.links != null
                          from img in i.links
                          where img.href != null && img.href.EndsWith(".jpg")
-                         select img.href; 
+                         select img.href;
             
             return result;
         }
