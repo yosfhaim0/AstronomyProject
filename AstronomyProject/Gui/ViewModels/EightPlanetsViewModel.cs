@@ -17,13 +17,15 @@ using SkiaSharp;
 using LiveChartsCore.Measure;
 using System.Reflection;
 using LiveChartsCore.Kernel.Sketches;
+using System.Collections;
 
 namespace Gui.ViewModels
 {
     public class ColumValue
     {
-        public object Value { get; set; }
+        public Object Value { get; set; }
         public string Name { get; set; }
+        public string Plant { get; set; }
 
     }
     public class EightPlanetsViewModel : ViewModelBase
@@ -61,51 +63,121 @@ namespace Gui.ViewModels
         {
             _eightPlanetsInfo = eightPlanetsInfo;
             PlanetList.AddRange(_eightPlanetsInfo.GetEightPlanetsInfo());
-            PropNames= typeof(Planet).GetProperties().Select(x=>x.Name).ToList();
-            
-            // The UnitWidth is only required for column or financial series
-            // because the library needs to know the width of each column, by default the
-            // width is 1, but when you are using a different scale, you must let the library know it.
-            XAxes = new Axis[]
+            PropNames = typeof(Planet).GetProperties().Select(x => x.Name).ToList();
+            PropNames.Remove("Name");
+            PropNames.Remove("Url");
+            PropNames.Remove("HasRingSystem");
+            PropNames.Remove("HasGlobalMagneticField");
+            PropNames.Remove("Id");
+
+            SelectedProp = "Mass";
+            //Series = new ObservableCollection<ISeries>() { new ColumnSeries<double>() };
+            setColum(SelectedProp);
+
+
+
+
+            XAxes = new List<Axis>
             {
-            new Axis
-            {
-                Labeler = value => new DateTime((long) value).ToString("MMMM dd"),
-                LabelsRotation = 15,
-
-                // in this case we want our columns with a width of 1 day, we can get that number
-                // using the following syntax
-                UnitWidth = TimeSpan.FromDays(1).Ticks, // mark
-
-                // The MinStep property forces the separator to be greater than 1 day.
-                MinStep = TimeSpan.FromDays(1).Ticks // mark
-
-                // if the difference between our points is in hours then we would:
-                // UnitWidth = TimeSpan.FromHours(1).Ticks,
-
-                // since all the months and years have a different number of days
-                // we can use the average, it would not cause any visible error in the user interface
-                // Months: TimeSpan.FromDays(30.4375).Ticks
-                // Years: TimeSpan.FromDays(365.25).Ticks
-            }
+                new()
+                {
+                    // Use the labels property to define named labels.
+                    Labels = PlanetList.Select(X=>X.Name).ToArray()
+                }
             };
+
+
 
         }
 
         private void setColum(string propertyName)
         {
+
+
             List<ColumValue> res = new();
             foreach (var item in PlanetList)
             {
                 var pro = item.GetType().GetProperty(propertyName);
-                res.Add(new ColumValue { Name = pro.Name, Value = pro.GetValue(item, null) });
+                res.Add(new ColumValue { Name = pro.Name, Value = pro.GetValue(item, null), Plant = item.Name });
             }
             PropList.Clear();
             PropList.AddRange(res);
+
+            Series.Clear();
+            Series.Add(new ColumnSeries<double>
+            {
+                Name = SelectedProp,
+                Values = new ObservableCollection<double>().AddRange(PropList.Select(x => (double)x.Value).ToArray()),
+            });
+
+            YAxes = new List<Axis>
+            {
+                new()
+                {
+                    // Now the Y axis we will display labels as currency
+                    // LiveCharts provides some common formatters
+                    // in this case we are using the currency formatter.
+                    Labeler =  (value) =>value+findMida(SelectedProp),
+
+                    // you could also build your own currency formatter
+                    // for example:
+                    // Labeler = (value) => value.ToString("C")
+
+                    // But the one that LiveCharts provides creates shorter labels when
+                    // the amount is in millions or trillions
+                }
+            };
+
         }
 
-        public IEnumerable<ISeries> Series { get; set; }
-        public IEnumerable<ICartesianAxis> XAxes { get; set; }
+        private static string findMida(string value)
+        {
+            switch (value)
+            {
+                case "Mass":
+                    return "(1024kg)";
+                case "Diameter":
+                    return "(km)";
+                case "Density":
+                    return "(kg / m3)";
+                case "Gravity":
+                    return "(m / s2)";
+                case "EscapeVelocity":
+                    return "(km/ s)";
+                case "RotationPeriod":
+                    return "(hours)";
+                case "LengthofDay":
+                    return "(hours)";
+                case "DistanceFromSun":
+                    return "(106 km)";
+                case "Perihelion":
+                    return "(106 km)";
+                case "Aphelion":
+                    return "(106 km)";
+                case "OrbitalPeriod":
+                    return "(days)";
+                case "OrbitalVelocity":
+                    return "(km/ s)";
+                case "OrbitalInclination":
+                    return "(degrees)";
+   
+                case "ObliquityToOrbit":
+                    return "(degrees)";
+                case "MeanTemperature":
+                    return "(C)";
+                case "SurfacePressure":
+                    return "(bars)";
+                
+                default:
+                    return "";
+            }
+        }
+
+        public ObservableCollection<ISeries> Series { get; set; } = new();
+
+        public List<Axis> XAxes { get; set; }
+
+        public List<Axis> YAxes { get; set; }
 
     }
 }

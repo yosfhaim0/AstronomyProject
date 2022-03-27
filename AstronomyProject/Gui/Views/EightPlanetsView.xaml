@@ -20,208 +20,147 @@
             <TextBlock FontSize="12" />
         </DataTemplate>
     </UserControl.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <TabControl
-            Grid.Row="0"
-            Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
-            TabStripPlacement="Top">
-            <TabItem>
-                <TabItem.Header>
-                    <TextBlock Text="compare" />
-                </TabItem.Header>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="300" />
-                        <ColumnDefinition Width="300" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="500" />
-                    </Grid.RowDefinitions>
-                    <ListBox
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        ItemsSource="{Binding PropNames}"
-                        SelectedItem="{Binding SelectedProp}" />
-                    <local:DateTimeChartView Grid.Row="0" Grid.Column="1" />
-                    <!--<lvc:CartesianChart
-                        Grid.Column="1"
-                        Height="auto"
-                        IsManipulationEnabled="False"
-                        LegendPosition="Right"
-                        Series="{Binding Series}"
-                        XAxes="{Binding XAxes}" />-->
-                </Grid>
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <TextBlock Text="on its on" />
-                </TabItem.Header>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <ListBox
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        ItemsSource="{Binding PlanetList}"
-                        ScrollViewer.CanContentScroll="True"
-                        ScrollViewer.VerticalScrollBarVisibility="Visible"
-                        SelectedItem="{Binding SelectedPlanet}"
-                        Style="{StaticResource MaterialDesignNavigationListBox}">
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel IsItemsHost="True" />
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <TextBlock
-                                        Grid.Row="0"
-                                        Background="WhiteSmoke"
-                                        Text="{Binding Name}"
-                                        TextAlignment="Center" />
-                                    <Viewbox Grid.Row="1">
-                                        <web:ChromiumWebBrowser
-                                            Width="240"
-                                            Height="120"
-                                            Address="{Binding Url}"
-                                            IsEnabled="False" />
-                                    </Viewbox>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                    <GroupBox
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        materialDesign:ColorZoneAssist.Background="#fffafa"
-                        materialDesign:ColorZoneAssist.Foreground="Black"
-                        materialDesign:ColorZoneAssist.Mode="Custom"
-                        DataContext="{Binding SelectedPlanet}"
-                        Header="{Binding Name}"
-                        Style="{StaticResource MaterialDesignCardGroupBox}">
-                        <GroupBox.HeaderTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <materialDesign:PackIcon
-                                        Grid.Column="0"
-                                        Width="28"
-                                        Height="28"
-                                        VerticalAlignment="Center"
-                                        Kind="ImageArea" />
-                                    <TextBlock
-                                        Grid.Column="1"
-                                        VerticalAlignment="Center"
-                                        FontFamily="Consoles"
-                                        FontSize="18"
-                                        FontWeight="DemiBold"
-                                        Text="{Binding}" />
+    <TabControl
+        Grid.Row="0"
+        Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
+        TabStripPlacement="Top">
+        <TabItem>
+            <TabItem.Header>
+                <TextBlock Text="compare" />
+            </TabItem.Header>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <ListBox
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    ItemsSource="{Binding PropNames}"
+                    SelectedItem="{Binding SelectedProp}" />
+                <lvc:CartesianChart
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Series="{Binding Series}"
+                    TooltipBackground="#480032"
+                    TooltipFontFamily="Courier New"
+                    TooltipFontSize="25"
+                    TooltipPosition="Left"
+                    TooltipTextBrush="#f2f4c3"
+                    XAxes="{Binding XAxes}"
+                    YAxes="{Binding YAxes}" />
 
-                                </Grid>
-                            </DataTemplate>
-                        </GroupBox.HeaderTemplate>
+            </Grid>
+        </TabItem>
+        <TabItem>
+            <TabItem.Header>
+                <TextBlock Text="on its on" />
+            </TabItem.Header>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <ListBox
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    ItemsSource="{Binding PlanetList}"
+                    ScrollViewer.CanContentScroll="True"
+                    ScrollViewer.VerticalScrollBarVisibility="Visible"
+                    SelectedItem="{Binding SelectedPlanet}"
+                    Style="{StaticResource MaterialDesignNavigationListBox}">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel IsItemsHost="True" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Background="WhiteSmoke"
+                                    Text="{Binding Name}"
+                                    TextAlignment="Center" />
+                                <Viewbox Grid.Row="1">
+                                    <web:ChromiumWebBrowser
+                                        Width="240"
+                                        Height="120"
+                                        Address="{Binding Url}"
+                                        IsEnabled="False" />
+                                </Viewbox>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <GroupBox
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    materialDesign:ColorZoneAssist.Background="#fffafa"
+                    materialDesign:ColorZoneAssist.Foreground="Black"
+                    materialDesign:ColorZoneAssist.Mode="Custom"
+                    DataContext="{Binding SelectedPlanet}"
+                    Header="{Binding Name}"
+                    Style="{StaticResource MaterialDesignCardGroupBox}">
+                    <GroupBox.HeaderTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="500" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon
+                                    Grid.Column="0"
+                                    Width="28"
+                                    Height="28"
+                                    VerticalAlignment="Center"
+                                    Kind="ImageArea" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    FontFamily="Consoles"
+                                    FontSize="18"
+                                    FontWeight="DemiBold"
+                                    Text="{Binding}" />
 
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <!--<local:LoadingBar
-                                Grid.Row="0"
-                                Grid.RowSpan="2"
-                                Grid.Column="0"
-                                Grid.ColumnSpan="2"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                IsLoading="{Binding ElementName=GalleryView, Path=DataContext.IsLoading}" />-->
-                            <!--<TextBlock
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                HorizontalAlignment="Center"
-                                FontSize="15"
-                                Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
-                                Text="{Binding Date, StringFormat=dd/MM/yyyy}" />-->
-                            <StackPanel
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                Orientation="Vertical">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Id: " />
-                                    <TextBlock Text="{Binding Id}" />
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Id: " />
-                                    <TextBlock Text="{Binding Id}" />
-                                </StackPanel>
-                                <local:FieldItem FieldName="Name" FieldValue="{Binding Name}" />
-                                <local:FieldItem FieldName="Mass" FieldValue="{Binding Mass}" />
+                            </Grid>
+                        </DataTemplate>
+                    </GroupBox.HeaderTemplate>
 
-                            </StackPanel>
-                            <!--<TextBox
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                MaxWidth="400"
-                                HorizontalAlignment="Left"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                FontFamily="{StaticResource MaterialDesignFont}"
-                                FontSize="15"
-                                IsReadOnly="True"
-                                Text="{Binding Explanation}"
-                                TextWrapping="Wrap" />-->
-                            <materialDesign:Card
-                                Grid.Row="0"
-                                Grid.RowSpan="2"
-                                Grid.Column="1"
-                                Margin="10,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="500" />
 
-                                <!--<materialDesign:Card.Style>
-                                    <Style TargetType="materialDesign:Card">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ElementName=GalleryView, Path=DataContext.IsLoading}" Value="True">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding ElementName=GalleryView, Path=DataContext.IsLoading}" Value="False">
-                                                <Setter Property="Visibility" Value="Visible" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </materialDesign:Card.Style>-->
-                                <Image
-                                    Width="auto"
-                                    Height="auto"
-                                    Source="{Binding Url}"
-                                    ToolTip="{Binding Name}" />
-                            </materialDesign:Card>
-                        </Grid>
-                    </GroupBox>
-                </Grid>
-            </TabItem>
-        </TabControl>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Row="0" Grid.Column="0">
+                            <local:FieldItem FieldName="Name" FieldValue="{Binding Name}" />
+                            <local:FieldItem FieldName="Mass" FieldValue="{Binding Mass}" />
+                        </StackPanel>
 
-    </Grid>
+                        <materialDesign:Card Grid.Column="1" Margin="10,0">
+                            <Image
+                                Width="auto"
+                                Height="auto"
+                                Source="{Binding Url}"
+                                ToolTip="{Binding Name}" />
+                        </materialDesign:Card>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </TabItem>
+    </TabControl>
 </UserControl>
