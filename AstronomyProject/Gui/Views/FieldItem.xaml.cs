@@ -48,7 +48,7 @@ namespace Gui.Views
         public FieldItem()
         {
             InitializeComponent();
-            DataContext = this;
+            //DataContext = this;
         }
     }
 }

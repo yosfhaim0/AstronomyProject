@@ -5,8 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Gui.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    Name="FildeItemInc"
     mc:Ignorable="d">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -14,9 +13,9 @@
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="0" Text="{Binding FieldName}" />
+        <TextBlock Grid.Column="0" Text="{Binding ElementName=FildeItemInc, Path=FieldName}" />
         <TextBlock Grid.Column="1" Text=":  " />
-        <TextBlock Grid.Column="2" Text="{Binding FieldValue}" />
+        <TextBlock Grid.Column="2" Text="{Binding ElementName=FildeItemInc, Path=FieldValue}" />
 
     </Grid>
 </UserControl>

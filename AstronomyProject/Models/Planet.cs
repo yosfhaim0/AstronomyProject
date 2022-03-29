@@ -8,7 +8,7 @@ namespace Models
 {
     public class Planet
     {
-        public int Id { get; set; }
+        public double Id { get; set; }
         public string Name { get; set; }
         public double Mass { get; set; }
         public double Diameter { get; set; }
@@ -27,7 +27,7 @@ namespace Models
         public double ObliquityToOrbit { get; set; }
         public double MeanTemperature { get; set; }
         public double? SurfacePressure { get; set; }
-        public int NumberOfMoons { get; set; }
+        public double NumberOfMoons { get; set; }
         public bool HasRingSystem { get; set; }
         public bool HasGlobalMagneticField { get; set; }
 

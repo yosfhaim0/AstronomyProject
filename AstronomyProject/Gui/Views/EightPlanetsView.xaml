@@ -106,12 +106,9 @@
                 <GroupBox
                     Grid.Row="0"
                     Grid.Column="1"
-                    materialDesign:ColorZoneAssist.Background="#fffafa"
-                    materialDesign:ColorZoneAssist.Foreground="Black"
-                    materialDesign:ColorZoneAssist.Mode="Custom"
                     DataContext="{Binding SelectedPlanet}"
                     Header="{Binding Name}"
-                    Style="{StaticResource MaterialDesignCardGroupBox}">
+                    Style="{StaticResource GroupBoxMainInvertThem}">
                     <GroupBox.HeaderTemplate>
                         <DataTemplate>
                             <Grid>

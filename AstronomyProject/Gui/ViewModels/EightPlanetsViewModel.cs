@@ -56,7 +56,7 @@ namespace Gui.ViewModels
             set
             {
                 SetProperty(ref _selectedProp, value);
-                setColum(SelectedProp);
+                setColum();
             }
         }
         public EightPlanetsViewModel(EightPlanets eightPlanetsInfo)
@@ -64,18 +64,14 @@ namespace Gui.ViewModels
             _eightPlanetsInfo = eightPlanetsInfo;
             PlanetList.AddRange(_eightPlanetsInfo.GetEightPlanetsInfo());
             PropNames = typeof(Planet).GetProperties().Select(x => x.Name).ToList();
+
             PropNames.Remove("Name");
             PropNames.Remove("Url");
             PropNames.Remove("HasRingSystem");
             PropNames.Remove("HasGlobalMagneticField");
             PropNames.Remove("Id");
 
-            SelectedProp = "Mass";
-            //Series = new ObservableCollection<ISeries>() { new ColumnSeries<double>() };
-            setColum(SelectedProp);
-
-
-
+            SelectedProp = PropNames.FirstOrDefault();
 
             XAxes = new List<Axis>
             {
@@ -83,6 +79,8 @@ namespace Gui.ViewModels
                 {
                     // Use the labels property to define named labels.
                     Labels = PlanetList.Select(X=>X.Name).ToArray()
+
+
                 }
             };
 
@@ -90,14 +88,14 @@ namespace Gui.ViewModels
 
         }
 
-        private void setColum(string propertyName)
+        private void setColum()
         {
 
 
             List<ColumValue> res = new();
             foreach (var item in PlanetList)
             {
-                var pro = item.GetType().GetProperty(propertyName);
+                var pro = item.GetType().GetProperty(SelectedProp);
                 res.Add(new ColumValue { Name = pro.Name, Value = pro.GetValue(item, null), Plant = item.Name });
             }
             PropList.Clear();
@@ -113,11 +111,11 @@ namespace Gui.ViewModels
             YAxes = new List<Axis>
             {
                 new()
-                {
+                {//String.Format("{0:0.##}", 123.4567); 
                     // Now the Y axis we will display labels as currency
                     // LiveCharts provides some common formatters
                     // in this case we are using the currency formatter.
-                    Labeler =  (value) =>value+findMida(SelectedProp),
+                    Labeler =  (value) =>$"{string.Format("{0:0.###}", value)} {findMida(SelectedProp)}",
 
                     // you could also build your own currency formatter
                     // for example:
@@ -160,14 +158,14 @@ namespace Gui.ViewModels
                     return "(km/ s)";
                 case "OrbitalInclination":
                     return "(degrees)";
-   
+
                 case "ObliquityToOrbit":
                     return "(degrees)";
                 case "MeanTemperature":
                     return "(C)";
                 case "SurfacePressure":
                     return "(bars)";
-                
+
                 default:
                     return "";
             }
