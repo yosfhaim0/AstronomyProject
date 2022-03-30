@@ -115,7 +115,7 @@ namespace Gui.ViewModels
                     // Now the Y axis we will display labels as currency
                     // LiveCharts provides some common formatters
                     // in this case we are using the currency formatter.
-                    Labeler =  (value) =>$"{string.Format("{0:0.###}", value)} {findMida(SelectedProp)}",
+                    Labeler =  (value) =>$"{string.Format("{0:0.###}", value)} {_eightPlanetsInfo.findMida(SelectedProp)}",
 
                     // you could also build your own currency formatter
                     // for example:
@@ -128,49 +128,7 @@ namespace Gui.ViewModels
 
         }
 
-        private static string findMida(string value)
-        {
-            switch (value)
-            {
-                case "Mass":
-                    return "(1024kg)";
-                case "Diameter":
-                    return "(km)";
-                case "Density":
-                    return "(kg / m3)";
-                case "Gravity":
-                    return "(m / s2)";
-                case "EscapeVelocity":
-                    return "(km/ s)";
-                case "RotationPeriod":
-                    return "(hours)";
-                case "LengthofDay":
-                    return "(hours)";
-                case "DistanceFromSun":
-                    return "(106 km)";
-                case "Perihelion":
-                    return "(106 km)";
-                case "Aphelion":
-                    return "(106 km)";
-                case "OrbitalPeriod":
-                    return "(days)";
-                case "OrbitalVelocity":
-                    return "(km/ s)";
-                case "OrbitalInclination":
-                    return "(degrees)";
-
-                case "ObliquityToOrbit":
-                    return "(degrees)";
-                case "MeanTemperature":
-                    return "(C)";
-                case "SurfacePressure":
-                    return "(bars)";
-
-                default:
-                    return "";
-            }
-        }
-
+       
         public ObservableCollection<ISeries> Series { get; set; } = new();
 
         public List<Axis> XAxes { get; set; }

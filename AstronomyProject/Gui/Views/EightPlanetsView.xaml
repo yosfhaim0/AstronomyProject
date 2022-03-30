@@ -109,6 +109,9 @@
                     DataContext="{Binding SelectedPlanet}"
                     Header="{Binding Name}"
                     Style="{StaticResource GroupBoxMainInvertThem}">
+                    <GroupBox.Background>
+                        <ImageBrush ImageSource="{Binding Url}" Opacity="0.8" />
+                    </GroupBox.Background>
                     <GroupBox.HeaderTemplate>
                         <DataTemplate>
                             <Grid>
@@ -146,15 +149,36 @@
                         <StackPanel Grid.Row="0" Grid.Column="0">
                             <local:FieldItem FieldName="Name" FieldValue="{Binding Name}" />
                             <local:FieldItem FieldName="Mass" FieldValue="{Binding Mass}" />
+                            <local:FieldItem FieldName="Diameter" FieldValue="{Binding Diameter}" />
+                            <local:FieldItem FieldName="Density" FieldValue="{Binding Density}" />
+                            <local:FieldItem FieldName="Gravity" FieldValue="{Binding Gravity}" />
+                            <local:FieldItem FieldName="EscapeVelocity" FieldValue="{Binding EscapeVelocity}" />
+                            <local:FieldItem FieldName="RotationPeriod" FieldValue="{Binding RotationPeriod}" />
+                            <local:FieldItem FieldName="LengthOfDay" FieldValue="{Binding LengthOfDay}" />
+                            <local:FieldItem FieldName="DistanceFromSun" FieldValue="{Binding DistanceFromSun}" />
+                            <local:FieldItem FieldName="Perihelion" FieldValue="{Binding Perihelion}" />
+                            <local:FieldItem FieldName="Aphelion" FieldValue="{Binding Aphelion}" />
+                            <local:FieldItem FieldName="OrbitalPeriod" FieldValue="{Binding OrbitalPeriod}" />
+                            <local:FieldItem FieldName="OrbitalVelocity" FieldValue="{Binding OrbitalVelocity}" />
+                            <local:FieldItem FieldName="OrbitalInclination" FieldValue="{Binding OrbitalInclination}" />
+                            <local:FieldItem FieldName="OrbitalEccentricity" FieldValue="{Binding OrbitalEccentricity}" />
+                            <local:FieldItem FieldName="ObliquityToOrbit" FieldValue="{Binding ObliquityToOrbit}" />
+                            <local:FieldItem FieldName="MeanTemperature" FieldValue="{Binding MeanTemperature}" />
+                            <local:FieldItem FieldName="SurfacePressure" FieldValue="{Binding SurfacePressure}" />
+                            <local:FieldItem FieldName="NumberOfMoons" FieldValue="{Binding NumberOfMoons}" />
+                            <local:FieldItem FieldName="HasRingSystem" FieldValue="{Binding HasRingSystem}" />
+                            <local:FieldItem FieldName="HasGlobalMagneticField" FieldValue="{Binding HasGlobalMagneticField}" />
+
+
                         </StackPanel>
 
-                        <materialDesign:Card Grid.Column="1" Margin="10,0">
+                        <!--<materialDesign:Card Grid.Column="1" Margin="10,0">
                             <Image
                                 Width="auto"
                                 Height="auto"
                                 Source="{Binding Url}"
                                 ToolTip="{Binding Name}" />
-                        </materialDesign:Card>
+                        </materialDesign:Card>-->
                     </Grid>
                 </GroupBox>
             </Grid>
