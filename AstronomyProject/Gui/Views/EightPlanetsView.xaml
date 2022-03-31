@@ -20,13 +20,16 @@
             <TextBlock FontSize="12" />
         </DataTemplate>
     </UserControl.Resources>
+
     <TabControl
         Grid.Row="0"
+        
         Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
         TabStripPlacement="Top">
-        <TabItem>
+
+        <TabItem Style="{StaticResource MaterialDesignNavigationRailTabItem}">
             <TabItem.Header>
-                <TextBlock Text="compare" />
+                <TextBlock Text="Comparison of planets" />
             </TabItem.Header>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -64,7 +67,7 @@
         </TabItem>
         <TabItem>
             <TabItem.Header>
-                <TextBlock Text="on its on" />
+                <TextBlock Text="Each planet on its own" />
             </TabItem.Header>
             <Grid>
                 <Grid.ColumnDefinitions>

@@ -94,25 +94,6 @@ namespace DomainModel.Services
             return false;
         }
 
-        private List<string> RootToString(Models.Dtos.MediaDto imgs)
-        {
-            var a = imgs.collection.items;
-            List<string> result = new List<string>();
-            var temp = true;
-            foreach (var item in a)
-            {
-                if (item.links != null)
-                    foreach (var link in item.links)
-                    {
-                        if (link != null)
-                        {
-                            temp = link.href.ToString().EndsWith(".jpg");
-                            if (temp)
-                                result.Add(link.href);
-                        }
-                    }
-            }
-            return result;
-        }
+        
     }
 }
