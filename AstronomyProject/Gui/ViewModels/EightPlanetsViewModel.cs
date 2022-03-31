@@ -33,7 +33,17 @@ namespace Gui.ViewModels
         readonly EightPlanets _eightPlanetsInfo;
         public ObservableCollection<Planet> PlanetList { get; set; } = new();
 
+        public List<string> ExplanImageList { get; set; } = new();
+        private string _explanImage;
 
+        public string ExplanImage
+        {
+            get { return _explanImage; }
+            set
+            {
+                SetProperty(ref _explanImage, value);
+            }            
+        }
 
         private Planet _selectedPlanet;
         public Planet SelectedPlanet
@@ -42,6 +52,7 @@ namespace Gui.ViewModels
             set
             {
                 SetProperty(ref _selectedPlanet, value);
+
             }
         }
         public List<string> PropNames { get; set; } = new();
@@ -57,8 +68,15 @@ namespace Gui.ViewModels
             {
                 SetProperty(ref _selectedProp, value);
                 setColum();
+                setExplanImage();
             }
         }
+
+        private void setExplanImage()
+        {
+            ExplanImage = _eightPlanetsInfo.getExplanImageList(SelectedProp);
+        }
+
         public EightPlanetsViewModel(EightPlanets eightPlanetsInfo)
         {
             _eightPlanetsInfo = eightPlanetsInfo;
@@ -70,7 +88,7 @@ namespace Gui.ViewModels
             PropNames.Remove("HasRingSystem");
             PropNames.Remove("HasGlobalMagneticField");
             PropNames.Remove("Id");
-
+            //ExplanImageList.AddRange(_eightPlanetsInfo.getExplanImageList(PropNames));
             SelectedProp = PropNames.FirstOrDefault();
 
             XAxes = new List<Axis>
@@ -78,8 +96,9 @@ namespace Gui.ViewModels
                 new()
                 {
                     // Use the labels property to define named labels.
-                    Labels = PlanetList.Select(X=>X.Name).ToArray()
-
+                    Labels = PlanetList.Select(X=>X.Name).ToArray(),
+                    TextSize=22
+                    
 
                 }
             };
@@ -116,7 +135,7 @@ namespace Gui.ViewModels
                     // LiveCharts provides some common formatters
                     // in this case we are using the currency formatter.
                     Labeler =  (value) =>$"{string.Format("{0:0.###}", value)} {_eightPlanetsInfo.findMida(SelectedProp)}",
-
+                    TextSize=22,
                     // you could also build your own currency formatter
                     // for example:
                     // Labeler = (value) => value.ToString("C")

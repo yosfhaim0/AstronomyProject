@@ -36,11 +36,13 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
+
                 <ListBox
                     Grid.Row="0"
                     Grid.Column="0"
                     ItemsSource="{Binding PropNames}"
-                    SelectedItem="{Binding SelectedProp}" />
+                    SelectedItem="{Binding SelectedProp}"
+                    Style="{StaticResource MaterialDesignChoiceChipPrimaryListBox}" />
                 <lvc:CartesianChart
                     Grid.Row="0"
                     Grid.Column="1"
@@ -51,7 +53,12 @@
                     TooltipPosition="Left"
                     TooltipTextBrush="#f2f4c3"
                     XAxes="{Binding XAxes}"
-                    YAxes="{Binding YAxes}" />
+                    YAxes="{Binding YAxes}">
+                    <lvc:CartesianChart.Background>
+
+                        <ImageBrush ImageSource="{Binding ExplanImage}" Opacity="0.4" />
+                    </lvc:CartesianChart.Background>
+                </lvc:CartesianChart>
 
             </Grid>
         </TabItem>
@@ -110,7 +117,7 @@
                     Header="{Binding Name}"
                     Style="{StaticResource GroupBoxMainInvertThem}">
                     <GroupBox.Background>
-                        <ImageBrush ImageSource="{Binding Url}" Opacity="0.8" />
+                        <ImageBrush ImageSource="{Binding Url}" Opacity="1" />
                     </GroupBox.Background>
                     <GroupBox.HeaderTemplate>
                         <DataTemplate>

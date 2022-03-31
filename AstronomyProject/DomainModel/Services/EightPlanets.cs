@@ -12,10 +12,11 @@ namespace DomainModel.Services
 {
     public class EightPlanets : IEightPlanets
     {
-        IDictionary dict;
+        IDictionary dictMida;
+        readonly string path;
         public EightPlanets()
         {
-            dict = new Dictionary<string, string>()
+            dictMida = new Dictionary<string, string>()
             {
                 ["Mass"] = "(1024kg)",
                 ["Diameter"] =
@@ -49,6 +50,10 @@ namespace DomainModel.Services
                 ["SurfacePressure"]
                     = "(bars)"
             };
+
+            path = Environment.CurrentDirectory;
+            path = path.Substring(0, path.LastIndexOf("AstronomyProject") + "AstronomyProject".Length) + @"\DomainModel\Services\ExplanImages\";
+
         }
         public List<Planet> GetEightPlanetsInfo()
         {
@@ -60,11 +65,15 @@ namespace DomainModel.Services
         }
         public string findMida(string value)
         {
-            if (dict.Contains(value))
-                return dict[value].ToString();
+            if (dictMida.Contains(value))
+                return dictMida[value].ToString();
             return "";
 
         }
 
+        public string getExplanImageList(string propNames)
+        {  
+            return path + propNames+".jpg";
+        }
     }
 }
