@@ -8,10 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Name="FildeItemInc"
     mc:Ignorable="d">
-    <UserControl.Background>
-        <ImageBrush ImageSource="https://previews.123rf.com/images/spicytruffel/spicytruffel1906/spicytruffel190600069/124949707-syst%C3%A8me-solaire-de-griffonnage-espace-dessin%C3%A9-%C3%A0-la-main-%C3%A0-la-mode-croquis-d-%C3%A9l%C3%A9ments-d-astronomie-de.jpg" Opacity="0.50" />
-    </UserControl.Background>
-
+   
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />

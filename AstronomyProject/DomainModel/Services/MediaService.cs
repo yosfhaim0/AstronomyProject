@@ -34,29 +34,29 @@ namespace DomainModel.Services
         {
             var searchWord = keyWord.ToLower();
             var imags = await _unitOfWork.MediaSearchRepository.Search(searchWord);
+            //new List<string> { "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/FullMoon2010.jpg/440px-FullMoon2010.jpg" };//
+            //return imags.ToList();
 
-            return imags.ToList();
+            var result = new List<string>();
 
-            //var result = new List<string>();
+            List<Task<Tuple<string, List<ImaggaTag>>>> tasks = new();
+            foreach (var im in imags)
+            {
+                tasks.Add(TagImage(im));
+            }
 
-            //List<Task<Tuple<string, List<ImaggaTag>>>> tasks = new();
-            //foreach (var im in imags)
-            //{
-            //    tasks.Add(TagImage(im));
-            //}
+            var imageAndTags = await Task.WhenAll(tasks);
 
-            //var imageAndTags = await Task.WhenAll(tasks);
+            var reletedWords = await GetWordAssociations(searchWord);
 
-            //var reletedWords = await GetWordAssociations(searchWord);
+            var res = (from t in imageAndTags
+                       where IsImageReletedToSearchWord(reletedWords, t.Item2)
+                       select t.Item1).ToList();
 
-            //var res = (from t in imageAndTags
-            //           where IsImageReletedToSearchWord(reletedWords, t.Item2)
-            //           select t.Item1).ToList();
+            result.AddRange(res);
 
-            //result.AddRange(res);
-
-            //// no data from db or firebase => call nasa => call imagga => save relevt data to db
-            //return result;
+            // no data from db or firebase => call nasa => call imagga => save relevt data to db
+            return result;
         }
 
         private async Task<Tuple<string, List<ImaggaTag>>> TagImage(string imageUrl)
@@ -86,7 +86,7 @@ namespace DomainModel.Services
                                     //where a.Pos == Pos.Noun
                                     select a.Word.ToLower();
             var inter = tagsWords.Intersect(associationsWords.Take(25));
-            if (inter.Count() > 1)
+            if (inter.Count() >= 1)
             {
                 return  true;
             }

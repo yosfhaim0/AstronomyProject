@@ -109,7 +109,7 @@ namespace ApiRequests.Nasa
                         {
                             content = await client.GetAsync(item.href);
                             res.AddRange((JsonConvert.DeserializeObject<List<string>>(content)).Where(x=>x.EndsWith(".jpg")));
-                            if (res.Count > 30)
+                            if (res.Count > 5)
                                 return res;
                         }
                     }

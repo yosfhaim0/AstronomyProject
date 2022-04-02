@@ -23,7 +23,6 @@
 
     <TabControl
         Grid.Row="0"
-        
         Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
         TabStripPlacement="Top">
 
@@ -149,7 +148,7 @@
 
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="500" />
+                            <RowDefinition Height="auto" />
 
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
@@ -157,6 +156,9 @@
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Row="0" Grid.Column="0">
+                            <StackPanel.Background>
+                                <ImageBrush ImageSource="https://static.vecteezy.com/system/resources/previews/000/544/060/non_2x/white-abstract-background-vector-gray-abstract-modern-design-background-for-report-and-project-presentation-template-vector-illustration-graphic-dot-and-circular-shape-product-advertising-present.jpg" Opacity="0.50" />
+                            </StackPanel.Background>
                             <local:FieldItem FieldName="Name" FieldValue="{Binding Name}" />
                             <local:FieldItem FieldName="Mass" FieldValue="{Binding Mass}" />
                             <local:FieldItem FieldName="Diameter" FieldValue="{Binding Diameter}" />

@@ -29,7 +29,7 @@ namespace DomainModel.Services
                     = "(km/ s)",
                 ["RotationPeriod"]
                     = "(hours)",
-                ["LengthofDay"]
+                ["LengthOfDay"]
                     = "(hours)",
                 ["DistanceFromSun"]
                     = "(106 km)",

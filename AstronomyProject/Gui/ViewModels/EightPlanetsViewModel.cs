@@ -18,6 +18,7 @@ using LiveChartsCore.Measure;
 using System.Reflection;
 using LiveChartsCore.Kernel.Sketches;
 using System.Collections;
+using System.Text.RegularExpressions;
 
 namespace Gui.ViewModels
 {
@@ -42,7 +43,7 @@ namespace Gui.ViewModels
             set
             {
                 SetProperty(ref _explanImage, value);
-            }            
+            }
         }
 
         private Planet _selectedPlanet;
@@ -63,7 +64,7 @@ namespace Gui.ViewModels
 
         public string SelectedProp
         {
-            get { return _selectedProp; }
+            get { return _selectedProp.Replace(" ", String.Empty); }
             set
             {
                 SetProperty(ref _selectedProp, value);
@@ -88,8 +89,10 @@ namespace Gui.ViewModels
             PropNames.Remove("HasRingSystem");
             PropNames.Remove("HasGlobalMagneticField");
             PropNames.Remove("Id");
-            //ExplanImageList.AddRange(_eightPlanetsInfo.getExplanImageList(PropNames));
             SelectedProp = PropNames.FirstOrDefault();
+            setPropName();
+            //ExplanImageList.AddRange(_eightPlanetsInfo.getExplanImageList(PropNames));
+
 
             XAxes = new List<Axis>
             {
@@ -97,8 +100,10 @@ namespace Gui.ViewModels
                 {
                     // Use the labels property to define named labels.
                     Labels = PlanetList.Select(X=>X.Name).ToArray(),
-                    TextSize=22
-                    
+                    TextSize=22,
+                    NameTextSize=22,
+
+
 
                 }
             };
@@ -107,13 +112,33 @@ namespace Gui.ViewModels
 
         }
 
+        private void setPropName()
+        {
+            List<string> r = new List<string>();
+            string str = "";
+            foreach (var v in PropNames)
+            {
+                string[] split = Regex.Split(v, @"(?<!^)(?=[A-Z])");
+                foreach (var item in split)
+                {
+                    str += item + " ";
+                }
+                r.Add(str);
+                str = "";
+            }
+            PropNames.Clear();
+            PropNames.AddRange(r);
+        }
+
         private void setColum()
         {
 
 
             List<ColumValue> res = new();
+            var str = "";
             foreach (var item in PlanetList)
             {
+
                 var pro = item.GetType().GetProperty(SelectedProp);
                 res.Add(new ColumValue { Name = pro.Name, Value = pro.GetValue(item, null), Plant = item.Name });
             }
@@ -125,6 +150,7 @@ namespace Gui.ViewModels
             {
                 Name = SelectedProp,
                 Values = new ObservableCollection<double>().AddRange(PropList.Select(x => (double)x.Value).ToArray()),
+                MaxBarWidth = 10,
             });
 
             YAxes = new List<Axis>
@@ -134,7 +160,8 @@ namespace Gui.ViewModels
                     // Now the Y axis we will display labels as currency
                     // LiveCharts provides some common formatters
                     // in this case we are using the currency formatter.
-                    Labeler =  (value) =>$"{string.Format("{0:0.###}", value)} {_eightPlanetsInfo.findMida(SelectedProp)}",
+                    
+                    Labeler =  (value) =>$"{FormatNumber(value)}{_eightPlanetsInfo.findMida(SelectedProp)}",
                     TextSize=22,
                     // you could also build your own currency formatter
                     // for example:
@@ -146,8 +173,26 @@ namespace Gui.ViewModels
             };
 
         }
+        private static string FormatNumber(double num)
+        {
+            if (num <= 1 && num >= 0)
+                return string.Format("{0:0.###}", (num));
+            // Ensure number has max 3 significant digits (no rounding up can happen)
+            long i = (long)Math.Pow(10, (int)Math.Max(0, Math.Log10(num) - 2));
+            if (i == 0)
+                return num.ToString("0.##");
+            num = num / i * i;
 
-       
+            if (num >= 1000000000)
+                return (num / 1000000000D).ToString("0.##") + "B";
+            if (num >= 1000000)
+                return (num / 1000000D).ToString("0.##") + "M";
+            if (num >= 1000)
+                return (num / 1000D).ToString("0.##") + "K";
+
+            return num.ToString("#,0");
+        }
+
         public ObservableCollection<ISeries> Series { get; set; } = new();
 
         public List<Axis> XAxes { get; set; }

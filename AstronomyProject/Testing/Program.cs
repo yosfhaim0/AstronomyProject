@@ -14,7 +14,7 @@ namespace Testing
     {
         static readonly NasaTests _nasaTest = new();
         static readonly FireBaseTest _fireBaseTest = new();
-
+        static MediaService _mediaService;
         static async Task Main(string[] args)
         {
             //await _nasaTest.TestSatellaitGet();
@@ -23,8 +23,9 @@ namespace Testing
             //await _fireBaseTest.PushImage();
             //await _fireBaseTest.DeleteImage();
             //var v=await _fireBaseTest.get("1.jpg");
-
-            var c=await _fireBaseTest.get("d");
+            //_mediaService = new();
+             var y=_mediaService.SearchMedia("moon");
+            //var c=await _fireBaseTest.get("d");
             //await _nasaTest.GetImageOfTheDayTest();
             //EightPlanets a = new();
             //var c= a.GetEightPlanetsInfo();
