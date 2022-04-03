@@ -228,6 +228,7 @@ namespace Gui.ViewModels
                     Values = new ObservableCollection<DateTimePoint>(from m in c.Values
                                                                      select new DateTimePoint(m.CloseApproachDate, m.MissDistance)),
                     Name = $"{c.OrbitingBody}: {c.Values.Count()}"
+                    , 
                 });
             }
 
