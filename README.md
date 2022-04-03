@@ -26,14 +26,18 @@ We use Design Patterns such as:
 * **Factory**
 
  Some pictures to demonstrate:
+ 
+ ![image](https://user-images.githubusercontent.com/40955004/161443713-e491c519-0a86-4a9b-857b-8d5a78f6c87d.png)
 
-![צילום מסך 2022-03-14 215009](https://user-images.githubusercontent.com/73117474/158272107-85da667c-a7e9-4562-bb4f-dd560f7bf024.png)
+![image](https://user-images.githubusercontent.com/40955004/161443745-4274958c-0ca4-4327-ab16-f99db27fb78a.png)
+
+![image](https://user-images.githubusercontent.com/40955004/161443789-e5046763-cb50-4272-9be7-742afd926e71.png)
+
+![image](https://user-images.githubusercontent.com/40955004/161443812-26e6c5ad-89d9-4bf0-b9d2-3766dc3168db.png)
+
+![image](https://user-images.githubusercontent.com/40955004/161443798-4ab1c310-8da9-4fb0-bbe2-0eff7b2a2fdb.png)
+
+![image](https://user-images.githubusercontent.com/40955004/161443839-3c0dab4a-3065-42d3-ac18-9f91d03e38fe.png)
 
 
-![צילום מסך 2022-03-14 215240](https://user-images.githubusercontent.com/73117474/158272123-533bb9fa-1471-4e8e-8aab-a3882749497c.png)
-
-
-![image](https://user-images.githubusercontent.com/40955004/158478876-3a2518c3-80bb-4aec-842c-e870fb99ae91.png)
-
-![image](https://user-images.githubusercontent.com/40955004/158479307-423dbcd8-df38-4cfe-a1b3-1974ed404163.png)
 
