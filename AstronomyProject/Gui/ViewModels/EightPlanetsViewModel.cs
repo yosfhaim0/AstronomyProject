@@ -3,34 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
-using Prism.Mvvm;
 using DomainModel.Services;
-using System.Windows.Controls;
 
 using Models;
-
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore.SkiaSharpView.Painting;
-using SkiaSharp;
-using LiveChartsCore.Measure;
-using System.Reflection;
-using LiveChartsCore.Kernel.Sketches;
-using System.Collections;
 using System.Text.RegularExpressions;
 
 namespace Gui.ViewModels
 {
-    public class ColumValue
-    {
-        public object Value { get; set; }
-        public string Name { get; set; }
-        public string Plant { get; set; }
-
-    }
     public class EightPlanetsViewModel : ViewModelBase
     {
-        readonly EightPlanetsService _eightPlanetsInfo;
+        readonly EightPlanetsService _eightPlanetsService;
         public ObservableCollection<Planet> PlanetList { get; set; } = new();
 
         public List<string> ExplanImageList { get; set; } = new();
@@ -73,13 +57,13 @@ namespace Gui.ViewModels
 
         private void SetExplanImage()
         {
-            ExplanImage = _eightPlanetsInfo.GetExplanImageList(SelectedProp);
+            ExplanImage = _eightPlanetsService.GetExplanImageList(SelectedProp);
         }
 
-        public EightPlanetsViewModel(EightPlanetsService eightPlanetsInfo)
+        public EightPlanetsViewModel(EightPlanetsService eightPlanetsService)
         {
-            _eightPlanetsInfo = eightPlanetsInfo;
-            PlanetList.AddRange(_eightPlanetsInfo.GetEightPlanetsInfo());
+            _eightPlanetsService = eightPlanetsService;
+            PlanetList.AddRange(_eightPlanetsService.GetEightPlanetsInfo());
             PropNames = typeof(Planet).GetProperties().Select(x => x.Name).ToList();
 
             PropNames.Remove("Name");
@@ -159,7 +143,7 @@ namespace Gui.ViewModels
                     // LiveCharts provides some common formatters
                     // in this case we are using the currency formatter.
                     
-                    Labeler =  (value) =>$"{FormatNumber(value)}{_eightPlanetsInfo.FindMida(SelectedProp)}",
+                    Labeler =  (value) =>$"{FormatNumber(value)}{_eightPlanetsService.FindMida(SelectedProp)}",
                     TextSize=22,
                     // you could also build your own currency formatter
                     // for example:
@@ -196,6 +180,14 @@ namespace Gui.ViewModels
         public List<Axis> XAxes { get; set; }
 
         public List<Axis> YAxes { get; set; }
+
+    }
+
+    public class ColumValue
+    {
+        public object Value { get; set; }
+        public string Name { get; set; }
+        public string Plant { get; set; }
 
     }
 }
