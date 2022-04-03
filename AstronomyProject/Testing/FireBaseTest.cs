@@ -12,7 +12,7 @@ namespace Testing
 {
     internal class FireBaseTest
     {
-        EightPlanets b = new();
+        EightPlanetsService b = new();
         readonly FireBase a = new();
         readonly NasaApi _nasaClient = new();
         public async Task PushImage()

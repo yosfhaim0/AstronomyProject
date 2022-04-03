@@ -6,10 +6,9 @@ using System.Collections.ObjectModel;
 using Prism.Mvvm;
 using DomainModel.Services;
 using System.Windows.Controls;
-using LiveCharts.Configurations;
-using LiveCharts;
+
 using Models;
-using LiveCharts.Helpers;
+
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
@@ -24,14 +23,14 @@ namespace Gui.ViewModels
 {
     public class ColumValue
     {
-        public Object Value { get; set; }
+        public object Value { get; set; }
         public string Name { get; set; }
         public string Plant { get; set; }
 
     }
     public class EightPlanetsViewModel : ViewModelBase
     {
-        readonly EightPlanets _eightPlanetsInfo;
+        readonly EightPlanetsService _eightPlanetsInfo;
         public ObservableCollection<Planet> PlanetList { get; set; } = new();
 
         public List<string> ExplanImageList { get; set; } = new();
@@ -53,7 +52,6 @@ namespace Gui.ViewModels
             set
             {
                 SetProperty(ref _selectedPlanet, value);
-
             }
         }
         public List<string> PropNames { get; set; } = new();
@@ -64,21 +62,21 @@ namespace Gui.ViewModels
 
         public string SelectedProp
         {
-            get { return _selectedProp.Replace(" ", String.Empty); }
+            get { return _selectedProp.Replace(" ", string.Empty); }
             set
             {
                 SetProperty(ref _selectedProp, value);
-                setColum();
-                setExplanImage();
+                SetColum();
+                SetExplanImage();
             }
         }
 
-        private void setExplanImage()
+        private void SetExplanImage()
         {
-            ExplanImage = _eightPlanetsInfo.getExplanImageList(SelectedProp);
+            ExplanImage = _eightPlanetsInfo.GetExplanImageList(SelectedProp);
         }
 
-        public EightPlanetsViewModel(EightPlanets eightPlanetsInfo)
+        public EightPlanetsViewModel(EightPlanetsService eightPlanetsInfo)
         {
             _eightPlanetsInfo = eightPlanetsInfo;
             PlanetList.AddRange(_eightPlanetsInfo.GetEightPlanetsInfo());
@@ -90,7 +88,7 @@ namespace Gui.ViewModels
             PropNames.Remove("HasGlobalMagneticField");
             PropNames.Remove("Id");
             SelectedProp = PropNames.FirstOrDefault();
-            setPropName();
+            SetPropName();
             //ExplanImageList.AddRange(_eightPlanetsInfo.getExplanImageList(PropNames));
 
 
@@ -99,7 +97,7 @@ namespace Gui.ViewModels
                 new()
                 {
                     // Use the labels property to define named labels.
-                    Labels = PlanetList.Select(X=>X.Name).ToArray(),
+                    Labels = PlanetList.Select(x => x.Name).ToArray(),
                     TextSize=22,
                     NameTextSize=22,
 
@@ -112,9 +110,9 @@ namespace Gui.ViewModels
 
         }
 
-        private void setPropName()
+        private void SetPropName()
         {
-            List<string> r = new List<string>();
+            List<string> r = new();
             string str = "";
             foreach (var v in PropNames)
             {
@@ -130,7 +128,7 @@ namespace Gui.ViewModels
             PropNames.AddRange(r);
         }
 
-        private void setColum()
+        private void SetColum()
         {
 
 
@@ -161,7 +159,7 @@ namespace Gui.ViewModels
                     // LiveCharts provides some common formatters
                     // in this case we are using the currency formatter.
                     
-                    Labeler =  (value) =>$"{FormatNumber(value)}{_eightPlanetsInfo.findMida(SelectedProp)}",
+                    Labeler =  (value) =>$"{FormatNumber(value)}{_eightPlanetsInfo.FindMida(SelectedProp)}",
                     TextSize=22,
                     // you could also build your own currency formatter
                     // for example:

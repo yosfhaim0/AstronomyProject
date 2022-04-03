@@ -91,7 +91,7 @@ namespace ApiRequests.Nasa
             }
         }
 
-        public async Task<IEnumerable<string>> SearchImage(string keyWord,string mediaType="image")
+        public async Task<IEnumerable<string>> SearchImage(string keyWord, string mediaType="image")
         {
             var query = $"{GET_IMAGE_LIB_BASE}/search?q={keyWord}";
 

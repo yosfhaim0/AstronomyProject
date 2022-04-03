@@ -32,8 +32,10 @@ namespace ApiRequests.Imagga
             {
                 string basicAuthValue = Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", _apiKey, _apiSecret)));
 
-                var client = new RestClient("https://api.imagga.com/v2/tags");
-                client.Timeout = -1;
+                var client = new RestClient("https://api.imagga.com/v2/tags")
+                {
+                    Timeout = -1
+                };
 
                 var request = new RestRequest(Method.GET);
                 request.AddParameter("image_url", imageUrl);

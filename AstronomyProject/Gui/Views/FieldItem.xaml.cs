@@ -34,21 +34,20 @@ namespace Gui.Views
 
 
 
-        public string FieldValue
+        public object FieldValue
         {
-            get { return (string)GetValue(FieldValueProperty); }
+            get { return GetValue(FieldValueProperty); }
             set { SetValue(FieldValueProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for FieldValue.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty FieldValueProperty =
-            DependencyProperty.Register("FieldValue", typeof(string), typeof(FieldItem));
+            DependencyProperty.Register("FieldValue", typeof(object), typeof(FieldItem));
 
 
         public FieldItem()
         {
             InitializeComponent();
-            //DataContext = this;
         }
     }
 }

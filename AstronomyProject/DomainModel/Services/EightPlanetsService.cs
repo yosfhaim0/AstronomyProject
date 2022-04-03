@@ -10,13 +10,15 @@ using System.Threading.Tasks;
 
 namespace DomainModel.Services
 {
-    public class EightPlanets : IEightPlanets
+    public class EightPlanetsService
     {
-        IDictionary dictMida;
-        readonly string path;
-        public EightPlanets()
+        readonly IDictionary _dictMida;
+        readonly string _path;
+
+
+        public EightPlanetsService()
         {
-            dictMida = new Dictionary<string, string>()
+            _dictMida = new Dictionary<string, string>()
             {
                 ["Mass"] = "(1024kg)",
                 ["Diameter"] =
@@ -51,29 +53,31 @@ namespace DomainModel.Services
                     = "(bars)"
             };
 
-            path = Environment.CurrentDirectory;
-            path = path.Substring(0, path.LastIndexOf("AstronomyProject") + "AstronomyProject".Length) + @"\DomainModel\Services\ExplanImages\";
+            _path = Environment.CurrentDirectory;
+            _path = _path[..(_path.LastIndexOf("AstronomyProject") + "AstronomyProject".Length)] + @"\DomainModel\Services\ExplanImages\";
 
         }
+
         public List<Planet> GetEightPlanetsInfo()
         {
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"EightPlanets.json");
             var jsonString = File.ReadAllText(path);
-            var EightPlanetsInfo = JsonConvert.DeserializeObject<List<Planet>>(jsonString);
+            var eightPlanetsInfo = JsonConvert.DeserializeObject<List<Planet>>(jsonString);
 
-            return EightPlanetsInfo;
+            return eightPlanetsInfo;
         }
-        public string findMida(string value)
+
+        public string FindMida(string parmeterProperty)
         {
-            if (dictMida.Contains(value))
-                return dictMida[value].ToString();
+            if (_dictMida.Contains(parmeterProperty))
+                return _dictMida[parmeterProperty].ToString();
             return "";
 
         }
 
-        public string getExplanImageList(string propNames)
+        public string GetExplanImageList(string propNames)
         {  
-            return path + propNames+".jpg";
+            return _path + propNames + ".jpg";
         }
     }
 }

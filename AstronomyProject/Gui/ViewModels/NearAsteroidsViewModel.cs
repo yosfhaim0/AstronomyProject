@@ -93,7 +93,7 @@ namespace Gui.ViewModels
             SetRiskInfoSeries();
         }
 
-        private List<NearAsteroid> _allAsteroids = new();
+        readonly List<NearAsteroid> _allAsteroids = new();
 
         private double _diameter;
         public double Diameter

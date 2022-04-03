@@ -19,113 +19,91 @@
         <DataTemplate x:Key="HeaderForTabItem" DataType="TabItem.Header">
             <TextBlock FontSize="12" />
         </DataTemplate>
+
     </UserControl.Resources>
 
     <TabControl
         Grid.Row="0"
+        materialDesign:ColorZoneAssist.Background="WhiteSmoke"
+        materialDesign:ColorZoneAssist.Mode="Custom"
+        SnapsToDevicePixels="True"
         Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
         TabStripPlacement="Top">
-
-        <TabItem Style="{StaticResource MaterialDesignNavigationRailTabItem}">
+        <TabItem
+            Width="auto"
+            Height="auto"
+            Margin="15"
+            Style="{StaticResource MaterialDesignNavigationRailTabItem}">
             <TabItem.Header>
-                <TextBlock Text="Comparison of planets" />
+                <TextBlock
+                    FontSize="15"
+                    Foreground="#333d4a"
+                    Style="{StaticResource MaterialDesignButtonTextBlock}"
+                    Text="Each planet on its own" />
             </TabItem.Header>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="300" />
+                    <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-
-                <ListBox
+                <Expander
                     Grid.Row="0"
                     Grid.Column="0"
-                    ItemsSource="{Binding PropNames}"
-                    SelectedItem="{Binding SelectedProp}"
-                    Style="{StaticResource MaterialDesignChoiceChipPrimaryListBox}" />
-                <lvc:CartesianChart
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Series="{Binding Series}"
-                    TooltipBackground="#480032"
-                    TooltipFontFamily="Courier New"
-                    TooltipFontSize="25"
-                    TooltipPosition="Left"
-                    TooltipTextBrush="#f2f4c3"
-                    XAxes="{Binding XAxes}"
-                    YAxes="{Binding YAxes}">
-                    <lvc:CartesianChart.Background>
+                    Margin="0,2,0,0"
+                    ExpandDirection="Right"
+                    IsExpanded="True"
+                    Style="{StaticResource MaterialDesignExpander}">
+                    <Expander.Header>
+                        <TextBlock
+                            FontSize="18"
+                            RenderTransformOrigin=".5,.5"
+                            Text="Planets">
+                            <TextBlock.LayoutTransform>
+                                <RotateTransform Angle="90" />
+                            </TextBlock.LayoutTransform>
+                        </TextBlock>
+                    </Expander.Header>
 
-                        <ImageBrush ImageSource="{Binding ExplanImage}" Opacity="0.4" />
-                    </lvc:CartesianChart.Background>
-                </lvc:CartesianChart>
-
-            </Grid>
-        </TabItem>
-        <TabItem>
-            <TabItem.Header>
-                <TextBlock Text="Each planet on its own" />
-            </TabItem.Header>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <ListBox
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    ItemsSource="{Binding PlanetList}"
-                    ScrollViewer.CanContentScroll="True"
-                    ScrollViewer.VerticalScrollBarVisibility="Visible"
-                    SelectedItem="{Binding SelectedPlanet}"
-                    Style="{StaticResource MaterialDesignNavigationListBox}">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel IsItemsHost="True" />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <TextBlock
-                                    Grid.Row="0"
-                                    Background="WhiteSmoke"
-                                    Text="{Binding Name}"
-                                    TextAlignment="Center" />
-                                <Viewbox Grid.Row="1">
-                                    <web:ChromiumWebBrowser
-                                        Width="240"
-                                        Height="120"
-                                        Address="{Binding Url}"
-                                        IsEnabled="False" />
-                                </Viewbox>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                    <ListBox
+                        FlowDirection="RightToLeft"
+                        ItemsSource="{Binding PlanetList}"
+                        ScrollViewer.CanContentScroll="False"
+                        SelectedItem="{Binding SelectedPlanet}"
+                        Style="{StaticResource MaterialDesignNavigationListBox}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <GroupBox
+                                    Width="240"
+                                    Height="180"
+                                    Style="{StaticResource GroupBoxMainInvertThem}">
+                                    <GroupBox.Header>
+                                        <TextBlock HorizontalAlignment="Center" Text="{Binding Name}" />
+                                    </GroupBox.Header>
+                                    <Viewbox>
+                                        <Image Source="{Binding Url}" />
+                                    </Viewbox>
+                                </GroupBox>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Expander>
                 <GroupBox
+                    Name="gbp"
                     Grid.Row="0"
                     Grid.Column="1"
+                    Margin="5"
+                    Background="#132446"
                     DataContext="{Binding SelectedPlanet}"
                     Header="{Binding Name}"
-                    Style="{StaticResource GroupBoxMainInvertThem}">
-                    <GroupBox.Background>
-                        <ImageBrush ImageSource="{Binding Url}" Opacity="1" />
-                    </GroupBox.Background>
+                    Style="{StaticResource GroupBoxMainThem}">
                     <GroupBox.HeaderTemplate>
                         <DataTemplate>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="500" />
+                                    <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <materialDesign:PackIcon
@@ -149,50 +127,86 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
-
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
+
                         <StackPanel Grid.Row="0" Grid.Column="0">
-                            <StackPanel.Background>
-                                <ImageBrush ImageSource="https://static.vecteezy.com/system/resources/previews/000/544/060/non_2x/white-abstract-background-vector-gray-abstract-modern-design-background-for-report-and-project-presentation-template-vector-illustration-graphic-dot-and-circular-shape-product-advertising-present.jpg" Opacity="0.50" />
-                            </StackPanel.Background>
-                            <local:FieldItem FieldName="Name" FieldValue="{Binding Name}" />
                             <local:FieldItem FieldName="Mass" FieldValue="{Binding Mass}" />
                             <local:FieldItem FieldName="Diameter" FieldValue="{Binding Diameter}" />
                             <local:FieldItem FieldName="Density" FieldValue="{Binding Density}" />
                             <local:FieldItem FieldName="Gravity" FieldValue="{Binding Gravity}" />
-                            <local:FieldItem FieldName="EscapeVelocity" FieldValue="{Binding EscapeVelocity}" />
-                            <local:FieldItem FieldName="RotationPeriod" FieldValue="{Binding RotationPeriod}" />
-                            <local:FieldItem FieldName="LengthOfDay" FieldValue="{Binding LengthOfDay}" />
-                            <local:FieldItem FieldName="DistanceFromSun" FieldValue="{Binding DistanceFromSun}" />
+                            <local:FieldItem FieldName="Escape Velocity" FieldValue="{Binding EscapeVelocity}" />
+                            <local:FieldItem FieldName="Rotation Period" FieldValue="{Binding RotationPeriod}" />
+                            <local:FieldItem FieldName="Length Of Day" FieldValue="{Binding LengthOfDay}" />
+                            <local:FieldItem FieldName="Distance From Sun" FieldValue="{Binding DistanceFromSun}" />
                             <local:FieldItem FieldName="Perihelion" FieldValue="{Binding Perihelion}" />
                             <local:FieldItem FieldName="Aphelion" FieldValue="{Binding Aphelion}" />
-                            <local:FieldItem FieldName="OrbitalPeriod" FieldValue="{Binding OrbitalPeriod}" />
-                            <local:FieldItem FieldName="OrbitalVelocity" FieldValue="{Binding OrbitalVelocity}" />
-                            <local:FieldItem FieldName="OrbitalInclination" FieldValue="{Binding OrbitalInclination}" />
-                            <local:FieldItem FieldName="OrbitalEccentricity" FieldValue="{Binding OrbitalEccentricity}" />
-                            <local:FieldItem FieldName="ObliquityToOrbit" FieldValue="{Binding ObliquityToOrbit}" />
-                            <local:FieldItem FieldName="MeanTemperature" FieldValue="{Binding MeanTemperature}" />
-                            <local:FieldItem FieldName="SurfacePressure" FieldValue="{Binding SurfacePressure}" />
-                            <local:FieldItem FieldName="NumberOfMoons" FieldValue="{Binding NumberOfMoons}" />
-                            <local:FieldItem FieldName="HasRingSystem" FieldValue="{Binding HasRingSystem}" />
-                            <local:FieldItem FieldName="HasGlobalMagneticField" FieldValue="{Binding HasGlobalMagneticField}" />
-
-
+                            <local:FieldItem FieldName="Orbital Period" FieldValue="{Binding OrbitalPeriod}" />
+                            <local:FieldItem FieldName="Orbital Velocity" FieldValue="{Binding OrbitalVelocity}" />
+                            <local:FieldItem FieldName="Orbital Inclination" FieldValue="{Binding OrbitalInclination}" />
+                            <local:FieldItem FieldName="Orbital Eccentricity" FieldValue="{Binding OrbitalEccentricity}" />
+                            <local:FieldItem FieldName="Obliquity To Orbit" FieldValue="{Binding ObliquityToOrbit}" />
+                            <local:FieldItem FieldName="Mean Temperature" FieldValue="{Binding MeanTemperature}" />
+                            <local:FieldItem FieldName="Surface Pressure" FieldValue="{Binding SurfacePressure}" />
+                            <local:FieldItem FieldName="Number Of Moons" FieldValue="{Binding NumberOfMoons}" />
+                            <local:FieldItem FieldName="Has Ring System" FieldValue="{Binding HasRingSystem}" />
+                            <local:FieldItem FieldName="Has Global Magnetic Field" FieldValue="{Binding HasGlobalMagneticField}" />
                         </StackPanel>
 
-                        <!--<materialDesign:Card Grid.Column="1" Margin="10,0">
-                            <Image
-                                Width="auto"
-                                Height="auto"
-                                Source="{Binding Url}"
-                                ToolTip="{Binding Name}" />
-                        </materialDesign:Card>-->
+                        <Grid.Background>
+                            <ImageBrush ImageSource="{Binding Url}" Stretch="Fill" />
+                        </Grid.Background>
                     </Grid>
                 </GroupBox>
+            </Grid>
+        </TabItem>
+        <TabItem
+            Width="auto"
+            Height="auto"
+            Margin="15"
+            Style="{StaticResource MaterialDesignNavigationRailTabItem}">
+            <TabItem.Header>
+                <TextBlock
+                    FontSize="15"
+                    Foreground="#333d4a"
+                    Style="{StaticResource MaterialDesignButtonTextBlock}"
+                    Text="Comparison of planets" />
+            </TabItem.Header>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <ListBox
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    ItemsSource="{Binding PropNames}"
+                    SelectedItem="{Binding SelectedProp}"
+                    Style="{StaticResource MaterialDesignChoiceChipPrimaryListBox}" />
+                <lvc:CartesianChart
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Margin="4"
+                    Series="{Binding Series}"
+                    TooltipBackground="#480032"
+                    TooltipFontFamily="Courier New"
+                    TooltipFontSize="25"
+                    TooltipPosition="Left"
+                    TooltipTextBrush="#f2f4c3"
+                    XAxes="{Binding XAxes}"
+                    YAxes="{Binding YAxes}">
+                    <lvc:CartesianChart.Background>
+                        <ImageBrush ImageSource="{Binding ExplanImage}" Opacity="0.3" />
+                    </lvc:CartesianChart.Background>
+                </lvc:CartesianChart>
+
             </Grid>
         </TabItem>
     </TabControl>

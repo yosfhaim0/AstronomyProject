@@ -239,10 +239,22 @@
                                 SelectedItem="{Binding SelectedAstroeid}"
                                 Style="{StaticResource MaterialDesignDataGrid}">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
-                                    <DataGridTextColumn Binding="{Binding AbsoluteMagnitudeH}" Header="Absolute&#x0a;Magnitude H" />
-                                    <DataGridTextColumn Binding="{Binding EstimatedDiameterMax, StringFormat={}{0:#.0.0.0}}" Header="Estimated&#x0a;Diameter Max" />
-                                    <DataGridTextColumn Binding="{Binding EstimatedDiameterMin, StringFormat={}{0:#.0.0.0}}" Header="Estimated&#x0a;Diameter Min" />
+                                    <DataGridTextColumn
+                                        Width="auto"
+                                        Binding="{Binding Name}"
+                                        Header="Name" />
+                                    <DataGridTextColumn
+                                        Width="auto"
+                                        Binding="{Binding AbsoluteMagnitudeH}"
+                                        Header="Absolute&#x0a;Magnitude H" />
+                                    <DataGridTextColumn
+                                        Width="auto"
+                                        Binding="{Binding EstimatedDiameterMax, StringFormat={}{0:#.0.0.0}}"
+                                        Header="Estimated&#x0a;Diameter Max" />
+                                    <DataGridTextColumn
+                                        Width="auto"
+                                        Binding="{Binding EstimatedDiameterMin, StringFormat={}{0:#.0.0.0}}"
+                                        Header="Estimated&#x0a;Diameter Min" />
                                 </DataGrid.Columns>
                             </DataGrid>
                         </GroupBox>
