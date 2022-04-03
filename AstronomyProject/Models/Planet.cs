@@ -8,27 +8,29 @@ namespace Models
 {
     public class Planet
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public double mass { get; set; }
-        public double diameter { get; set; }
-        public double density { get; set; }
-        public double gravity { get; set; }
-        public double escapeVelocity { get; set; }
-        public double rotationPeriod { get; set; }
-        public double lengthOfDay { get; set; }
-        public double distanceFromSun { get; set; }
-        public double perihelion { get; set; }
-        public double aphelion { get; set; }
-        public double orbitalPeriod { get; set; }
-        public double orbitalVelocity { get; set; }
-        public double orbitalInclination { get; set; }
-        public double orbitalEccentricity { get; set; }
-        public double obliquityToOrbit { get; set; }
-        public double meanTemperature { get; set; }
-        public double? surfacePressure { get; set; }
-        public int numberOfMoons { get; set; }
-        public bool hasRingSystem { get; set; }
-        public bool hasGlobalMagneticField { get; set; }
+        public double Id { get; set; }
+        public string Name { get; set; }
+        public double Mass { get; set; }
+        public double Diameter { get; set; }
+        public double Density { get; set; }
+        public double Gravity { get; set; }
+        public double EscapeVelocity { get; set; }
+        public double RotationPeriod { get; set; }
+        public double LengthOfDay { get; set; }
+        public double DistanceFromSun { get; set; }
+        public double Perihelion { get; set; }
+        public double Aphelion { get; set; }
+        public double OrbitalPeriod { get; set; }
+        public double OrbitalVelocity { get; set; }
+        public double OrbitalInclination { get; set; }
+        public double OrbitalEccentricity { get; set; }
+        public double ObliquityToOrbit { get; set; }
+        public double MeanTemperature { get; set; }
+        public double? SurfacePressure { get; set; }
+        public double NumberOfMoons { get; set; }
+        public bool HasRingSystem { get; set; }
+        public bool HasGlobalMagneticField { get; set; }
+
+        public string Url { get; set; }
     }
 }

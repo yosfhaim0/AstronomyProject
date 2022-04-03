@@ -44,5 +44,10 @@ namespace Models.Dtos
     {
         public Collection collection { get; set; }
     }
+    public class Harf
+    {
+        public List<string> MyArray { get; set; }
+    }
+
 
 }

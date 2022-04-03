@@ -14,13 +14,13 @@ namespace ApiRequests.Nasa
         const string API_KEY = @"tytdjk9rjM9VFGudlmOf7tnLyMYeOTFZjRp36YjU";
 
         const string GET_TLE = @"https://tle.ivanstanojevic.me/api/tle/";
-        
+
         //
         const string GET_IMAGE_LIB_BASE = @"https://images-api.nasa.gov";
-        
+
         //get nasa picture of the day 
         const string GET_APOD = @"https://api.nasa.gov/planetary/apod?api_key=";
-        
+
         //astrid closest to Earth
         string GET_AC = @"https://api.nasa.gov/neo/rest/v1/feed?start_date=START_DATE&end_date=END_DATE&api_key=API_KEY";
 
@@ -91,21 +91,39 @@ namespace ApiRequests.Nasa
             }
         }
 
-        public async Task<IEnumerable<string>> SearchImage(string keyWord)
+        public async Task<IEnumerable<string>> SearchImage(string keyWord,string mediaType="image")
         {
             var query = $"{GET_IMAGE_LIB_BASE}/search?q={keyWord}";
-            
+
             var content = await client.GetAsync(query);
-            
+
             var root = JsonConvert.DeserializeObject<MediaDto>(content);
+            var res = new List<string>();
             
-            var result = from i in root.collection.items
-                         where i.links != null
-                         from img in i.links
-                         where img.href != null && img.href.EndsWith(".jpg")
-                         select img.href; 
-            
-            return result;
+            foreach (var item in root.collection.items)
+            {
+                if (item != null)
+                    if (item.href != null)
+                    {
+                        if (item.data.FirstOrDefault().media_type == mediaType)
+                        {
+                            content = await client.GetAsync(item.href);
+                            res.AddRange((JsonConvert.DeserializeObject<List<string>>(content)).Where(x=>x.EndsWith(".jpg")));
+                            if (res.Count > 5)
+                                return res;
+                        }
+                    }
+            }
+
+
+            //var result = from i in root.collection.items
+            //             where i.href != null
+            //             select
+            //             //from img in i.links
+            //             //where img.href != null && img.href.EndsWith(".jpg")
+            //             //select img.href;
+
+            return res;
         }
 
 
@@ -128,7 +146,7 @@ namespace ApiRequests.Nasa
         }
         public async Task<List<GetNearAsteroidNasaDto>> GetClosestAsteroids(DateTime start, DateTime end)
         {
-            if((end - start).Days > 7)
+            if ((end - start).Days > 7)
             {
                 throw new ArgumentOutOfRangeException("The maximum is 7 days");
             }
@@ -172,7 +190,7 @@ namespace ApiRequests.Nasa
 
         private static List<string> DeserialObjMedia(Root content)
         {
-            
+
             var result = new List<string>();
             foreach (var item in content.collection.items)
             {
@@ -180,7 +198,7 @@ namespace ApiRequests.Nasa
             }
             return result;
         }
-       
+
 
     }
 }

@@ -71,6 +71,7 @@ namespace Gui.ViewModels
             async () =>
             {
                 IsLoading = true;
+                //TODO 
                 var asteroids = await _nearAsteroidService
                 .SearchNearAsteroids(FromDate.Value, ToDate.Value);
 
@@ -225,10 +226,11 @@ namespace Gui.ViewModels
             {
                 series.Add(new ColumnSeries<DateTimePoint>
                 {
+                    
                     Values = new ObservableCollection<DateTimePoint>(from m in c.Values
-                                                                     select new DateTimePoint(m.CloseApproachDate, m.MissDistance)),
+                                                                         select new DateTimePoint(m.CloseApproachDate, m.MissDistance)),
                     Name = $"{c.OrbitingBody}: {c.Values.Count()}"
-                    , 
+                    
                 });
             }
 

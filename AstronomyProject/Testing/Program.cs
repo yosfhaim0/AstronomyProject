@@ -14,7 +14,7 @@ namespace Testing
     {
         static readonly NasaTests _nasaTest = new();
         static readonly FireBaseTest _fireBaseTest = new();
-
+        static MediaService _mediaService;
         static async Task Main(string[] args)
         {
             //await _nasaTest.TestSatellaitGet();
@@ -23,14 +23,16 @@ namespace Testing
             //await _fireBaseTest.PushImage();
             //await _fireBaseTest.DeleteImage();
             //var v=await _fireBaseTest.get("1.jpg");
-
+            //_mediaService = new();
+             var y=_mediaService.SearchMedia("moon");
+            //var c=await _fireBaseTest.get("d");
             //await _nasaTest.GetImageOfTheDayTest();
-            EightPlanets a = new();
-            var c= a.GetEightPlanetsInfo();
-            var t = 0;
+            //EightPlanets a = new();
+            //var c= a.GetEightPlanetsInfo();
+            //var t = 0;
             //await _nasaTest.GetAstroid();
             //await _nasaTest.GetAsteroidById(54245556);
-
+            var t = 0;
 
         }
         // This examples is using RestSharp as a REST client - http://restsharp.org

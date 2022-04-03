@@ -1,5 +1,6 @@
 ﻿using ApiRequests.FireBaseStorage;
 using ApiRequests.Nasa;
+using DomainModel.Services;
 using Models.Dtos;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace Testing
 {
     internal class FireBaseTest
     {
+        EightPlanets b = new();
         readonly FireBase a = new();
         readonly NasaApi _nasaClient = new();
         public async Task PushImage()
@@ -23,9 +25,16 @@ namespace Testing
         {
             await a.Delete("a");
         }
-        public async Task<String> get(String A)
+        public async Task<List<string>> get(String A)
         {
-            return await a.Get(A);
+            b.GetEightPlanetsInfo();
+
+            List<string> vs = new List<string>();
+            foreach(var i in b.GetEightPlanetsInfo())
+            {
+                vs.Add(await a.Get(i.Name+".jpg")+i.Name);
+            }
+            return vs;
         }
     }
 }
