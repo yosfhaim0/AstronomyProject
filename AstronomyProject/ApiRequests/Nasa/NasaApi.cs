@@ -91,7 +91,7 @@ namespace ApiRequests.Nasa
             }
         }
 
-        public async Task<IEnumerable<string>> SearchImage(string keyWord, string mediaType="image")
+        public async Task<IEnumerable<string>> SearchImage(string keyWord, string mediaType = "image")
         {
             var query = $"{GET_IMAGE_LIB_BASE}/search?q={keyWord}";
 
@@ -99,7 +99,7 @@ namespace ApiRequests.Nasa
 
             var root = JsonConvert.DeserializeObject<MediaDto>(content);
             var res = new List<string>();
-            
+
             foreach (var item in root.collection.items)
             {
                 if (item != null)
@@ -108,9 +108,10 @@ namespace ApiRequests.Nasa
                         if (item.data.FirstOrDefault().media_type == mediaType)
                         {
                             content = await client.GetAsync(item.href);
-                            res.AddRange((JsonConvert.DeserializeObject<List<string>>(content)).Where(x=>x.EndsWith(".jpg")));
-                            if (res.Count > 5)
-                                return res;
+                            res.AddRange((JsonConvert.DeserializeObject<List<string>>(content))
+                                .Where(x => x.EndsWith(".jpg") || x.EndsWith(".mp4") || x.EndsWith(".pnj")));
+                            if (res.Count > 20)
+                                return res.Distinct();
                         }
                     }
             }
