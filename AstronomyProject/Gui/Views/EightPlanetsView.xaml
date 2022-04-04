@@ -189,6 +189,7 @@
                     Grid.Column="0"
                     ItemsSource="{Binding PropNames}"
                     SelectedItem="{Binding SelectedProp}"
+                    SelectionMode="Multiple"
                     Style="{StaticResource MaterialDesignChoiceChipPrimaryListBox}" />
                 <lvc:CartesianChart
                     Grid.Row="0"

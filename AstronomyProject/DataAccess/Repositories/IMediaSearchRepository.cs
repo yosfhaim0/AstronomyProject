@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
-    public interface IMediaSearchRepository
+    public interface IMediaSearchRepository : IModelRepository<MediaGroupe>
     {
-        Task<IEnumerable<string>> Search(string searchWord);
+        Task<IEnumerable<MediaGroupe>> Search(string searchWord);
     }
 }

@@ -13,6 +13,9 @@ namespace ApiRequests.Nasa
     {
         const string API_KEY = @"tytdjk9rjM9VFGudlmOf7tnLyMYeOTFZjRp36YjU";
 
+        const int MAX_MEDIAE_ITEMS_FOR_SEARCH = 25;
+        const int MAX_MEDIAE_ITEMS_PER_GROUPE = 6;
+
         const string GET_TLE = @"https://tle.ivanstanojevic.me/api/tle/";
 
         //
@@ -26,7 +29,7 @@ namespace ApiRequests.Nasa
 
         string GET_ASTROID_BY_ID = "http://www.neowsapp.com/rest/v1/neo/ASTROID_ID?api_key=API_KEY";
 
-        readonly HttpGet client = new();
+        readonly HttpGet _client = new();
 
         readonly string _apiKey;
 
@@ -44,7 +47,7 @@ namespace ApiRequests.Nasa
         {
             try
             {
-                var jsonString = await client.GetAsync(GET_TLE);
+                var jsonString = await _client.GetAsync(GET_TLE);
                 var result = JsonConvert.DeserializeObject<SatelliteCollection>(jsonString);
                 return result.Satellites;
             }
@@ -63,7 +66,7 @@ namespace ApiRequests.Nasa
                     .Replace("ASTROID_ID", astroidId)
                     .Replace("API_KEY", API_KEY);
 
-                var jsonString = await client.GetAsync(query);
+                var jsonString = await _client.GetAsync(query);
 
                 var result = JsonConvert.DeserializeObject<GetNearAsteroidNasaDto>(jsonString);
 
@@ -79,7 +82,7 @@ namespace ApiRequests.Nasa
         {
             try
             {
-                var jsonString = await client.GetAsync(query);
+                var jsonString = await _client.GetAsync(query);
 
                 var result = JsonConvert.DeserializeObject<GetNearAsteroidNasaDto>(jsonString);
 
@@ -91,40 +94,59 @@ namespace ApiRequests.Nasa
             }
         }
 
-        public async Task<IEnumerable<string>> SearchImage(string keyWord, string mediaType = "image")
+        public async Task<IEnumerable<MediaGroupe>> SearchMedia(string keyWord)
         {
             var query = $"{GET_IMAGE_LIB_BASE}/search?q={keyWord}";
 
-            var content = await client.GetAsync(query);
+            var jsonString = await _client.GetAsync(query);
 
-            var root = JsonConvert.DeserializeObject<MediaDto>(content);
-            var res = new List<string>();
+            var root = JsonConvert.DeserializeObject<MediasJsonToCS>(jsonString);
 
-            foreach (var item in root.collection.items)
+            var items = (from i in root.collection.items
+                        where i != null && !string.IsNullOrEmpty(i.href)
+                        select i)
+                        .Take(MAX_MEDIAE_ITEMS_FOR_SEARCH);
+
+            var itemsWithMediaContents = await GetContenetForEachMediaItem(items);
+
+            return from i in itemsWithMediaContents
+                   let item = i.Item1
+                   let content = i.Item2
+                   let data = item.data.First()
+                   select new MediaGroupe
+                   {
+                       Description = data.description,
+                       MediaType = data.media_type,
+                       PreviewUrl = item.links
+                       .Where(l => l.rel == "preview")
+                       .Select(l => l.href)
+                       .FirstOrDefault(),
+                       Title = data.title,
+                       Url = content.FirstOrDefault(m => m.Contains("~orig")),
+                       MediaItems = content
+                       .Where(m => m.EndsWith("jpg") || m.EndsWith("png"))
+                       .Select(m => new MediaItem { Url = m })
+                       .Take(MAX_MEDIAE_ITEMS_PER_GROUPE)
+                       .ToList(),
+                   };
+        }
+
+        private async Task<IEnumerable<Tuple<MediaItemDto, List<string>>>> GetContenetForEachMediaItem(IEnumerable<MediaItemDto> items)
+        {
+            var tasks = new List<Task<Tuple<MediaItemDto, List<string>>>>();
+            foreach (var item in items)
             {
-                if (item != null)
-                    if (item.href != null)
-                    {
-                        if (item.data.FirstOrDefault().media_type == mediaType)
-                        {
-                            content = await client.GetAsync(item.href);
-                            res.AddRange((JsonConvert.DeserializeObject<List<string>>(content))
-                                .Where(x => x.EndsWith(".jpg") || x.EndsWith(".mp4") || x.EndsWith(".pnj")));
-                            if (res.Count > 20)
-                                return res.Distinct();
-                        }
-                    }
+                tasks.Add(GetMediaContent(item));
             }
 
+            return await Task.WhenAll(tasks);
+        }
 
-            //var result = from i in root.collection.items
-            //             where i.href != null
-            //             select
-            //             //from img in i.links
-            //             //where img.href != null && img.href.EndsWith(".jpg")
-            //             //select img.href;
-
-            return res;
+        async Task<Tuple<MediaItemDto, List<string>>> GetMediaContent(MediaItemDto item)
+        {
+            var content = await _client.GetAsync(item.href);
+            var mediaContents = JsonConvert.DeserializeObject<List<string>>(content);
+            return new Tuple<MediaItemDto, List<string>>(item, mediaContents);
         }
 
 
@@ -134,7 +156,7 @@ namespace ApiRequests.Nasa
             {
                 var query = $"{GET_APOD}{API_KEY}";
 
-                var jsonString = await client.GetAsync(query);
+                var jsonString = await _client.GetAsync(query);
 
                 var result = JsonConvert.DeserializeObject<GetAPODNasaDto>(jsonString);
 
@@ -163,7 +185,7 @@ namespace ApiRequests.Nasa
 
             try
             {
-                var jsonString = await client.GetAsync(query);
+                var jsonString = await _client.GetAsync(query);
                 var dict = JsonConvert.DeserializeObject<NearAstridCollection>(jsonString);
 
                 var result = new List<GetNearAsteroidNasaDto>();
@@ -184,7 +206,7 @@ namespace ApiRequests.Nasa
         public async Task<List<string>> GetMediaBy(string keyWord)
         {
             var query = $"{GET_IMAGE_LIB_BASE}/asset/{keyWord}";
-            var content = await client.GetAsync(query);
+            var content = await _client.GetAsync(query);
             var a = JsonConvert.DeserializeObject<Root>(content);
             return DeserialObjMedia(a);
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace DomainModel.Services
 {
     public interface IMediaService
     {
-        Task<List<string>> SearchMedia(string keyWord); 
+        Task<IEnumerable<MediaGroupe>> SearchMedia(string keyWord); 
     }
 }

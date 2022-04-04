@@ -19,16 +19,17 @@ namespace Models.Dtos
         public DateTime date_created { get; set; }
         public string center { get; set; }
         public List<string> album { get; set; }
-        public string description_508 { get; set; }
         public string secondary_creator { get; set; }
     }
 
     public class Link
     {
         public string href { get; set; }
+
+        public string  rel { get; set; }
     }
 
-    public class Item
+    public class MediaItemDto
     {
         public string href { get; set; }
         public List<Datum> data { get; set; }
@@ -37,10 +38,10 @@ namespace Models.Dtos
 
     public class Collection
     {
-        public List<Item> items { get; set; }
+        public List<MediaItemDto> items { get; set; }
     }
 
-    public class MediaDto
+    public class MediasJsonToCS
     {
         public Collection collection { get; set; }
     }

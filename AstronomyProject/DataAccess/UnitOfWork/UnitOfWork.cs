@@ -28,7 +28,7 @@ namespace DataAccess.UnitOfWork
 
             ImageOfTheDayRepository = new ImageOfTheDayRepository(_context, nasaApi, firebase);
             NearAstroidRepository = new NearAsteroidRepository(_context, nasaApi);
-            MediaSearchRepository = new MediaSearchRepository(nasaApi);
+            MediaSearchRepository = new MediaSearchRepository(_context ,nasaApi);
         }
 
         public IImageOfTheDayRepository ImageOfTheDayRepository { get; }

@@ -3,6 +3,7 @@ using LiveChartsCore;
 using LiveChartsCore.Measure;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
+using Models;
 using Prism.Commands;
 using Prism.Mvvm;
 using SkiaSharp;
@@ -29,25 +30,33 @@ namespace Gui.ViewModels
         public string SearchWord
         {
             get { return _searchWord; }
-            set { SetProperty(ref _searchWord, value); }
-        }
-
-        private string _selectedImage;
-        public string SelectedImage
-        {
-            get { return _selectedImage ?? Content?.FirstOrDefault(); }
-            set
+            set 
             {
-                SetProperty(ref _selectedImage, value);
+                IsSelected = false;
+                SetProperty(ref _searchWord, value); 
             }
         }
 
-        private List<string> _content;
-        public List<string> Content
-        {
-            get { return _content; }
-            set { SetProperty(ref _content, value); }
+        bool _isSelected = false;
+        public bool IsSelected 
+        { 
+            get => _isSelected; 
+            set => SetProperty(ref _isSelected, value); 
         }
+
+
+        private MediaGroupe _selectedMedia;
+        public MediaGroupe SelectedMedia
+        {
+            get { return _selectedMedia ?? Medias?.FirstOrDefault(); }
+            set
+            {
+                IsSelected = true;
+                SetProperty(ref _selectedMedia, value);
+            }
+        }
+
+        public ObservableCollection<MediaGroupe> Medias { get; set; } = new();
 
         private DelegateCommand _searchCommand;
         public DelegateCommand SearchCommand => _searchCommand ??= new DelegateCommand(
@@ -56,7 +65,10 @@ namespace Gui.ViewModels
                 if (!string.IsNullOrEmpty(SearchWord))
                 {
                     IsLoading = true;
-                    Content = await _mediaService.SearchMedia(SearchWord);
+                    IsSelected = false;
+                    var medias = await _mediaService.SearchMedia(SearchWord);
+                    Medias.Clear();
+                    Medias.AddRange(medias);
                     IsLoading = false;
                 }
             },

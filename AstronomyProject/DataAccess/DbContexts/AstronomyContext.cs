@@ -17,6 +17,8 @@ namespace DataAccess.DbContexts
 
         public DbSet<CloseApproach> CloseApproachs { get; set; }
 
+        public DbSet<MediaGroupe> Media { get; set; }
+
         public AstronomyContext(DbContextOptions options) : base(options)
         {
 
