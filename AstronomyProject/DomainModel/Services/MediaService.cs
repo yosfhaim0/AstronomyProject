@@ -68,7 +68,7 @@ namespace DomainModel.Services
         private async Task<IEnumerable<MediaGroupe>> ConfigureMedia(IEnumerable<MediaGroupe> mediasFromNasa)
         {
             List<Task<Tuple<string, List<ImaggaTag>>>> tasks = new();
-            foreach (var im in mediasFromNasa.Select(m => m.Url))
+            foreach (var im in mediasFromNasa.Select(m => m.PreviewUrl))
             {
                 tasks.Add(TagImage(im));
             }
@@ -81,7 +81,7 @@ namespace DomainModel.Services
                 {
                     var image = imt.Item1;
                     var tags = imt.Item2;
-                    if (m.Url == image)
+                    if (m.PreviewUrl == image)
                     {
                         m.Tags = tags;
                     }
