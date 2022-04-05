@@ -11,6 +11,7 @@ namespace DataAccess.Repositories
     {
         Task<IEnumerable<MediaGroupe>> Search(string searchWord);
 
-        Task AddSearchWord(string searchWord);
+        Task AddSearchWord(MediaGroupe media, SearchWordModel searchWord);
+        Task AddTags(MediaGroupe media, List<ImaggaTag> tags);
     }
 }

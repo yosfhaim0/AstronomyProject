@@ -7,6 +7,7 @@ namespace Models
     {
         [Key]
         public int Id { get; set; }
+        
         [MaxLength(50)]
         [Required]
         public string SearchWord { get; set; }
