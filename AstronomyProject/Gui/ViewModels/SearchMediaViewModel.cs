@@ -30,14 +30,16 @@ namespace Gui.ViewModels
         private void SetImaggaGraph()
         {
             if (_selectedMedia.Tags == null) return;
-            Series = new ObservableCollection<ISeries>
+            
+            Series.Clear();
+            Series.AddRange(new List<ISeries>
             {
                 new ColumnSeries<double>
                 {
                     Name = "Confidence",
                     Values = _selectedMedia.Tags.Select(x=>x.Confidence).ToList(),
                 }
-            };
+            });
 
             XAxes = new List<Axis>
             {
@@ -86,7 +88,7 @@ namespace Gui.ViewModels
                 SetImaggaGraph();
             }
         }
-        public IEnumerable<ISeries> Series { get; set; }
+        public ObservableCollection<ISeries> Series { get; set; } = new();
 
         public List<Axis> XAxes { get; set; }
 

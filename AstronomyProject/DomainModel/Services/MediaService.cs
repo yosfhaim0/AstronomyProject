@@ -39,38 +39,39 @@ namespace DomainModel.Services
         public async Task<IEnumerable<MediaGroupe>> SearchMedia(string keyWord)
         {
             keyWord = keyWord.ToLower();
-            var medias = await _unitOfWork
-                .MediaSearchRepository
-                .Search(keyWord);
+            var medias = await _unitOfWork.MediaSearchRepository.GetAll();
+            //await _unitOfWork
+            //.MediaSearchRepository
+            //.Search(keyWord);
 
-            if (medias.Any())
-            {
-                return medias;
-            }
-
-            var mediasFromNasa = await _nasaApi.SearchMedia(keyWord);
-
-            foreach(var m in mediasFromNasa)
-            {
-                m.SearchWords.Add(new SearchWordModel
-                {
-                    SearchWord = keyWord
-                });
-            }
-
-            return mediasFromNasa;
-
-            //var result = await ConfigurMedia(mediasFromNasa);
-
-            //if(result.Any())
+            //if (medias.Any())
             //{
-            //    await _unitOfWork
-            //        .MediaSearchRepository
-            //        .InsertMany(result);
-            //    await _unitOfWork.Complete();
+            //    return medias;
             //}
 
-            //return result;
+            //var mediasFromNasa = await _nasaApi.SearchMedia(keyWord);
+
+            //foreach(var m in medias)
+            //{
+            //    await _unitOfWork.MediaSearchRepository.AddSearchWord(m,
+            //        new SearchWordModel
+            //        {
+            //            SearchWord = keyWord
+            //        });
+            //}
+            //await _unitOfWork.Complete();
+
+            var result = await ConfigureMedia(medias);
+
+            if (result.Any())
+            {
+                await _unitOfWork
+                    .MediaSearchRepository
+                    .InsertMany(result);
+                await _unitOfWork.Complete();
+            }
+
+            return result;
         }
 
         private async Task<IEnumerable<MediaGroupe>> ConfigureMedia(IEnumerable<MediaGroupe> mediasFromNasa)
@@ -91,7 +92,7 @@ namespace DomainModel.Services
                     var tags = imt.Item2;
                     if (m.PreviewUrl == image)
                     {
-                        m.Tags = tags;
+                        await _unitOfWork.MediaSearchRepository.AddTags(m, tags);
                     }
                 }
             }

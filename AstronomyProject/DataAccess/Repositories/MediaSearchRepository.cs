@@ -28,6 +28,11 @@ namespace DataAccess.Repositories
                 .Select(s => s.MediaGroupeId)
                 .ToListAsync();
 
+            if(!mediaIds.Any())
+            {
+                return new List<MediaGroupe>();
+            }
+
             return await MyContext.Media
                 .Where(m => mediaIds.Contains(m.Id))
                 .Include(m => m.Tags)
@@ -35,6 +40,16 @@ namespace DataAccess.Repositories
                 .ToListAsync();
         }
 
-        
+        public async Task AddSearchWord(MediaGroupe media, SearchWordModel searchWord)
+        {
+            media.SearchWords.Add(searchWord);
+            await MyContext.SearchWords.AddAsync(searchWord);
+        }
+
+        public async Task AddTags(MediaGroupe media, List<ImaggaTag> tags)
+        {
+            media.Tags.AddRange(tags);
+            await MyContext.ImaggaTags.AddRangeAsync(tags);
+        }
     }
 }

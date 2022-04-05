@@ -18,10 +18,13 @@ namespace DataAccess.DbContexts
         public DbSet<CloseApproach> CloseApproachs { get; set; }
 
         public DbSet<MediaGroupe> Media { get; set; }
+
         public DbSet<MediaItem> MediaItems { get; set; }
 
         public DbSet<ImaggaTag> ImaggaTags { get; set; }
+
         public DbSet<SearchWordModel> SearchWords { get; set; }
+
         public AstronomyContext(DbContextOptions options) : base(options)
         {
 

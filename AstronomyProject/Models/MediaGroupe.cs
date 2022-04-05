@@ -29,11 +29,11 @@ namespace Models
         [Column(TypeName = "varchar(10)")]
         public string MediaType { get; set; }
 
-        public List<MediaItem> MediaItems { get; set; }
+        public List<MediaItem> MediaItems { get; set; } = new();
 
-        public List<ImaggaTag> Tags { get; set; }
+        public List<ImaggaTag> Tags { get; set; } = new();
 
-        public List<SearchWordModel> SearchWords { get; set;}
+        public List<SearchWordModel> SearchWords { get; set; } = new();
     }
 }
 
