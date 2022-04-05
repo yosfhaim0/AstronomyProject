@@ -24,24 +24,54 @@ namespace Gui.ViewModels
         public SearchMediaViewModel(IMediaService mediaService)
         {
             _mediaService = mediaService;
+
+        }
+
+        private void SetImaggaGraph()
+        {
+            if (_selectedMedia.Tags == null) return;
+            Series = new ObservableCollection<ISeries>
+            {
+                new ColumnSeries<double>
+                {
+                    Name = _selectedMedia.Title,
+                    Values = _selectedMedia.Tags.Select(x=>x.Confidence).ToList(),
+                }
+            };
+
+            XAxes = new List<Axis>
+            {
+                new()
+                {
+                    Labels = _selectedMedia.Tags.Select(t=>t.Tag).ToList(),
+                }
+            };
+
+            YAxes = new List<Axis>
+            {
+                new()
+                {
+                    Labeler =(value) =>value.ToString(),
+                }
+            };
         }
 
         private string _searchWord;
         public string SearchWord
         {
             get { return _searchWord; }
-            set 
+            set
             {
                 IsSelected = false;
-                SetProperty(ref _searchWord, value); 
+                SetProperty(ref _searchWord, value);
             }
         }
 
         bool _isSelected = false;
-        public bool IsSelected 
-        { 
-            get => _isSelected; 
-            set => SetProperty(ref _isSelected, value); 
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set => SetProperty(ref _isSelected, value);
         }
 
 
@@ -53,8 +83,15 @@ namespace Gui.ViewModels
             {
                 IsSelected = true;
                 SetProperty(ref _selectedMedia, value);
+                SetImaggaGraph();
             }
         }
+        public IEnumerable<ISeries> Series { get; set; }
+
+        public List<Axis> XAxes { get; set; }
+
+        public List<Axis> YAxes { get; set; }
+
 
         public ObservableCollection<MediaGroupe> Medias { get; set; } = new();
 

@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:Gui.Views"
+    xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
@@ -66,6 +67,7 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <Button
                             Grid.Row="0"
@@ -108,6 +110,17 @@
                             FontSize="15"
                             Text="{Binding Description}"
                             TextWrapping="Wrap" />
+                        <lvc:CartesianChart
+                            Grid.Row="4"
+                            Margin="4"
+                            Series="{Binding Series}"
+                            TooltipBackground="#480032"
+                            TooltipFontFamily="Courier New"
+                            TooltipFontSize="25"
+                            TooltipPosition="Left"
+                            TooltipTextBrush="#f2f4c3"
+                            XAxes="{Binding XAxes}"
+                            YAxes="{Binding YAxes}" />
                     </Grid>
                 </ScrollViewer>
             </materialDesign:DrawerHost.RightDrawerContent>
