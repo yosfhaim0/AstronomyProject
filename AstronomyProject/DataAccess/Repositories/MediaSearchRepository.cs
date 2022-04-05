@@ -23,10 +23,15 @@ namespace DataAccess.Repositories
 
         public async Task<IEnumerable<MediaGroupe>> Search(string searchWord)
         {
+            var mediaIds = await MyContext.SearchWords
+                .Where(s => s.SearchWord == searchWord)
+                .Select(s => s.MediaGroupeId)
+                .ToListAsync();
+
             return await MyContext.Media
-                .Include(m => m.SearchWords)
-                .Where(m => m.SearchWords
-                    .Any(s => s.SearchWord == searchWord))
+                .Where(m => mediaIds.Contains(m.Id))
+                .Include(m => m.Tags)
+                .Include(m => m.MediaItems)    
                 .ToListAsync();
         }
     }

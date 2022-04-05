@@ -38,17 +38,25 @@ namespace DomainModel.Services
 
         public async Task<IEnumerable<MediaGroupe>> SearchMedia(string keyWord)
         {
-            //keyWord = keyWord.ToLower();
-            //var medias = await _unitOfWork
-            //    .MediaSearchRepository
-            //    .Search(keyWord);
+            keyWord = keyWord.ToLower();
+            var medias = await _unitOfWork
+                .MediaSearchRepository
+                .Search(keyWord);
 
-            //if (medias.Any())
-            //{
-            //    return medias;
-            //}
+            if (medias.Any())
+            {
+                return medias;
+            }
 
             var mediasFromNasa = await _nasaApi.SearchMedia(keyWord);
+
+            foreach(var m in mediasFromNasa)
+            {
+                m.SearchWords.Add(new SearchWordModel
+                {
+                    SearchWord = keyWord
+                });
+            }
 
             return mediasFromNasa;
 

@@ -25,10 +25,6 @@ namespace Models
         public string Description { get; set; }
 
         [Required]
-        [MaxLength(200)]
-        public string FirebaseName { get; set; }
-
-        [Required]
         [MaxLength(30)]
         [Column(TypeName = "varchar(10)")]
         public string MediaType { get; set; }

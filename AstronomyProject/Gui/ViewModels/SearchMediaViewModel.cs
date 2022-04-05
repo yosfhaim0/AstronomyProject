@@ -34,7 +34,7 @@ namespace Gui.ViewModels
             {
                 new ColumnSeries<double>
                 {
-                    Name = _selectedMedia.Title,
+                    Name = "Confidence",
                     Values = _selectedMedia.Tags.Select(x=>x.Confidence).ToList(),
                 }
             };
