@@ -10,11 +10,14 @@ namespace DataAccess.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {
-        public IImageOfTheDayRepository ImageOfTheDayRepository { get; }
+        public IModelRepository<ImageOfTheDay> ImageOfTheDayRepository { get; }
 
         public INearAsteroidRepository NearAstroidRepository { get; }
 
         public IMediaSearchRepository MediaSearchRepository { get; }
+
+        public IModelRepository<ImaggaTag> ImaggaTagRepository { get; }
+
         Task Complete();
     }
 }

@@ -12,13 +12,10 @@ namespace DataAccess.Repositories
 {
     public class MediaSearchRepository : EFModelRepository<MediaGroupe> ,IMediaSearchRepository
     {
-        readonly NasaApi _nasaApi;
-
         public AstronomyContext MyContext { get => Context as AstronomyContext; }
 
-        public MediaSearchRepository(AstronomyContext context ,NasaApi nasaApi) : base(context)
+        public MediaSearchRepository(AstronomyContext context) : base(context)
         {
-            _nasaApi = nasaApi;
         }
 
         public async Task<IEnumerable<MediaGroupe>> Search(string searchWord)
@@ -46,7 +43,7 @@ namespace DataAccess.Repositories
             await MyContext.SearchWords.AddAsync(searchWord);
         }
 
-        public async Task AddTags(MediaGroupe media, List<ImaggaTag> tags)
+        public async Task AddTags(MediaGroupe media, IEnumerable<ImaggaTag> tags)
         {
             media.Tags.AddRange(tags);
             await MyContext.ImaggaTags.AddRangeAsync(tags);

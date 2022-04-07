@@ -9,6 +9,7 @@ namespace DomainModel.Services
 {
     public interface IMediaService
     {
+        Task<IEnumerable<ImaggaTag>> GetMediaTags(MediaGroupe media);
         Task<IEnumerable<MediaGroupe>> SearchMedia(string keyWord); 
     }
 }

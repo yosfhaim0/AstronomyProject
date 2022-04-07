@@ -1,4 +1,5 @@
 ﻿using DomainModel.Services;
+using Gui.Dialogs;
 using LiveChartsCore;
 using LiveChartsCore.Measure;
 using LiveChartsCore.SkiaSharpView;
@@ -19,43 +20,14 @@ namespace Gui.ViewModels
 {
     public class SearchMediaViewModel : ViewModelBase
     {
-
         readonly IMediaService _mediaService;
-        public SearchMediaViewModel(IMediaService mediaService)
+
+        readonly IDialogService _dialogService;
+
+        public SearchMediaViewModel(IMediaService mediaService, IDialogService dialogService)
         {
             _mediaService = mediaService;
-
-        }
-
-        private void SetImaggaGraph()
-        {
-            if (_selectedMedia.Tags == null) return;
-            
-            Series.Clear();
-            Series.AddRange(new List<ISeries>
-            {
-                new ColumnSeries<double>
-                {
-                    Name = "Confidence",
-                    Values = _selectedMedia.Tags.Select(x=>x.Confidence).ToList(),
-                }
-            });
-
-            XAxes = new List<Axis>
-            {
-                new()
-                {
-                    Labels = _selectedMedia.Tags.Select(t=>t.Tag).ToList(),
-                }
-            };
-
-            YAxes = new List<Axis>
-            {
-                new()
-                {
-                    Labeler =(value) =>value.ToString(),
-                }
-            };
+            _dialogService = dialogService;
         }
 
         private string _searchWord;
@@ -85,10 +57,10 @@ namespace Gui.ViewModels
             {
                 IsSelected = true;
                 SetProperty(ref _selectedMedia, value);
-                SetImaggaGraph();
             }
         }
-        public ObservableCollection<ISeries> Series { get; set; } = new();
+
+        public ObservableCollection<ISeries> TagsSeries { get; set; } = new();
 
         public List<Axis> XAxes { get; set; }
 
@@ -105,9 +77,16 @@ namespace Gui.ViewModels
                 {
                     IsLoading = true;
                     IsSelected = false;
-                    var medias = await _mediaService.SearchMedia(SearchWord);
-                    Medias.Clear();
-                    Medias.AddRange(medias);
+                    try
+                    {
+                        var medias = await _mediaService.SearchMedia(SearchWord);
+                        Medias.Clear();
+                        Medias.AddRange(medias);
+                    }
+                    catch (Exception ex)
+                    {
+                        _dialogService.ShowDialog("Erorr", ex.Message);
+                    }
                     IsLoading = false;
                 }
             },
@@ -115,6 +94,64 @@ namespace Gui.ViewModels
             {
                 return !IsLoading;
             });
+
+
+        private DelegateCommand _getTagsCommand;
+        public DelegateCommand GetTagsCommand => _getTagsCommand ??= new DelegateCommand(
+            async () =>
+            {
+                if (SelectedMedia.Tags.Any())
+                {
+                    SetImaggaGraph();
+                    return;
+                }
+
+                IsLoading = true;
+                try
+                {
+                    var tags = await _mediaService
+            .GetMediaTags(SelectedMedia);
+                    SelectedMedia.Tags = tags?.ToList();
+                    SetImaggaGraph();
+                }
+                catch (Exception ex)
+                {
+                    _dialogService.ShowDialog("Erorr", ex.Message);
+                }
+                IsLoading = false;
+
+            });
+
+        private void SetImaggaGraph()
+        {
+            TagsSeries.Clear();
+            TagsSeries.AddRange(new List<ISeries>
+            {
+                new ColumnSeries<double>
+                {
+                    Name = "Confidence",
+                    Values = new ObservableCollection<double>(SelectedMedia
+                    .Tags
+                    .Select(x => x.Confidence)),
+                }
+            });
+
+            XAxes = new List<Axis>
+            {
+                new()
+                {
+                    Labels = SelectedMedia.Tags.Select(t => t.Tag).ToList(),
+                }
+            };
+
+            YAxes = new List<Axis>
+            {
+                new()
+                {
+                    Labeler =(value) => value.ToString(),
+                }
+            };
+        }
 
 
 

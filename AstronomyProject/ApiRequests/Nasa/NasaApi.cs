@@ -128,6 +128,10 @@ namespace ApiRequests.Nasa
                        .Select(m => new MediaItem { Url = m })
                        .Take(MAX_MEDIAE_ITEMS_PER_GROUPE)
                        .ToList(),
+                       SearchWords = new () 
+                       { 
+                           new() { SearchWord = keyWord }
+                       }
                    };
         }
 

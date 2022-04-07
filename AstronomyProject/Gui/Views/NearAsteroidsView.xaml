@@ -29,7 +29,7 @@
     </UserControl.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding Load}" />
+            <i:InvokeCommandAction Command="{Binding SearchBetweenDates}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>

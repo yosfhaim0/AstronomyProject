@@ -1,11 +1,14 @@
-﻿using DataAccess.UnitOfWork;
+﻿using ApiRequests.Nasa;
+using DataAccess.UnitOfWork;
 using DomainModel.DbFactory;
 using Models;
+using Models.Configurations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tools;
 
 namespace DomainModel.Services
 {
@@ -13,18 +16,37 @@ namespace DomainModel.Services
     {
         readonly IUnitOfWork _unitOfWork;
 
-        public GalleryImageOfTheDayService(IDbFactory dbFactory)
+        readonly NasaApi _nasaApi;
+
+        public GalleryImageOfTheDayService(IDbFactory dbFactory, MyConfigurations configuration)
         {
             _unitOfWork = dbFactory.GetDataAccess();
+
+            _nasaApi = new NasaApi(configuration.CurrentNasaApiKey);
         }
 
         public async Task<ImageOfTheDay> GetTodayImage()
         {
-            var img = await _unitOfWork
+            var isExist = await  
+                _unitOfWork
                 .ImageOfTheDayRepository
-                .GetImageOfTheDayFromNasa();
+                .FindAll(i => i.Date.Date == DateTime.Now.Date);
+            if (isExist.Any())
+            {
+                return isExist.First();
+            }
+
+            var imgDto = await _nasaApi.GetImageOfTheDay();
+
+            var result = imgDto.CopyPropertiesToNew(typeof(ImageOfTheDay)) as ImageOfTheDay;
+
+            await _unitOfWork
+                .ImageOfTheDayRepository
+                .Insert(result);
+
             await _unitOfWork.Complete();
-            return img;
+
+            return result;
         }
 
         public async Task<IEnumerable<ImageOfTheDay>> GetGallery()

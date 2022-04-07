@@ -15,6 +15,7 @@ using Gui.Views;
 using DataAccess.DbContexts;
 using DataAccess.UnitOfWork;
 using Prism.Regions;
+using Gui.Dialogs;
 
 namespace Gui
 {
@@ -26,6 +27,8 @@ namespace Gui
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterInstance(GetConfigurations());
+
+            containerRegistry.Register<IDialogService, DialogService>();
             
             containerRegistry.RegisterSingleton<IDbFactory ,DbFactory>();
 

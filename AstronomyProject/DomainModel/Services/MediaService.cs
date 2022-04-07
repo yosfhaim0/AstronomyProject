@@ -39,47 +39,56 @@ namespace DomainModel.Services
         public async Task<IEnumerable<MediaGroupe>> SearchMedia(string keyWord)
         {
             keyWord = keyWord.ToLower();
-            var medias = await _unitOfWork.MediaSearchRepository.GetAll();
-            //await _unitOfWork
-            //.MediaSearchRepository
-            //.Search(keyWord);
+            var medias = await _unitOfWork
+                                                .MediaSearchRepository
+                                                .Search(keyWord);
+            if (medias.Any())
+            {
+                return medias;
+            }
 
-            //if (medias.Any())
-            //{
-            //    return medias;
-            //}
 
-            //var mediasFromNasa = await _nasaApi.SearchMedia(keyWord);
+            var mediasFromNasa = await _nasaApi.SearchMedia(keyWord);
 
-            //foreach(var m in medias)
-            //{
-            //    await _unitOfWork.MediaSearchRepository.AddSearchWord(m,
-            //        new SearchWordModel
-            //        {
-            //            SearchWord = keyWord
-            //        });
-            //}
-            //await _unitOfWork.Complete();
+            await _unitOfWork.MediaSearchRepository
+                .InsertMany(mediasFromNasa);
+            await _unitOfWork.Complete();
 
-            var result = await ConfigureMedia(medias);
+            return mediasFromNasa;
+        }
 
-            if (result.Any())
+        public async Task<IEnumerable<ImaggaTag>> GetMediaTags(MediaGroupe media)
+        {
+            var tags = await _unitOfWork
+                .ImaggaTagRepository
+                .FindAll(t => t.MediaGroupeId == media.Id);
+            
+            if (tags.Any())
+            {
+                return tags;
+            }
+
+            tags = await TagImage(media.PreviewUrl);
+
+            if(tags != null)
             {
                 await _unitOfWork
                     .MediaSearchRepository
-                    .InsertMany(result);
+                    .AddTags(media, tags);
                 await _unitOfWork.Complete();
+                return tags;
             }
-
-            return result;
+            
+            throw new Exception("Can not parse image");
         }
 
         private async Task<IEnumerable<MediaGroupe>> ConfigureMedia(IEnumerable<MediaGroupe> mediasFromNasa)
         {
             List<Task<Tuple<string, List<ImaggaTag>>>> tasks = new();
-            foreach (var im in mediasFromNasa.Select(m => m.PreviewUrl))
+            var urls = mediasFromNasa.Select(m => m.PreviewUrl);
+            foreach (var im in urls)
             {
-                tasks.Add(TagImage(im));
+                tasks.Add(GetImageTagPair(im));
             }
 
             var imageAndTags = await Task.WhenAll(tasks);
@@ -92,7 +101,9 @@ namespace DomainModel.Services
                     var tags = imt.Item2;
                     if (m.PreviewUrl == image)
                     {
-                        await _unitOfWork.MediaSearchRepository.AddTags(m, tags);
+                        await _unitOfWork
+                            .MediaSearchRepository
+                            .AddTags(m, tags);
                     }
                 }
             }
@@ -104,7 +115,7 @@ namespace DomainModel.Services
             List<Task<Tuple<string, List<ImaggaTag>>>> tasks = new();
             foreach (var im in mediasFromNasa.Select(m => m.Url))
             {
-                tasks.Add(TagImage(im));
+                tasks.Add(GetImageTagPair(im));
             }
 
             var imageAndTags = await Task.WhenAll(tasks);
@@ -124,7 +135,15 @@ namespace DomainModel.Services
 
         }
 
-        private async Task<Tuple<string, List<ImaggaTag>>> TagImage(string imageUrl)
+        private async Task<List<ImaggaTag>> TagImage(string imageUrl)
+        {
+            var imaggTag = await _imagga.AutoTagging(imageUrl);
+            return imaggTag.GetTags();
+        }
+
+
+
+        private async Task<Tuple<string, List<ImaggaTag>>> GetImageTagPair(string imageUrl)
         {
 
             var imaggTag = await _imagga.AutoTagging(imageUrl);

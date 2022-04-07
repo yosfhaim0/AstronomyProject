@@ -23,7 +23,11 @@
             </Grid.ColumnDefinitions>
             <TextBox
                 Grid.Column="0"
+                materialDesign:HintAssist.Background="WhiteSmoke"
+                materialDesign:HintAssist.Foreground="#333d4a"
                 materialDesign:HintAssist.Hint="Search here"
+                BorderBrush="#333d4a"
+                Foreground="#333d4a"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
                 Text="{Binding SearchWord, UpdateSourceTrigger=PropertyChanged}">
                 <TextBox.InputBindings>
@@ -54,17 +58,18 @@
         </Grid>
 
         <local:LoadingBar
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
+            Margin="0,70,0,0"
+            DockPanel.Dock="Top"
             IsLoading="{Binding IsLoading}" />
 
-        <materialDesign:DrawerHost IsRightDrawerOpen="{Binding IsSelected}" RightDrawerCloseOnClickAway="True">
+        <materialDesign:DrawerHost IsRightDrawerOpen="{Binding IsSelected}">
             <materialDesign:DrawerHost.RightDrawerContent>
                 <ScrollViewer CanContentScroll="True">
                     <Grid DataContext="{Binding SelectedMedia}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="*" />
+                            <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
@@ -82,8 +87,50 @@
                             Margin="5,0,5,5">
                             <MediaElement Source="{Binding Url}" Visibility="Visible" />
                         </materialDesign:Card>
-                        <ListBox
+                        <materialDesign:DialogHost
                             Grid.Row="2"
+                            Margin="4"
+                            CloseOnClickAway="True">
+                            <materialDesign:DialogHost.DialogContent>
+                                <StackPanel Width="400" Height="400">
+                                    <Button
+                                        HorizontalAlignment="Right"
+                                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                        Style="{StaticResource MaterialDesignIconButton}">
+                                        <materialDesign:PackIcon Kind="Close" />
+                                    </Button>
+                                    <local:LoadingBar IsLoading="{Binding ElementName=SearchView, Path=DataContext.IsLoading}" />
+                                    <lvc:CartesianChart
+                                        Series="{Binding ElementName=SearchView, Path=DataContext.TagsSeries}"
+                                        XAxes="{Binding ElementName=SearchView, Path=DataContext.XAxes}"
+                                        YAxes="{Binding ElementName=SearchView, Path=DataContext.YAxes}" />
+                                </StackPanel>
+                            </materialDesign:DialogHost.DialogContent>
+                            <StackPanel Orientation="Horizontal">
+                                <Button
+                                    Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                    Foreground="#333d4a"
+                                    Style="{StaticResource MaterialDesignFlatButton}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon
+                                            Width="20"
+                                            Height="20"
+                                            Margin="0,0,3,0"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Kind="Tags" />
+                                        <TextBlock Text="See AI Auto taging for this image" />
+                                    </StackPanel>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Click">
+                                            <i:InvokeCommandAction Command="{Binding ElementName=SearchView, Path=DataContext.GetTagsCommand}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+                            </StackPanel>
+                        </materialDesign:DialogHost>
+                        <ListBox
+                            Grid.Row="4"
                             ItemsSource="{Binding MediaItems}"
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                             <ListBox.ItemsPanel>
@@ -110,17 +157,6 @@
                             FontSize="15"
                             Text="{Binding Description}"
                             TextWrapping="Wrap" />
-                        <lvc:CartesianChart
-                            Grid.Row="4"
-                            Margin="4"
-                            Series="{Binding Series}"
-                            TooltipBackground="#480032"
-                            TooltipFontFamily="Courier New"
-                            TooltipFontSize="25"
-                            TooltipPosition="Left"
-                            TooltipTextBrush="#f2f4c3"
-                            XAxes="{Binding XAxes}"
-                            YAxes="{Binding YAxes}" />
                     </Grid>
                 </ScrollViewer>
             </materialDesign:DrawerHost.RightDrawerContent>

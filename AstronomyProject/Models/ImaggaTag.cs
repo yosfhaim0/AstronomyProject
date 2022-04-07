@@ -16,5 +16,7 @@ namespace Models
 
         [Required]
         public double Confidence { get; set; }
+
+        public int MediaGroupeId { get; set; }
     }
 }

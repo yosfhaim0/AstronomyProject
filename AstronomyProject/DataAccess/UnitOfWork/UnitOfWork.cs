@@ -26,12 +26,15 @@ namespace DataAccess.UnitOfWork
             var nasaApi = new NasaApi(configurations.CurrentNasaApiKey);
             var firebase = new FireBase(configurations.FirebaseConnection);
 
-            ImageOfTheDayRepository = new ImageOfTheDayRepository(_context, nasaApi, firebase);
+            ImageOfTheDayRepository = new EFModelRepository<ImageOfTheDay>(_context);
             NearAstroidRepository = new NearAsteroidRepository(_context, nasaApi);
-            MediaSearchRepository = new MediaSearchRepository(_context ,nasaApi);
+            MediaSearchRepository = new MediaSearchRepository(_context);
+            ImaggaTagRepository = new EFModelRepository<ImaggaTag>(_context);
         }
 
-        public IImageOfTheDayRepository ImageOfTheDayRepository { get; }
+        public IModelRepository<ImaggaTag> ImaggaTagRepository { get; }
+
+        public IModelRepository<ImageOfTheDay> ImageOfTheDayRepository { get; }
 
         public INearAsteroidRepository NearAstroidRepository { get; }
 

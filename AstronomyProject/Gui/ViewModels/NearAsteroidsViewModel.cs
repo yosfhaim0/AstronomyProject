@@ -13,35 +13,20 @@ using LiveChartsCore;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.Kernel.Sketches;
 using Prism.Regions;
+using Gui.Dialogs;
 
 namespace Gui.ViewModels
 {
     public class NearAsteroidsViewModel : ViewModelBase , INavigationAware
     {
         readonly INearAsteroidService _nearAsteroidService;
+        IDialogService _dialogService;
 
-        public NearAsteroidsViewModel(INearAsteroidService nearAsteroidService )
+        public NearAsteroidsViewModel(INearAsteroidService nearAsteroidService, IDialogService dialogService)
         {
             _nearAsteroidService = nearAsteroidService;
+            _dialogService = dialogService;
         }
-
-        DelegateCommand _load;
-        public DelegateCommand Load => _load ??= new DelegateCommand(
-            async () =>
-            {
-                if (_allAsteroids.Any())
-                {
-                    return;
-                }
-                IsLoading = true;
-                var asteroids = await _nearAsteroidService
-                .SearchNearAsteroids(FromDate.Value, ToDate.Value);
-
-
-                OnLoading(asteroids);
-                
-                IsLoading = false;
-            });
 
         private DateTime? _fromDate = DateTime.Today.AddDays(-3);
         public DateTime? FromDate
@@ -71,12 +56,18 @@ namespace Gui.ViewModels
             async () =>
             {
                 IsLoading = true;
-                //TODO 
-                var asteroids = await _nearAsteroidService
-                .SearchNearAsteroids(FromDate.Value, ToDate.Value);
+                try
+                {
+                    var asteroids = await _nearAsteroidService
+                            .SearchNearAsteroids(FromDate.Value, ToDate.Value);
+                    OnLoading(asteroids);
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    _dialogService.ShowDialog("Erorr", ex.ParamName);
 
-                OnLoading(asteroids);
-                
+                }
+
                 IsLoading = false;
             });
 
