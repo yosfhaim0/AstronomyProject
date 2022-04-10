@@ -12,13 +12,13 @@ using Tools;
 
 namespace DomainModel.Services
 {
-    public class GalleryImageOfTheDayService : IGalleryImageOfTheDayService
+    public class ImageOfTheDayService : IImageOfTheDayService
     {
         readonly IUnitOfWork _unitOfWork;
 
         readonly NasaApi _nasaApi;
 
-        public GalleryImageOfTheDayService(IDbFactory dbFactory, MyConfigurations configuration)
+        public ImageOfTheDayService(IDbFactory dbFactory, MyConfigurations configuration)
         {
             _unitOfWork = dbFactory.GetDataAccess();
 

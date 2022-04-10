@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Prism;
+using Prism.Ioc;
 
 namespace Gui.Views
 {
@@ -23,6 +13,21 @@ namespace Gui.Views
         public SearchMediaView()
         {
             InitializeComponent();
+            var app = Application.Current as PrismApplicationBase;
+            var vm = app.Container.Resolve<ViewModels.SearchMediaViewModel>();
+            DataContext = vm;
+            vm.PlayRequested += (s, e) =>
+            {
+                media.Play();
+            };
+            vm.PauseRequested += (s, e) =>
+            {
+                media.Pause();
+            };
+            vm.StopRequested += (s, e) =>
+            {
+                media.Stop();
+            };
         }
     }
 }

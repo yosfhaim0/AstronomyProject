@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DomainModel.Services
 {
-    public interface IGalleryImageOfTheDayService
+    public interface IImageOfTheDayService
     {
         Task<ImageOfTheDay> GetTodayImage();
 

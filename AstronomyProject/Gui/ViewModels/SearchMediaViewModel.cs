@@ -6,6 +6,7 @@ using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using Models;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using SkiaSharp;
 using System;
@@ -23,12 +24,15 @@ namespace Gui.ViewModels
         readonly IMediaService _mediaService;
 
         readonly IDialogService _dialogService;
+        readonly ChartDialog _chartDialog;
 
-        public SearchMediaViewModel(IMediaService mediaService, IDialogService dialogService)
+        public SearchMediaViewModel(IMediaService mediaService, IDialogService dialogService, ChartDialog chartDialog)
         {
             _mediaService = mediaService;
             _dialogService = dialogService;
+            _chartDialog = chartDialog;
         }
+
 
         private string _searchWord;
         public string SearchWord
@@ -36,8 +40,10 @@ namespace Gui.ViewModels
             get { return _searchWord; }
             set
             {
-                IsSelected = false;
-                SetProperty(ref _searchWord, value);
+                if(SetProperty(ref _searchWord, value))
+                {
+                    IsSelected = false;
+                };
             }
         }
 
@@ -60,12 +66,6 @@ namespace Gui.ViewModels
             }
         }
 
-        public ObservableCollection<ISeries> TagsSeries { get; set; } = new();
-
-        public List<Axis> XAxes { get; set; }
-
-        public List<Axis> YAxes { get; set; }
-
 
         public ObservableCollection<MediaGroupe> Medias { get; set; } = new();
 
@@ -76,12 +76,13 @@ namespace Gui.ViewModels
                 if (!string.IsNullOrEmpty(SearchWord))
                 {
                     IsLoading = true;
-                    IsSelected = false;
+
                     try
                     {
                         var medias = await _mediaService.SearchMedia(SearchWord);
                         Medias.Clear();
                         Medias.AddRange(medias);
+                        IsSelected = false;
                     }
                     catch (Exception ex)
                     {
@@ -96,63 +97,99 @@ namespace Gui.ViewModels
             });
 
 
+        bool _isIoadingTagChart = false;
+        public bool IsIoadingTagChart
+        {
+            get => _isIoadingTagChart;
+            set => SetProperty(ref _isIoadingTagChart, value);
+        }
+
         private DelegateCommand _getTagsCommand;
-        public DelegateCommand GetTagsCommand => _getTagsCommand ??= new DelegateCommand(
+        public DelegateCommand GetTagsCommand => _getTagsCommand ??= new(
             async () =>
             {
-                if (SelectedMedia.Tags.Any())
-                {
-                    SetImaggaGraph();
-                    return;
-                }
-
-                IsLoading = true;
+                IsIoadingTagChart = true;
                 try
                 {
-                    var tags = await _mediaService
-            .GetMediaTags(SelectedMedia);
-                    SelectedMedia.Tags = tags?.ToList();
-                    SetImaggaGraph();
+                    await _chartDialog.ShowChartByMedia(SelectedMedia);
                 }
                 catch (Exception ex)
                 {
                     _dialogService.ShowDialog("Erorr", ex.Message);
                 }
-                IsLoading = false;
+                IsIoadingTagChart = false;
+            },
+            () => !IsIoadingTagChart);
 
+        
+
+        private DelegateCommand _seeMoreCommand;
+        public DelegateCommand SeeMoreCommand => _seeMoreCommand ??= new(
+            async () =>
+            {
+                if (!string.IsNullOrEmpty(SearchWord))
+                {
+                    IsLoading = true;
+
+                    try
+                    {
+                        var medias = await _mediaService.SearchMedia(SearchWord, Medias.Count);
+                        Medias.AddRange(medias);
+                        IsSelected = false;
+                    }
+                    catch (Exception ex)
+                    {
+                        _dialogService.ShowDialog("Erorr", ex.Message);
+                    }
+                    IsLoading = false;
+                }
+            },
+            () =>
+            {
+                return !IsLoading;
             });
 
-        private void SetImaggaGraph()
+        private bool _isMuted = false;
+        public bool IsMuted
         {
-            TagsSeries.Clear();
-            TagsSeries.AddRange(new List<ISeries>
-            {
-                new ColumnSeries<double>
-                {
-                    Name = "Confidence",
-                    Values = new ObservableCollection<double>(SelectedMedia
-                    .Tags
-                    .Select(x => x.Confidence)),
-                }
-            });
-
-            XAxes = new List<Axis>
-            {
-                new()
-                {
-                    Labels = SelectedMedia.Tags.Select(t => t.Tag).ToList(),
-                }
-            };
-
-            YAxes = new List<Axis>
-            {
-                new()
-                {
-                    Labeler =(value) => value.ToString(),
-                }
-            };
+            get { return _isMuted; }
+            set { SetProperty(ref _isMuted, value); }
         }
 
+
+        public event EventHandler PlayRequested;
+
+        public event EventHandler PauseRequested;
+
+        public event EventHandler StopRequested;
+
+        private DelegateCommand _play;
+        public DelegateCommand PlayCommand => _play ??= new(
+            () =>
+            {
+                PlayRequested?.Invoke(this, EventArgs.Empty);
+            });
+
+        private DelegateCommand _pause;
+        public DelegateCommand PauseCommand => _pause ??= new(
+            () =>
+            {
+                PauseRequested?.Invoke(this, EventArgs.Empty);
+            });
+
+        private DelegateCommand _stop;
+        public DelegateCommand StopCommand => _stop ??= new(
+            () =>
+            {
+                StopRequested?.Invoke(this, EventArgs.Empty);
+            });
+
+        private DelegateCommand _mute;
+        public DelegateCommand MuteCommand => _mute ??= new(
+            () =>
+            {
+                IsMuted = !IsMuted;
+            });
 
 
     }

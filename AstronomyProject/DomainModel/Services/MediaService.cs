@@ -39,6 +39,7 @@ namespace DomainModel.Services
         public async Task<IEnumerable<MediaGroupe>> SearchMedia(string keyWord)
         {
             keyWord = keyWord.ToLower();
+
             var medias = await _unitOfWork
                                                 .MediaSearchRepository
                                                 .Search(keyWord);
@@ -47,8 +48,18 @@ namespace DomainModel.Services
                 return medias;
             }
 
+            return await GetNewFromNasa(keyWord);
+        }
 
-            var mediasFromNasa = await _nasaApi.SearchMedia(keyWord);
+        public async Task<IEnumerable<MediaGroupe>> SearchMedia(string keyWord, int skip)
+        {
+            keyWord = keyWord.ToLower();
+            return await GetNewFromNasa(keyWord, skip);
+        }
+
+        private async Task<IEnumerable<MediaGroupe>> GetNewFromNasa(string keyWord, int skip = 0)
+        {
+            var mediasFromNasa = await _nasaApi.SearchMedia(keyWord, skip);
 
             await _unitOfWork.MediaSearchRepository
                 .InsertMany(mediasFromNasa);

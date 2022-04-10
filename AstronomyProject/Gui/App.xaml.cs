@@ -27,16 +27,17 @@ namespace Gui
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterInstance(GetConfigurations());
-
-            containerRegistry.Register<IDialogService, DialogService>();
             
-            containerRegistry.RegisterSingleton<IDbFactory ,DbFactory>();
+            containerRegistry.RegisterScoped<IDbFactory ,DbFactory>();
 
             #region Register services from the domain model
-            containerRegistry.RegisterSingleton<IGalleryImageOfTheDayService, GalleryImageOfTheDayService>();
-            containerRegistry.RegisterSingleton<INearAsteroidService, NearAsteroidService>();
-            containerRegistry.RegisterSingleton<IMediaService, MediaService>();
+            containerRegistry.RegisterScoped<IImageOfTheDayService, ImageOfTheDayService>();
+            containerRegistry.RegisterScoped<INearAsteroidService, NearAsteroidService>();
+            containerRegistry.RegisterScoped<IMediaService, MediaService>();
             #endregion
+
+            containerRegistry.Register<IDialogService, DialogService>();
+            containerRegistry.Register<ChartDialog>();
 
             #region Register views for navigation
             containerRegistry.RegisterForNavigation<ImageOfTheDayView>();

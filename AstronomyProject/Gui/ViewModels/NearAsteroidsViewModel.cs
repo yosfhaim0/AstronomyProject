@@ -28,6 +28,24 @@ namespace Gui.ViewModels
             _dialogService = dialogService;
         }
 
+        private async Task Search()
+        {
+            IsLoading = true;
+            try
+            {
+                var asteroids = await _nearAsteroidService
+                        .SearchNearAsteroids(FromDate.Value, ToDate.Value);
+                OnLoading(asteroids);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                _dialogService.ShowDialog("Erorr", ex.ParamName);
+
+            }
+
+            IsLoading = false;
+        }
+
         private DateTime? _fromDate = DateTime.Today.AddDays(-3);
         public DateTime? FromDate
         {
@@ -50,25 +68,20 @@ namespace Gui.ViewModels
             set => SetProperty(ref _totalCount, value); 
         }
 
+        DelegateCommand _load;
+        public DelegateCommand Load => _load ??= new DelegateCommand(
+            async () =>
+            {
+                if (IsLoading) 
+                    return;
+                await Search();
+            });
 
         DelegateCommand _searchBetweenDates;
         public DelegateCommand SearchBetweenDates => _searchBetweenDates ??= new DelegateCommand(
             async () =>
             {
-                IsLoading = true;
-                try
-                {
-                    var asteroids = await _nearAsteroidService
-                            .SearchNearAsteroids(FromDate.Value, ToDate.Value);
-                    OnLoading(asteroids);
-                }
-                catch (ArgumentOutOfRangeException ex)
-                {
-                    _dialogService.ShowDialog("Erorr", ex.ParamName);
-
-                }
-
-                IsLoading = false;
+                await Search();
             });
 
         private void OnLoading(IEnumerable<NearAsteroid> asteroids)

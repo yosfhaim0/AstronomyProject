@@ -28,6 +28,7 @@ namespace DataAccess.Repositories
         {
             var asteroids = await MyContext
                 .NearAsteroids
+                .AsNoTracking()
                 .Include(a => a.CloseApproachs)
                 .Where(predicate is null ? _ => true : predicate)
                 .ToListAsync();
@@ -40,6 +41,7 @@ namespace DataAccess.Repositories
             try
             {
                 var asteroids = await MyContext.NearAsteroids
+                    .AsNoTracking()
                      .Include(a => a.CloseApproachs)
                      .Where(a => a.CloseApproachs.Any(c =>
                       c.CloseApproachDate.Date <= endDate.Date
@@ -105,7 +107,9 @@ namespace DataAccess.Repositories
                 currAstFromDb.CloseApproachs.AddRange(newCA);
                 currNewAst.CloseApproachs.AddRange(newCA);
 
-                tasks.Add(MyContext.CloseApproachs.AddRangeAsync(newCA));
+                tasks.Add(MyContext
+                    .CloseApproachs
+                    .AddRangeAsync(newCA));
             }
             await Task.WhenAll(tasks);
         }

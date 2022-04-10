@@ -16,9 +16,9 @@ namespace Gui.ViewModels
 {
     public class ImageOfTheDayViewModel : ViewModelBase
     {
-        readonly IGalleryImageOfTheDayService _gallery;
+        readonly IImageOfTheDayService _gallery;
 
-        public ImageOfTheDayViewModel(IGalleryImageOfTheDayService gallery)
+        public ImageOfTheDayViewModel(IImageOfTheDayService gallery)
         {
             _gallery = gallery;
         }
@@ -65,7 +65,7 @@ namespace Gui.ViewModels
         public DelegateCommand Load => _load ??= new DelegateCommand(
             async () =>
             {
-                if (Gallery.Any())
+                if (IsLoading || Gallery.Any())
                 {
                     return;
                 }

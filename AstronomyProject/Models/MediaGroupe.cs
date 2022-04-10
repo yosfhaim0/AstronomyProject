@@ -9,13 +9,26 @@ namespace Models
         [Key]
         public int Id { get; set; }
 
+        string _url = "";
         [Required]
         [MaxLength(500)]
-        public string Url { get; set; }
+        public string Url 
+        { 
+            get => _url; 
+            set => _url = value ?? ""; 
+        }
 
+        string _previewUrl = "";
         [Required]
         [MaxLength(500)]
-        public string PreviewUrl { get; set; }
+        public string PreviewUrl 
+        { 
+            get => _previewUrl; 
+            set
+            {
+                _previewUrl = value ?? "";
+            } 
+        }
 
         [Required]
         [MaxLength(1000)]

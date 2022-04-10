@@ -11,15 +11,17 @@ namespace DomainModel.DbFactory
     public class DbFactory : IDbFactory
     {
         readonly IUnitOfWork _unitOfWork;
+        readonly MyConfigurations _configurations;
 
         public DbFactory(MyConfigurations configurations)
         {
             _unitOfWork = new UnitOfWork(configurations);
+            _configurations = configurations;
         }
 
         public IUnitOfWork GetDataAccess()
         {
-            return _unitOfWork;
+            return new UnitOfWork(_configurations);
         }
     }
 }

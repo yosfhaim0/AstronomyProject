@@ -94,7 +94,7 @@ namespace ApiRequests.Nasa
             }
         }
 
-        public async Task<IEnumerable<MediaGroupe>> SearchMedia(string keyWord)
+        public async Task<IEnumerable<MediaGroupe>> SearchMedia(string keyWord, int skip = 0)
         {
             var query = $"{GET_IMAGE_LIB_BASE}/search?q={keyWord}";
 
@@ -105,6 +105,7 @@ namespace ApiRequests.Nasa
             var items = (from i in root.collection.items
                         where i != null && !string.IsNullOrEmpty(i.href)
                         select i)
+                        .Skip(skip)
                         .Take(MAX_MEDIAE_ITEMS_FOR_SEARCH);
 
             var itemsWithMediaContents = await GetContenetForEachMediaItem(items);
@@ -115,15 +116,15 @@ namespace ApiRequests.Nasa
                    let data = item.data.First()
                    select new MediaGroupe
                    {
-                       Description = data.description,
-                       MediaType = data.media_type,
-                       PreviewUrl = item.links
+                       Description = data?.description,
+                       MediaType = data?.media_type,
+                       PreviewUrl = item.links?
                        .Where(l => l.rel == "preview")
                        .Select(l => l.href)
                        .FirstOrDefault(),
-                       Title = data.title,
+                       Title = data?.title,
                        Url = content.FirstOrDefault(m => m.Contains("~orig")),
-                       MediaItems = content
+                       MediaItems = content?
                        .Where(m => m.EndsWith("jpg") || m.EndsWith("png"))
                        .Select(m => new MediaItem { Url = m })
                        .Take(MAX_MEDIAE_ITEMS_PER_GROUPE)

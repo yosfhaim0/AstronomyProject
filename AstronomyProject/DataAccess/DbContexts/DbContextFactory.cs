@@ -20,6 +20,7 @@ namespace DataAccess.DbContexts
         public AstronomyContext CreateAstronomyContext()
         {
             var options = new DbContextOptionsBuilder()
+                .EnableSensitiveDataLogging()
                 .UseSqlServer(_connectionStrings)
                 .Options;
 
