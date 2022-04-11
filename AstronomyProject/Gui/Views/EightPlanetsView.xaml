@@ -183,20 +183,35 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-
-                <ListBox
-                    x:Name="lblb"
+                <Expander
                     Grid.Row="0"
                     Grid.Column="0"
-                    ItemsSource="{Binding PropNames}"
-                    SelectedItem="{Binding SelectedProp}"
-                    Style="{StaticResource MaterialDesignChoiceChipPrimaryListBox}">
-                    <!--<i:Interaction.Triggers>
+                    Margin="0,2,0,0"
+                    ExpandDirection="Right"
+                    IsExpanded="True"
+                    Style="{StaticResource MaterialDesignExpander}">
+                    <Expander.Header>
+                        <TextBlock
+                            FontSize="18"
+                            RenderTransformOrigin=".5,.5"
+                            Text="Attributes">
+                            <TextBlock.LayoutTransform>
+                                <RotateTransform Angle="90" />
+                            </TextBlock.LayoutTransform>
+                        </TextBlock>
+                    </Expander.Header>
+                    <ListBox
+                        x:Name="lblb"
+                        ItemsSource="{Binding PropNames}"
+                        SelectedItem="{Binding SelectedProp}"
+                        Style="{StaticResource MaterialDesignChoiceChipPrimaryListBox}">
+                        <!--<i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <i:InvokeCommandAction Command="{Binding SelectMenyFeildsCommand}" CommandParameter="{Binding ElementName=lblb, Path=SelectedItems}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>-->
-                </ListBox>
+                    </ListBox>
+                </Expander>
                 <lvc:CartesianChart
                     Grid.Row="0"
                     Grid.Column="1"
@@ -213,7 +228,6 @@
                         <ImageBrush ImageSource="{Binding ExplanImage}" Opacity="0.3" />
                     </lvc:CartesianChart.Background>
                 </lvc:CartesianChart>
-
             </Grid>
         </TabItem>
     </TabControl>
