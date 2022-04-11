@@ -98,7 +98,7 @@
                     Background="#132446"
                     DataContext="{Binding SelectedPlanet}"
                     Header="{Binding Name}"
-                    Style="{StaticResource GroupBoxMainThem}">
+                    Style="{StaticResource GroupBoxMainInvertThem}">
                     <GroupBox.HeaderTemplate>
                         <DataTemplate>
                             <Grid>
@@ -190,13 +190,12 @@
                     Grid.Column="0"
                     ItemsSource="{Binding PropNames}"
                     SelectedItem="{Binding SelectedProp}"
-                    SelectionMode="Multiple"
-                    Style="{StaticResource MaterialDesignFilterChipAccentOutlineListBox}">
-                    <i:Interaction.Triggers>
+                    Style="{StaticResource MaterialDesignChoiceChipPrimaryListBox}">
+                    <!--<i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <i:InvokeCommandAction Command="{Binding SelectMenyFeildsCommand}" CommandParameter="{Binding ElementName=lblb, Path=SelectedItems}" />
                         </i:EventTrigger>
-                    </i:Interaction.Triggers>
+                    </i:Interaction.Triggers>-->
                 </ListBox>
                 <lvc:CartesianChart
                     Grid.Row="0"

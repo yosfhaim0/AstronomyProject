@@ -5,11 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Services\EightPlanets.json" />
+    <None Remove="Services\ToolTipPropEightPlanet.json" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="EightPlanets.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\ToolTipPropEightPlanet.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

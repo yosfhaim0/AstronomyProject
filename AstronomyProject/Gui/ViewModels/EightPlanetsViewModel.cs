@@ -55,12 +55,14 @@ namespace Gui.ViewModels
             set
             {
                 SetProperty(ref _selectedProp, value);
+                setColum();
+                SetExplanImage();
             }
         }
 
         private void SetExplanImage()
         {
-            ExplanImage = _eightPlanetsService.GetExplanImageList(SelectedProp);
+            ExplanImage = _eightPlanetsService.GetExplanImageList(SelectedProp.Replace(" ", ""));
         }
 
         public EightPlanetsViewModel(EightPlanetsService eightPlanetsService)
@@ -77,7 +79,7 @@ namespace Gui.ViewModels
             PropNames.Remove("HasRingSystem");
             PropNames.Remove("HasGlobalMagneticField");
             PropNames.Remove("Id");
-
+           // YAxes = new();
             //SelectedProp = PropNames.FirstOrDefault();
             SetPropName();
             //ExplanImageList.AddRange(_eightPlanetsInfo.getExplanImageList(PropNames));
@@ -95,36 +97,36 @@ namespace Gui.ViewModels
             };
         }
 
-        private DelegateCommand<object> _selectMenyFeildsCommand;
+        //private DelegateCommand<object> _selectMenyFeildsCommand;
 
-        public DelegateCommand<object> SelectMenyFeildsCommand => _selectMenyFeildsCommand
-            ??= new(
-            (selectedPropNames) =>
-            {
-                var propNames = (selectedPropNames as IList<object>)
-                .Select(i => i.ToString())
-                .ToList();
-                if(propNames.Count <= 0)
-                {
-                    Series.Clear();
-                    return;
-                }
-                foreach (var p1 in propNames)
-                {
-                    var p_p1 = p1.Replace(" ", string.Empty);
-                    foreach (var p2 in propNames)
-                    {
-                        var p_p2 = p2.Replace(" ", string.Empty);
-                        if (_eightPlanetsService.FindMida(p_p1) != _eightPlanetsService.FindMida(p_p2))
-                        {
-                            return;
-                        }
-                    }
-                }
-                var mida = _eightPlanetsService.FindMida(propNames.FirstOrDefault().Replace(" ", string.Empty));
-                SetColumn(propNames, mida);
+        //public DelegateCommand<object> SelectMenyFeildsCommand => _selectMenyFeildsCommand
+        //    ??= new(
+        //    (selectedPropNames) =>
+        //    {
+        //        var propNames = (selectedPropNames as IList<object>)
+        //        .Select(i => i.ToString())
+        //        .ToList();
+        //        if(propNames.Count <= 0)
+        //        {
+        //            Series.Clear();
+        //            return;
+        //        }
+        //        foreach (var p1 in propNames)
+        //        {
+        //            var p_p1 = p1.Replace(" ", string.Empty);
+        //            foreach (var p2 in propNames)
+        //            {
+        //                var p_p2 = p2.Replace(" ", string.Empty);
+        //                if (_eightPlanetsService.FindMida(p_p1) != _eightPlanetsService.FindMida(p_p2))
+        //                {
+        //                    return;
+        //                }
+        //            }
+        //        }
+        //        var mida = _eightPlanetsService.FindMida(propNames.FirstOrDefault().Replace(" ", string.Empty));
+        //        SetColumn(propNames, mida);
 
-            });
+        //    });
 
         private void SetPropName()
         {
@@ -140,62 +142,47 @@ namespace Gui.ViewModels
             PropNames.AddRange(r);
         }
 
-        private void SetColumn(List<string> vs, string mida)
+        private void setColum()
         {
+
+
             List<ColumValue> res = new();
+            var str = "";
             foreach (var item in PlanetList)
             {
-                foreach (var v in vs)
-                {
-                    var prop = item
-                            .GetType()
-                            .GetProperty(v.Replace(" ", string.Empty));
-                    res.Add(new ColumValue
-                    {
-                        Name = prop.Name,
-                        Value = prop.GetValue(item, null),
-                        Plant = item.Name
-                    });
-                }
 
+                var pro = item.GetType().GetProperty(SelectedProp.Replace(" ", ""));
+                res.Add(new ColumValue { Name = pro.Name, Value = pro.GetValue(item, null), Plant = item.Name });
             }
             PropList.Clear();
             PropList.AddRange(res);
 
-            var seri = new List<ISeries>();
-            foreach (var v in vs)
-            {
-                var ll = PropList
-                    .Where(p => p.Name == v.Replace(" ", string.Empty))
-                    .Select(x => (double)x.Value);
-                seri.Add(new ColumnSeries<double>
-                {
-                    Name = v,
-                    Values = new ObservableCollection<double>(ll),
-                    MaxBarWidth = 10,
-                });
-            }
             Series.Clear();
-            Series.AddRange(seri);
-
-            YAxes = new List<Axis>
+            Series.Add(new ColumnSeries<double>
             {
+                Name = SelectedProp,
+                Values = new ObservableCollection<double>().AddRange(PropList.Select(x => (double)x.Value).ToArray()),
+                MaxBarWidth = 10,
+            });
+
+            YAxes.Clear();
+            YAxes.Add(
                 new()
                 {//String.Format("{0:0.##}", 123.4567); 
-                    // Now the Y axis we will display labels as currency
-                    // LiveCharts provides some common formatters
-                    // in this case we are using the currency formatter.
-                    
-                    Labeler =  (value) =>$"{FormatNumber(value)}{mida}",
-                    TextSize=22,
+                 // Now the Y axis we will display labels as currency
+                 // LiveCharts provides some common formatters
+                 // in this case we are using the currency formatter.
+
+                    Labeler = (value) => $"{FormatNumber(value)}{_eightPlanetsService.FindMida(SelectedProp.Replace(" ", ""))}",
+                    TextSize = 22,
                     // you could also build your own currency formatter
                     // for example:
                     // Labeler = (value) => value.ToString("C")
 
                     // But the one that LiveCharts provides creates shorter labels when
                     // the amount is in millions or trillions
-                }
-            };
+                });
+
 
         }
         private static string FormatNumber(double num)
@@ -222,7 +209,7 @@ namespace Gui.ViewModels
 
         public List<Axis> XAxes { get; set; }
 
-        public List<Axis> YAxes { get; set; } 
+        public List<Axis> YAxes { get; set; } = new();
 
     }
 
