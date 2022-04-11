@@ -1,9 +1,6 @@
 ﻿using DataAccess.Repositories;
 using Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.UnitOfWork
@@ -17,6 +14,8 @@ namespace DataAccess.UnitOfWork
         public IMediaSearchRepository MediaSearchRepository { get; }
 
         public IModelRepository<ImaggaTag> ImaggaTagRepository { get; }
+
+        public IModelRepository<SearchWordModel> SearchWordRepository { get; }
 
         Task Complete();
     }

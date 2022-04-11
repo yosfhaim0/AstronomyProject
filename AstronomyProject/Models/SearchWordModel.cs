@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models
 {
@@ -12,6 +13,7 @@ namespace Models
         [Required]
         public string SearchWord { get; set; }
 
+        [ForeignKey("Media")]
         public int MediaGroupeId { get; set; }
 
     }

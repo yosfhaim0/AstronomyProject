@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace Models
         [Required]
         public double Confidence { get; set; }
 
+        [ForeignKey("Media")]
         public int MediaGroupeId { get; set; }
     }
 }

@@ -4,13 +4,11 @@ using DomainModel.DbFactory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Models;
 using Models.Configurations;
 using ApiRequests.WordAssociations;
 using ApiRequests.Nasa;
-using Tools;
 
 namespace DomainModel.Services
 {
@@ -55,6 +53,16 @@ namespace DomainModel.Services
         {
             keyWord = keyWord.ToLower();
             return await GetNewFromNasa(keyWord, skip);
+        }
+
+        public async Task<IEnumerable<string>> GetSearchWords()
+        {
+            var result = await _unitOfWork
+                .SearchWordRepository
+                .GetAll();
+            return result.Select(s => s.SearchWord)
+                .Distinct()
+                .Take(10);
         }
 
         private async Task<IEnumerable<MediaGroupe>> GetNewFromNasa(string keyWord, int skip = 0)

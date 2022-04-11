@@ -177,11 +177,12 @@
             </TabItem.Header>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="300" />
+                    <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
                 <Expander
                     Grid.Row="0"
@@ -201,18 +202,60 @@
                         </TextBlock>
                     </Expander.Header>
                     <ListBox
-                        x:Name="lblb"
+                        MaxWidth="350"
                         ItemsSource="{Binding PropNames}"
                         SelectedItem="{Binding SelectedProp}"
-                        Style="{StaticResource MaterialDesignChoiceChipPrimaryListBox}">
-                        <!--<i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding SelectMenyFeildsCommand}" CommandParameter="{Binding ElementName=lblb, Path=SelectedItems}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>-->
-                    </ListBox>
+                        Style="{StaticResource MaterialDesignChoiceChipPrimaryListBox}" />
                 </Expander>
+                <materialDesign:DialogHost
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    CloseOnClickAway="True">
+                    <materialDesign:DialogHost.DialogContent>
+                        <Grid Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Button
+                                Grid.Row="0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                FontWeight="Bold"
+                                Foreground="Black"
+                                Style="{StaticResource MaterialDesignIconButton}">
+                                <materialDesign:PackIcon
+                                    Width="15"
+                                    Height="15"
+                                    Kind="Close" />
+                            </Button>
+                            <Image Grid.Row="1" Source="{Binding ExplanImage}" />
+                        </Grid>
+                    </materialDesign:DialogHost.DialogContent>
+                    <Button
+                        Width="200"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                        Foreground="#333d4a"
+                        Style="{StaticResource MaterialDesignFlatButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Width="20"
+                                Height="20"
+                                Margin="0,0,3,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Kind="Image" />
+                            <TextBlock Text="See illustration image" />
+                        </StackPanel>
+                    </Button>
+
+                </materialDesign:DialogHost>
+
                 <lvc:CartesianChart
+                    x:Name="CompareChart"
                     Grid.Row="0"
                     Grid.Column="1"
                     Margin="4"
@@ -225,8 +268,25 @@
                     XAxes="{Binding XAxes}"
                     YAxes="{Binding YAxes}">
                     <lvc:CartesianChart.Background>
-                        <ImageBrush ImageSource="{Binding ExplanImage}" Opacity="0.3" />
+                        <ImageBrush
+                            x:Name="ExplanImagePopup"
+                            ImageSource="{Binding ExplanImage}"
+                            Opacity="0.3" />
                     </lvc:CartesianChart.Background>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:ChangePropertyAction
+                                PropertyName="Opacity"
+                                TargetName="ExplanImagePopup"
+                                Value="1" />
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseRightButtonDown">
+                            <i:ChangePropertyAction
+                                PropertyName="Opacity"
+                                TargetName="ExplanImagePopup"
+                                Value="0.3" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                 </lvc:CartesianChart>
             </Grid>
         </TabItem>

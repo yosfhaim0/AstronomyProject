@@ -33,6 +33,15 @@ namespace Gui.ViewModels
             _chartDialog = chartDialog;
         }
 
+        DelegateCommand _load;
+        public DelegateCommand Load => _load ??= new DelegateCommand(
+            async () =>
+            {
+                var searchs = await _mediaService.GetSearchWords();
+                Searches.Clear();
+                Searches.AddRange(searchs);
+            });
+
 
         private string _searchWord;
         public string SearchWord
@@ -65,6 +74,8 @@ namespace Gui.ViewModels
                 SetProperty(ref _selectedMedia, value);
             }
         }
+
+        public ObservableCollection<string> Searches { get; set; } = new();
 
 
         public ObservableCollection<MediaGroupe> Medias { get; set; } = new();

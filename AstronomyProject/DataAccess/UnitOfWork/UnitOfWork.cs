@@ -2,14 +2,8 @@
 using ApiRequests.Nasa;
 using DataAccess.DbContexts;
 using DataAccess.Repositories;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using Models;
 using Models.Configurations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.UnitOfWork
@@ -30,6 +24,7 @@ namespace DataAccess.UnitOfWork
             NearAstroidRepository = new NearAsteroidRepository(_context, nasaApi);
             MediaSearchRepository = new MediaSearchRepository(_context);
             ImaggaTagRepository = new EFModelRepository<ImaggaTag>(_context);
+            SearchWordRepository = new EFModelRepository<SearchWordModel>(_context);
         }
 
         public IModelRepository<ImaggaTag> ImaggaTagRepository { get; }
@@ -39,6 +34,8 @@ namespace DataAccess.UnitOfWork
         public INearAsteroidRepository NearAstroidRepository { get; }
 
         public IMediaSearchRepository MediaSearchRepository { get; }
+
+        public IModelRepository<SearchWordModel> SearchWordRepository { get; }
 
         public async Task Complete()
         {

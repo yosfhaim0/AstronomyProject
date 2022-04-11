@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
@@ -25,7 +24,6 @@ namespace DataAccess.Repositories
         public async Task<IEnumerable<TModel>> FindAll(Expression<Func<TModel, bool>> predicate)
         {
             return await Context.Set<TModel>().Where(predicate).ToListAsync();
-
         }
 
         public async Task<IEnumerable<TModel>> GetAll()

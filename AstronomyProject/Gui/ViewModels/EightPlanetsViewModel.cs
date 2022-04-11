@@ -16,11 +16,40 @@ namespace Gui.ViewModels
     public class EightPlanetsViewModel : ViewModelBase
     {
         readonly EightPlanetsService _eightPlanetsService;
+
+        public EightPlanetsViewModel(EightPlanetsService eightPlanetsService)
+        {
+            _eightPlanetsService = eightPlanetsService;
+            PlanetList.AddRange(_eightPlanetsService.GetEightPlanetsInfo());
+            PropNames = typeof(Planet)
+                .GetProperties()
+                .Select(x => x.Name)
+                .ToList();
+
+            PropNames.Remove("Name");
+            PropNames.Remove("Url");
+            PropNames.Remove("HasRingSystem");
+            PropNames.Remove("HasGlobalMagneticField");
+            PropNames.Remove("Id");
+            SetPropName();
+
+            XAxes = new List<Axis>
+            {
+                new()
+                {
+                    // Use the labels property to define named labels.
+                    Labels = PlanetList.Select(x => x.Name).ToArray(),
+                    TextSize=22,
+                    NameTextSize=22,
+                }
+            };
+        }
+
         public ObservableCollection<Planet> PlanetList { get; set; } = new();
 
         public List<string> ExplanImageList { get; set; } = new();
+        
         private string _explanImage;
-
         public string ExplanImage
         {
             get { return _explanImage; }
@@ -39,11 +68,10 @@ namespace Gui.ViewModels
                 SetProperty(ref _selectedPlanet, value);
             }
         }
+
         public List<string> PropNames { get; set; } = new();
 
         public ObservableCollection<ColumValue> PropList { get; set; } = new();
-
-        private ObservableCollection<string> _selectedProps = new();
 
         private string _selectedProp;
         public string SelectedProp
@@ -55,7 +83,7 @@ namespace Gui.ViewModels
             set
             {
                 SetProperty(ref _selectedProp, value);
-                setColum();
+                SetPropertySeries();
                 SetExplanImage();
             }
         }
@@ -64,69 +92,6 @@ namespace Gui.ViewModels
         {
             ExplanImage = _eightPlanetsService.GetExplanImageList(SelectedProp.Replace(" ", ""));
         }
-
-        public EightPlanetsViewModel(EightPlanetsService eightPlanetsService)
-        {
-            _eightPlanetsService = eightPlanetsService;
-            PlanetList.AddRange(_eightPlanetsService.GetEightPlanetsInfo());
-            PropNames = typeof(Planet)
-                .GetProperties()
-                .Select(x => x.Name)
-                .ToList();
-
-            PropNames.Remove("Name");
-            PropNames.Remove("Url");
-            PropNames.Remove("HasRingSystem");
-            PropNames.Remove("HasGlobalMagneticField");
-            PropNames.Remove("Id");
-           // YAxes = new();
-            //SelectedProp = PropNames.FirstOrDefault();
-            SetPropName();
-            //ExplanImageList.AddRange(_eightPlanetsInfo.getExplanImageList(PropNames));
-
-
-            XAxes = new List<Axis>
-            {
-                new()
-                {
-                    // Use the labels property to define named labels.
-                    Labels = PlanetList.Select(x => x.Name).ToArray(),
-                    TextSize=22,
-                    NameTextSize=22,
-                }
-            };
-        }
-
-        //private DelegateCommand<object> _selectMenyFeildsCommand;
-
-        //public DelegateCommand<object> SelectMenyFeildsCommand => _selectMenyFeildsCommand
-        //    ??= new(
-        //    (selectedPropNames) =>
-        //    {
-        //        var propNames = (selectedPropNames as IList<object>)
-        //        .Select(i => i.ToString())
-        //        .ToList();
-        //        if(propNames.Count <= 0)
-        //        {
-        //            Series.Clear();
-        //            return;
-        //        }
-        //        foreach (var p1 in propNames)
-        //        {
-        //            var p_p1 = p1.Replace(" ", string.Empty);
-        //            foreach (var p2 in propNames)
-        //            {
-        //                var p_p2 = p2.Replace(" ", string.Empty);
-        //                if (_eightPlanetsService.FindMida(p_p1) != _eightPlanetsService.FindMida(p_p2))
-        //                {
-        //                    return;
-        //                }
-        //            }
-        //        }
-        //        var mida = _eightPlanetsService.FindMida(propNames.FirstOrDefault().Replace(" ", string.Empty));
-        //        SetColumn(propNames, mida);
-
-        //    });
 
         private void SetPropName()
         {
@@ -142,17 +107,20 @@ namespace Gui.ViewModels
             PropNames.AddRange(r);
         }
 
-        private void setColum()
+        private void SetPropertySeries()
         {
-
-
             List<ColumValue> res = new();
-            var str = "";
             foreach (var item in PlanetList)
             {
 
-                var pro = item.GetType().GetProperty(SelectedProp.Replace(" ", ""));
-                res.Add(new ColumValue { Name = pro.Name, Value = pro.GetValue(item, null), Plant = item.Name });
+                var pro = item.GetType()
+                    .GetProperty(SelectedProp.Replace(" ", ""));
+                res.Add(new ColumValue 
+                { 
+                    Name = pro.Name, 
+                    Value = pro.GetValue(item, null), 
+                    Plant = item.Name 
+                });
             }
             PropList.Clear();
             PropList.AddRange(res);
@@ -161,7 +129,7 @@ namespace Gui.ViewModels
             Series.Add(new ColumnSeries<double>
             {
                 Name = SelectedProp,
-                Values = new ObservableCollection<double>().AddRange(PropList.Select(x => (double)x.Value).ToArray()),
+                Values = new ObservableCollection<double>(PropList.Select(x => (double)x.Value)),
                 MaxBarWidth = 10,
             });
 

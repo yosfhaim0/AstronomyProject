@@ -24,7 +24,7 @@ namespace Testing
             //await _fireBaseTest.DeleteImage();
             //var v=await _fireBaseTest.get("1.jpg");
             //_mediaService = new();
-             var y=_mediaService.SearchMedia("moon");
+             var y=await _mediaService.SearchMedia("moon");
             //var c=await _fireBaseTest.get("d");
             //await _nasaTest.GetImageOfTheDayTest();
             //EightPlanets a = new();

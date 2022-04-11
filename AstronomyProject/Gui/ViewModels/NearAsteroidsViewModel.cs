@@ -20,7 +20,7 @@ namespace Gui.ViewModels
     public class NearAsteroidsViewModel : ViewModelBase , INavigationAware
     {
         readonly INearAsteroidService _nearAsteroidService;
-        IDialogService _dialogService;
+        readonly IDialogService _dialogService;
 
         public NearAsteroidsViewModel(INearAsteroidService nearAsteroidService, IDialogService dialogService)
         {
@@ -68,11 +68,61 @@ namespace Gui.ViewModels
             set => SetProperty(ref _totalCount, value); 
         }
 
+        readonly List<NearAsteroid> _allAsteroids = new();
+
+        public ObservableCollection<NearAsteroid> Asteroids { get; set; } = new();
+
+        private NearAsteroid _selectedAstroeid = new();
+        public NearAsteroid SelectedAstroeid
+        {
+            get => _selectedAstroeid;
+            set
+            {
+                if (value == null) return;
+                SetProperty(ref _selectedAstroeid, value);
+                CloseApproach = new(_selectedAstroeid?.CloseApproachs);
+                FilterDatesCommand.Execute();
+            }
+        }
+
+        private ObservableCollection<CloseApproach> _closeApproach = new();
+        public ObservableCollection<CloseApproach> CloseApproach
+        {
+            get => _closeApproach;
+            set => SetProperty(ref _closeApproach, value);
+        }
+
+        DelegateCommand _filterByDiameter;
+        public DelegateCommand FilterByDiameter => _filterByDiameter ??= new DelegateCommand(
+             () =>
+            {
+                Asteroids.Clear();
+                Asteroids.AddRange(_allAsteroids.Where(a => a.EstimatedDiameterMin >= Diameter));
+
+            });
+
+        private double _diameter;
+        public double Diameter
+        {
+            get => _diameter;
+            set
+            {
+                SetProperty(ref _diameter, value);
+            }
+        }
+
+        private string _selectedFilterOfCloseApproach = "All";
+        public string SelectedFilterOfCloseApproach
+        {
+            get { return _selectedFilterOfCloseApproach; }
+            set { SetProperty(ref _selectedFilterOfCloseApproach, value); }
+        }
+
         DelegateCommand _load;
         public DelegateCommand Load => _load ??= new DelegateCommand(
             async () =>
             {
-                if (IsLoading) 
+                if (IsLoading)
                     return;
                 await Search();
             });
@@ -97,51 +147,45 @@ namespace Gui.ViewModels
             SetRiskInfoSeries();
         }
 
-        readonly List<NearAsteroid> _allAsteroids = new();
-
-        private double _diameter;
-        public double Diameter
-        {
-            get => _diameter;
-            set
-            {
-                SetProperty(ref _diameter, value);
-            }
-        }
-
-        public ObservableCollection<NearAsteroid> Asteroids { get; set; } = new();
-
-        DelegateCommand _filterByDiameter;
-        public DelegateCommand FilterByDiameter => _filterByDiameter ??= new DelegateCommand(
-             () =>
-            {
-                Asteroids.Clear();
-                Asteroids.AddRange(_allAsteroids.Where(a => a.EstimatedDiameterMin >= Diameter));
-
-            });
-
-
-        private NearAsteroid _selectedAstroeid = new();
-        public NearAsteroid SelectedAstroeid
-        {
-            get => _selectedAstroeid;
-            set
-            {
-                if (value == null) return;
-                SetProperty(ref _selectedAstroeid, value);
-                CloseApproach = new(_selectedAstroeid?.CloseApproachs);
-                SetRelativeVelocitySeries();
-                SetMissDistanceSeries();
-                SetOrbitingBodySeries();
-            }
-        }
-
-        private ObservableCollection<CloseApproach> _closeApproach = new();
-        public ObservableCollection<CloseApproach> CloseApproach
-        {
-            get => _closeApproach;
-            set => SetProperty(ref _closeApproach, value);
-        }
+        private DelegateCommand _filterDatesCommand;
+        public DelegateCommand FilterDatesCommand => _filterDatesCommand ??= new (
+         () =>
+         {
+             CloseApproach.Clear();
+             switch (SelectedFilterOfCloseApproach)
+             {
+                 case "All":
+                     CloseApproach.AddRange(SelectedAstroeid.CloseApproachs);
+                     break;
+                 case "Between the search dates":
+                     CloseApproach.AddRange(SelectedAstroeid
+                         .CloseApproachs
+                         .Where(c => c.CloseApproachDate >= FromDate
+                         && c.CloseApproachDate <= ToDate));
+                     break;
+                 case "Last week":
+                     CloseApproach.AddRange(SelectedAstroeid
+                         .CloseApproachs
+                         .Where(c => c.CloseApproachDate >= DateTime.Now.AddDays(-7)
+                         && c.CloseApproachDate <= DateTime.Now));
+                     break;
+                 case "Last month":
+                     CloseApproach.AddRange(SelectedAstroeid
+                         .CloseApproachs
+                         .Where(c => c.CloseApproachDate >= DateTime.Now.AddDays(-30)
+                         && c.CloseApproachDate <= DateTime.Now));
+                     break;
+                 case "Last year":
+                     CloseApproach.AddRange(SelectedAstroeid
+                         .CloseApproachs
+                         .Where(c => c.CloseApproachDate >= DateTime.Now.AddDays(-365)
+                         && c.CloseApproachDate <= DateTime.Now));
+                     break;
+             }
+             SetRelativeVelocitySeries();
+             SetMissDistanceSeries();
+             SetOrbitingBodySeries();
+         });
 
         public ObservableCollection<ISeries> RiskInformation { get; set; } = new();
 
