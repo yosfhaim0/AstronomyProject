@@ -4,6 +4,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Tools;
 
 namespace DomainModel.Services
 {
@@ -76,5 +78,28 @@ namespace DomainModel.Services
         {  
             return _path + propNames + ".jpg";
         }
+
+        public IEnumerable<PropertyToolTipPair> GetPropertyToolTipPairs()
+        {
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"ToolTipPropEightPlanet.json");
+            var jsonString = File.ReadAllText(path);
+            var content = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonString);
+            return from p in content
+                   select new PropertyToolTipPair
+                   {
+                       PropertyName = p.Key,
+                       ToolTip = p.Value.SpliceText(10),
+                   };
+        }
+    }
+
+    public class PropertyToolTipPair
+    {
+        public string PropertyName { get; set; }
+
+        public string ToolTip { get; set; }
+
+        string _property;
+        public string Property { get => _property ??= PropertyName.Replace(" ", ""); }
     }
 }

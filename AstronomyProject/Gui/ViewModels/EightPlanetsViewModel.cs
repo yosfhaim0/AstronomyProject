@@ -21,17 +21,10 @@ namespace Gui.ViewModels
         {
             _eightPlanetsService = eightPlanetsService;
             PlanetList.AddRange(_eightPlanetsService.GetEightPlanetsInfo());
-            PropNames = typeof(Planet)
-                .GetProperties()
-                .Select(x => x.Name)
-                .ToList();
 
-            PropNames.Remove("Name");
-            PropNames.Remove("Url");
-            PropNames.Remove("HasRingSystem");
-            PropNames.Remove("HasGlobalMagneticField");
-            PropNames.Remove("Id");
+            PropNames = new(_eightPlanetsService.GetPropertyToolTipPairs());
             SetPropName();
+
             SelectedProp = PropNames.First();
 
             XAxes = new List<Axis>
@@ -70,12 +63,12 @@ namespace Gui.ViewModels
             }
         }
 
-        public List<string> PropNames { get; set; } = new();
+        public ObservableCollection<PropertyToolTipPair> PropNames { get; set; }
 
         public ObservableCollection<ColumValue> PropList { get; set; } = new();
 
-        private string _selectedProp;
-        public string SelectedProp
+        private PropertyToolTipPair _selectedProp;
+        public PropertyToolTipPair SelectedProp
         {
             get
             {
@@ -91,21 +84,16 @@ namespace Gui.ViewModels
 
         private void SetExplanImage()
         {
-            ExplanImage = _eightPlanetsService.GetExplanImageList(SelectedProp.Replace(" ", ""));
+            ExplanImage = _eightPlanetsService.GetExplanImageList(SelectedProp.Property);
         }
 
         private void SetPropName()
         {
-
-            List<string> r = new();
             foreach (var v in PropNames)
             {
-                string[] split = Regex.Split(v, @"(?<!^)(?=[A-Z])");
-                var res = split.Length > 1 ? string.Join(" ", split) : split[0];
-                r.Add(res);
+                string[] split = Regex.Split(v.PropertyName, @"(?<!^)(?=[A-Z])");
+                v.PropertyName = split.Length > 1 ? string.Join(" ", split) : split[0];
             }
-            PropNames.Clear();
-            PropNames.AddRange(r);
         }
 
         private void SetPropertySeries()
@@ -115,7 +103,7 @@ namespace Gui.ViewModels
             {
 
                 var pro = item.GetType()
-                    .GetProperty(SelectedProp.Replace(" ", ""));
+                    .GetProperty(SelectedProp.Property);
                 res.Add(new ColumValue 
                 { 
                     Name = pro.Name, 
@@ -129,7 +117,7 @@ namespace Gui.ViewModels
             Series.Clear();
             Series.Add(new ColumnSeries<double>
             {
-                Name = SelectedProp,
+                Name = SelectedProp.PropertyName,
                 Values = new ObservableCollection<double>(PropList.Select(x => (double)x.Value)),
                 MaxBarWidth = 10,
             });
@@ -142,7 +130,7 @@ namespace Gui.ViewModels
                  // LiveCharts provides some common formatters
                  // in this case we are using the currency formatter.
 
-                    Labeler = (value) => $"{FormatNumber(value)}{_eightPlanetsService.FindMida(SelectedProp.Replace(" ", ""))}",
+                    Labeler = (value) => $"{FormatNumber(value)}{_eightPlanetsService.FindMida(SelectedProp.Property)}",
                     TextSize = 22,
                     // you could also build your own currency formatter
                     // for example:

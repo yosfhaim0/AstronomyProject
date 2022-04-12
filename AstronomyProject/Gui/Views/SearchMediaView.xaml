@@ -209,7 +209,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Kind="Tags" />
-                                <TextBlock FontSize="16" Text="See AI Auto taging for this image" />
+                                <TextBlock FontSize="16" Text="See AI Auto tagging for this image" />
                             </StackPanel>
                         </Button>
 

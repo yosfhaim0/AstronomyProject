@@ -67,9 +67,9 @@
             Grid.Row="3"
             Grid.Column="0"
             Margin="10">
-            <local:BulletedItem BulletText="Search for astronomy media" />
+            <local:BulletedItem BulletText="Search for astronomy media and AI Auto tagging for the images" />
             <local:BulletedItem BulletText="Find near asteroids and analyze there data with visual charts" />
-            <local:BulletedItem BulletText="View a data profile for the eight planets" />
+            <local:BulletedItem BulletText="View a data profile for The Solar System" />
             <local:BulletedItem BulletText="View image of the day by nasa" />
         </StackPanel>
         <materialDesign:Card

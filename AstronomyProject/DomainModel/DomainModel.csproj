@@ -12,7 +12,7 @@
     <Content Include="EightPlanets.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Services\ToolTipPropEightPlanet.json">
+    <Content Include="ToolTipPropEightPlanet.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

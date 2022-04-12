@@ -9,15 +9,9 @@ using System.Threading.Tasks;
 namespace ApiRequests.FireBaseStorage
 {
     public class FireBase
-    {
-        private const string ONLINE_REPO = @"astronomyproject-36250.appspot.com";
+    { 
 
         readonly FirebaseStorage _storage;
-
-        public FireBase()
-        {
-
-        }
 
         public FireBase(string repoConnction)
         {
@@ -35,12 +29,11 @@ namespace ApiRequests.FireBaseStorage
             try
             {
                 var stream = File.Open(path, FileMode.Open);
-                
+
                 // Construct FirebaseStorage with path to where you want to upload the 
-                //file and put it there
-                var storege = new FirebaseStorage(ONLINE_REPO);
-                
-                var downloadUrl = await storege
+                //file and put it ther
+
+                var downloadUrl = await _storage
                     .Child(fileName)
                     .PutAsync(stream);
                 
@@ -60,7 +53,7 @@ namespace ApiRequests.FireBaseStorage
         /// <returns></returns>
         public async Task Delete(string nameInFirebase)
         {
-            await new FirebaseStorage(ONLINE_REPO).
+            await _storage.
                 Child(nameInFirebase).
                 DeleteAsync();
 
@@ -71,7 +64,7 @@ namespace ApiRequests.FireBaseStorage
         {
             try
             {
-                return await new FirebaseStorage(ONLINE_REPO).
+                return await _storage.
                        Child(nameToBeKeptInFirebase).
                        GetDownloadUrlAsync();
             }

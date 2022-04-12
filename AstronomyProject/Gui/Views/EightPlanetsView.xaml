@@ -205,7 +205,13 @@
                         MaxWidth="350"
                         ItemsSource="{Binding PropNames}"
                         SelectedItem="{Binding SelectedProp}"
-                        Style="{StaticResource MaterialDesignChoiceChipPrimaryListBox}" />
+                        Style="{StaticResource MaterialDesignChoiceChipPrimaryListBox}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding PropertyName}" ToolTip="{Binding ToolTip}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </Expander>
                 <materialDesign:DialogHost
                     Grid.Row="1"

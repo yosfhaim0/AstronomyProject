@@ -133,7 +133,7 @@
                             FontSize="16"
                             Text="{Binding Diameter, UpdateSourceTrigger=PropertyChanged}">
                             <materialDesign:HintAssist.Hint>
-                                <TextBlock FontSize="14" Text="All greater then diameter..." />
+                                <TextBlock FontSize="14" Text="Greater then diameter..." />
                             </materialDesign:HintAssist.Hint>
                             <TextBox.InputBindings>
                                 <KeyBinding
@@ -249,7 +249,7 @@
                                         Width="auto"
                                         Binding="{Binding AbsoluteMagnitudeH, StringFormat={}{0:#.0.0}}"
                                         Header="Absolute&#x0a;Magnitude H" />
-                                    <DataGridTemplateColumn Header="Estimated&#x0a;Diameter">
+                                    <DataGridTemplateColumn Header="Estimated&#x0a;Diameter&#x0a;(min - max)">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <StackPanel Orientation="Horizontal">

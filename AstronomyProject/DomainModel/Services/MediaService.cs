@@ -8,6 +8,7 @@ using Models;
 using Models.Configurations;
 using ApiRequests.WordAssociations;
 using ApiRequests.Nasa;
+using ApiRequests.FireBaseStorage;
 
 namespace DomainModel.Services
 {
@@ -19,12 +20,16 @@ namespace DomainModel.Services
 
         readonly NasaApi _nasaApi;
 
+        readonly FireBase _fireBase;
+
         readonly IDataAccessFactory _daFactory;
 
         public MediaService(IDataAccessFactory daFactory, MyConfigurations configurations)
         {
             _daFactory = daFactory;
-            
+
+            _fireBase = new FireBase(configurations.FirebaseConnection);
+
             _imagga = new ImaggaApi(configurations.ImaggaKey.ImaggaApiKey, configurations.ImaggaKey.ImaggaApiSecret);
 
             _nasaApi = new NasaApi(configurations.CurrentNasaApiKey);
@@ -44,6 +49,7 @@ namespace DomainModel.Services
             var medias = await unitOfWork
                                                 .MediaSearchRepository
                                                 .Search(keyWord);
+            
             if (medias.Any())
             {
                 return medias;
