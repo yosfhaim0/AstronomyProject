@@ -37,6 +37,8 @@ namespace Gui.ViewModels
         public DelegateCommand Load => _load ??= new DelegateCommand(
             async () =>
             {
+                if (IsLoading)
+                    return;
                 var searchs = await _mediaService.GetSearchWords();
                 Searches.Clear();
                 Searches.AddRange(searchs);
@@ -91,6 +93,10 @@ namespace Gui.ViewModels
                     try
                     {
                         var medias = await _mediaService.SearchMedia(SearchWord);
+                        if (!Searches.Contains(SearchWord.ToLower()))
+                        {
+                            Searches.Add(SearchWord.ToLower());
+                        }
                         Medias.Clear();
                         Medias.AddRange(medias);
                         IsSelected = false;

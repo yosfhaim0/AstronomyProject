@@ -11,8 +11,6 @@ namespace ApiRequests.Nasa
 {
     public class NasaApi
     {
-        const string API_KEY = @"tytdjk9rjM9VFGudlmOf7tnLyMYeOTFZjRp36YjU";
-
         const int MAX_MEDIAE_ITEMS_FOR_SEARCH = 25;
         const int MAX_MEDIAE_ITEMS_PER_GROUPE = 6;
 
@@ -32,11 +30,6 @@ namespace ApiRequests.Nasa
         readonly HttpGet _client = new();
 
         readonly string _apiKey;
-
-        public NasaApi()
-        {
-
-        }
 
         public NasaApi(string apiKey)
         {
@@ -64,7 +57,7 @@ namespace ApiRequests.Nasa
             {
                 var query = GET_ASTROID_BY_ID
                     .Replace("ASTROID_ID", astroidId)
-                    .Replace("API_KEY", API_KEY);
+                    .Replace("API_KEY", _apiKey);
 
                 var jsonString = await _client.GetAsync(query);
 
@@ -159,7 +152,7 @@ namespace ApiRequests.Nasa
         {
             try
             {
-                var query = $"{GET_APOD}{API_KEY}";
+                var query = $"{GET_APOD}{_apiKey}";
 
                 var jsonString = await _client.GetAsync(query);
 
@@ -186,7 +179,7 @@ namespace ApiRequests.Nasa
             var query = GET_AC
                 .Replace("START_DATE", startFormat)
                 .Replace("END_DATE", endFormat)
-                .Replace("API_KEY", API_KEY);
+                .Replace("API_KEY", _apiKey);
 
             try
             {

@@ -42,7 +42,9 @@ namespace DataAccess.Repositories
 
         public async Task AddTags(MediaGroupe media, IEnumerable<ImaggaTag> tags)
         {
+            var mediaFromDB = await GetById(media.Id);
             media.Tags.AddRange(tags);
+            mediaFromDB.Tags.AddRange(tags);
             await MyContext.ImaggaTags.AddRangeAsync(tags);
         }
     }

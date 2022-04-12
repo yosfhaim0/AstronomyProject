@@ -17,7 +17,7 @@ using Gui.Dialogs;
 
 namespace Gui.ViewModels
 {
-    public class NearAsteroidsViewModel : ViewModelBase , INavigationAware
+    public class NearAsteroidsViewModel : ViewModelBase
     {
         readonly INearAsteroidService _nearAsteroidService;
         readonly IDialogService _dialogService;
@@ -143,6 +143,8 @@ namespace Gui.ViewModels
 
             Asteroids.Clear();
             Asteroids.AddRange(asteroids);
+
+            SelectedAstroeid = Asteroids.First();
 
             SetRiskInfoSeries();
         }
@@ -297,16 +299,6 @@ namespace Gui.ViewModels
                 MinStep = TimeSpan.FromDays(1).Ticks, 
             }
         };
-
-        public void OnNavigatedTo(NavigationContext navigationContext) { }
-
-        public bool IsNavigationTarget(NavigationContext navigationContext)
-        {
-            return true;
-        }
-
-        public void OnNavigatedFrom(NavigationContext navigationContext) { }
-
     }
 
     class CloseApproachGroupByOrbitingBody

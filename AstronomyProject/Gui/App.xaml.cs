@@ -5,16 +5,9 @@ using Newtonsoft.Json;
 using Prism.Ioc;
 using Prism.Unity;
 using System;
-using System.Collections.Generic;
-using System.Data;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using Gui.Views;
-using DataAccess.DbContexts;
-using DataAccess.UnitOfWork;
-using Prism.Regions;
 using Gui.Dialogs;
 
 namespace Gui
@@ -56,13 +49,6 @@ namespace Gui
             var configurations = JsonConvert.DeserializeObject<MyConfigurations>(jsonString);
             return configurations;
         }
-
-        //protected override async void OnExit(ExitEventArgs e)
-        //{
-        //    await Container.Resolve<SaveAllToDB>().SaveAsync();
-        //    Current.Shutdown();
-        //    base.OnExit(e);
-        //}
 
         protected override Window CreateShell()
         {

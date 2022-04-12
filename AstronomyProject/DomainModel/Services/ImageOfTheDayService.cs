@@ -13,21 +13,23 @@ namespace DomainModel.Services
 {
     public class ImageOfTheDayService : IImageOfTheDayService
     {
-        readonly IUnitOfWork _unitOfWork;
-
         readonly NasaApi _nasaApi;
+
+        readonly IDbFactory _dbFactory;
 
         public ImageOfTheDayService(IDbFactory dbFactory, MyConfigurations configuration)
         {
-            _unitOfWork = dbFactory.GetDataAccess();
+            _dbFactory = dbFactory;
 
             _nasaApi = new NasaApi(configuration.CurrentNasaApiKey);
         }
 
         public async Task<ImageOfTheDay> GetTodayImage()
         {
-            var isExist = await  
-                _unitOfWork
+            using var unitOfWork = _dbFactory.GetDataAccess();
+
+            var isExist = await
+                unitOfWork
                 .ImageOfTheDayRepository
                 .FindAll(i => i.Date.Date == DateTime.Now.Date);
             if (isExist.Any())
@@ -39,18 +41,20 @@ namespace DomainModel.Services
 
             var result = imgDto.CopyPropertiesToNew(typeof(ImageOfTheDay)) as ImageOfTheDay;
 
-            await _unitOfWork
+            await unitOfWork
                 .ImageOfTheDayRepository
                 .Insert(result);
 
-            await _unitOfWork.Complete();
+            await unitOfWork.Complete();
 
             return result;
         }
 
         public async Task<IEnumerable<ImageOfTheDay>> GetGallery()
         {
-            var images = await _unitOfWork
+            using var unitOfWork = _dbFactory.GetDataAccess();
+
+            var images = await unitOfWork
                 .ImageOfTheDayRepository
                 .GetAll();
             return images.OrderByDescending(i => i.Date);

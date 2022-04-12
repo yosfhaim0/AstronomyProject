@@ -1,25 +1,36 @@
-﻿using DataAccess.UnitOfWork;
+﻿using ApiRequests.Nasa;
+using DataAccess.UnitOfWork;
 using DomainModel.DbFactory;
 using Models;
+using Models.Configurations;
+using Models.Dtos;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Tools;
 
 namespace DomainModel.Services
 {
     public class NearAsteroidService : INearAsteroidService
     {
-        readonly IUnitOfWork _unitOfWork;
+        readonly NasaApi _nasaApi;
 
-        public NearAsteroidService(IDbFactory dbFactory)
+        readonly IDbFactory _dbFactory;
+
+        public NearAsteroidService(IDbFactory dbFactory, MyConfigurations configuration)
         {
-            _unitOfWork = dbFactory.GetDataAccess();
+            _dbFactory = dbFactory;
+
+            _nasaApi = new NasaApi(configuration.CurrentNasaApiKey);
         }
 
         public async Task<int> CountBy(Expression<Func<NearAsteroid, bool>> predicate)
         {
-            return await _unitOfWork
+            using var unitOfWork = _dbFactory.GetDataAccess();
+
+            return await unitOfWork
                 .NearAstroidRepository
                 .Count(predicate);
         }
@@ -31,42 +42,176 @@ namespace DomainModel.Services
                 throw new ArgumentNullException();
             }
 
-            if ((to.Value - from.Value).Days > 7)
-            {
-                throw new ArgumentOutOfRangeException("The maximum is 7 days");
-            }
-
             if (to == null)
             {
                 to = from.Value.AddDays(7);
             }
 
+            using var unitOfWork = _dbFactory.GetDataAccess();
+
             var astroids = await
-                _unitOfWork.NearAstroidRepository
+                unitOfWork.NearAstroidRepository
                 .ClosestApproachBetweenDates(from.Value, to.Value);
 
-
-            foreach (var a in astroids)
+            if (!astroids.Any() || !await IsDbContainCloseApproach(from.Value, to.Value))
             {
-                var del = a.CloseApproachs.RemoveAll(c => c.CloseApproachDate < from.Value
-                && c.CloseApproachDate > to.Value);
-                if(del > 0)
-                {
-                    Console.WriteLine("");
-                }
+                await GetNewAsteroidsFromNasa(from.Value, to.Value, astroids);
             }
 
-            await _unitOfWork.Complete();
+            await FillAsteroidsWithCloseApprochData(astroids, to.Value);
+
+            await unitOfWork.Complete();
 
             return astroids;
         }
 
         public async Task<IEnumerable<NearAsteroid>> GetNearAsteroids(Expression<Func<NearAsteroid, bool>> predicate = null)
         {
-            var result = await _unitOfWork
+            using var unitOfWork = _dbFactory.GetDataAccess();
+
+            var result = await unitOfWork
                 .NearAstroidRepository.GetNearAsteroids(predicate);
-            await _unitOfWork.Complete();
+
+            await FillAsteroidsWithCloseApprochData(result);
+
+            await unitOfWork.Complete();
+
             return result;
+        }
+
+        private async Task GetNewAsteroidsFromNasa(DateTime startDate, DateTime endDate, IEnumerable<NearAsteroid> result)
+        {
+            if ((endDate - startDate).Days > 7)
+            {
+                throw new ArgumentOutOfRangeException("The maximum is 7 days");
+            }
+            var astroidDtos = await _nasaApi
+                .GetClosestAsteroids(startDate, endDate);
+
+            var resultFromNasa = from a in astroidDtos
+                                 select a.CopyPropertiesToNew(typeof(NearAsteroid))
+                                 as NearAsteroid;
+
+            var inter = result.Select(a => a.Id)
+                .Intersect(resultFromNasa.Select(a => a.Id));
+
+            var newAst = from a in resultFromNasa
+                         where !inter.Contains(a.Id)
+                         select a;
+
+            using var unitOfWork = _dbFactory.GetDataAccess();
+
+            await unitOfWork
+                .NearAstroidRepository
+                .InsertMany(newAst);
+            
+            await unitOfWork.Complete(); 
+            result.ToList().AddRange(newAst);
+        }
+
+        private async Task<GetNearAsteroidNasaDto[]> GetCloseApprochDataFromNasa(IEnumerable<NearAsteroid> asteroids, DateTime endDate)
+        {
+            var tasks = new List<Task<GetNearAsteroidNasaDto>>();
+            foreach (var a in asteroids)
+            {
+                bool isDbContainCloseApproach = endDate != default && await IsDbContainCloseApproachById(endDate, a.Id);
+                bool isAsteroidFill = await IsAsteroidFill(a.Id);
+                if (!isDbContainCloseApproach || !isAsteroidFill)
+                {
+                    tasks.Add(_nasaApi.GetAstroidById(a.Id.ToString()));
+                }
+            }
+
+            var newAst = await Task.WhenAll(tasks);
+            return newAst;
+        }
+
+        private async Task<bool> IsDbContainCloseApproach(DateTime startDate, DateTime endDate)
+        {
+            using var unitOfWork = _dbFactory.GetDataAccess();
+
+            var isContainStart = await unitOfWork.CloseApproachsRepository
+                .Any(c => c.CloseApproachDate.Date
+                == startDate.Date);
+
+            var isContainEnd = await unitOfWork.CloseApproachsRepository
+                .Any(c => c.CloseApproachDate.Date
+                 == endDate.Date);
+
+            return isContainStart && isContainEnd;
+        }
+
+        private async Task<bool> IsDbContainCloseApproachById(DateTime endDate, int astId)
+        {
+            using var unitOfWork = _dbFactory.GetDataAccess();
+
+            return await unitOfWork.CloseApproachsRepository
+                .Any(c => c.NearAsteroidId == astId &&
+                c.CloseApproachDate.Date > endDate.Date);
+        }
+
+        private async Task<bool> IsAsteroidFill(int astId)
+        {
+            using var unitOfWork = _dbFactory.GetDataAccess();
+
+            return await unitOfWork.CloseApproachsRepository
+                .Any(c => c.NearAsteroidId == astId);
+        }
+
+        private async Task FillAsteroidsWithCloseApprochData(IEnumerable<NearAsteroid> asteroids, DateTime endDate = default)
+        {
+            var newAstroidsFromNasa = await GetCloseApprochDataFromNasa(asteroids, endDate);
+
+            await InsertNewCloseApprochsToDb(asteroids, endDate, newAstroidsFromNasa);
+        }
+
+        private async Task InsertNewCloseApprochsToDb(IEnumerable<NearAsteroid> asteroids, DateTime endDate, GetNearAsteroidNasaDto[] newAstroidsFromNasa)
+        {
+            var tasks = new List<Task>();
+
+            using var unitOfWork = _dbFactory.GetDataAccess();
+
+            foreach (var astFromNasa in newAstroidsFromNasa)
+            {
+                var currAstFromDb = await unitOfWork
+                    .NearAstroidRepository
+                    .GetById(astFromNasa.Id);
+                var currNewAst = asteroids.FirstOrDefault(a => a.Id == astFromNasa.Id);
+                if (currAstFromDb == null || currNewAst == null)
+                {
+                    continue;
+                }
+
+                var isNotFill = !await IsAsteroidFill(currAstFromDb.Id);
+
+                var newCA = new List<CloseApproach>();
+                if (isNotFill)
+                {
+                    newCA = astFromNasa.CloseApproachs
+                        .Except(currNewAst.CloseApproachs)
+                        .ToList();
+                }
+                else if (endDate != default)
+                {   // Get the new observations of close approachs
+                    newCA = (from c in astFromNasa.CloseApproachs
+                             where c.CloseApproachDate.Date > endDate.Date
+                             select c)
+                             .ToList();
+                }
+                if (!newCA.Any())
+                {
+                    continue;
+                }
+
+                currAstFromDb.CloseApproachs.AddRange(newCA);
+                currNewAst.CloseApproachs.AddRange(newCA);
+
+                tasks.Add(unitOfWork
+                    .CloseApproachsRepository
+                    .InsertMany(newCA));
+            }
+            await Task.WhenAll(tasks);
+            await unitOfWork.Complete();
         }
     }
 }

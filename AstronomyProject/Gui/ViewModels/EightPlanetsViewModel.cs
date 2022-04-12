@@ -32,13 +32,14 @@ namespace Gui.ViewModels
             PropNames.Remove("HasGlobalMagneticField");
             PropNames.Remove("Id");
             SetPropName();
+            SelectedProp = PropNames.First();
 
             XAxes = new List<Axis>
             {
                 new()
                 {
                     // Use the labels property to define named labels.
-                    Labels = PlanetList.Select(x => x.Name).ToArray(),
+                    Labels = PlanetList.Select(x => x.Name).ToList(),
                     TextSize=22,
                     NameTextSize=22,
                 }

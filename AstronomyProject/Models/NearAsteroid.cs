@@ -31,6 +31,6 @@ namespace Models
         [Required]
         public double EstimatedDiameterMin { get; set; }
 
-        public List<CloseApproach> CloseApproachs { get; set; }
+        public List<CloseApproach> CloseApproachs { get; set; } = new();
     }
 }

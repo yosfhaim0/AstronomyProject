@@ -1,5 +1,4 @@
 ﻿using ApiRequests.FireBaseStorage;
-using ApiRequests.Nasa;
 using DataAccess.DbContexts;
 using DataAccess.Repositories;
 using Models;
@@ -17,14 +16,15 @@ namespace DataAccess.UnitOfWork
             _context = new DbContextFactory(configurations.CurrentConnectionStrings)
                 .CreateAstronomyContext();
 
-            var nasaApi = new NasaApi(configurations.CurrentNasaApiKey);
             var firebase = new FireBase(configurations.FirebaseConnection);
 
-            ImageOfTheDayRepository = new EFModelRepository<ImageOfTheDay>(_context);
-            NearAstroidRepository = new NearAsteroidRepository(_context, nasaApi);
+            NearAstroidRepository = new NearAsteroidRepository(_context);
             MediaSearchRepository = new MediaSearchRepository(_context);
+
+            ImageOfTheDayRepository = new EFModelRepository<ImageOfTheDay>(_context);
             ImaggaTagRepository = new EFModelRepository<ImaggaTag>(_context);
             SearchWordRepository = new EFModelRepository<SearchWordModel>(_context);
+            CloseApproachsRepository = new EFModelRepository<CloseApproach>(_context);
         }
 
         public IModelRepository<ImaggaTag> ImaggaTagRepository { get; }
@@ -37,6 +37,8 @@ namespace DataAccess.UnitOfWork
 
         public IModelRepository<SearchWordModel> SearchWordRepository { get; }
 
+        public IModelRepository<CloseApproach> CloseApproachsRepository { get; }
+
         public async Task Complete()
         {
             await _context.SaveChangesAsync();
@@ -46,5 +48,7 @@ namespace DataAccess.UnitOfWork
         {
             _context.Dispose();
         }
+
+        
     }
 }

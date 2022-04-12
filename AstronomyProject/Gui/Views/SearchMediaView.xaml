@@ -54,6 +54,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <TextBox
+                x:Name="tbSearch"
                 Grid.Column="0"
                 materialDesign:HintAssist.Background="WhiteSmoke"
                 materialDesign:HintAssist.Foreground="#333d4a"

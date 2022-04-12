@@ -45,7 +45,7 @@
                     HorizontalAlignment="Left"
                     AutomationProperties.Name="HamburgerToggleButton"
                     Foreground="WhiteSmoke"
-                    IsChecked="False"
+                    IsChecked="True"
                     Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
                 <Button
                     Grid.Column="1"
@@ -134,7 +134,7 @@
                             Grid.Row="3"
                             Command="{Binding NavigateCommand}"
                             CommandParameter="EightPlanetsView"
-                            Content="Eight Planets"
+                            Content="The Solar System"
                             Style="{StaticResource MenuButtonsStyle}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">

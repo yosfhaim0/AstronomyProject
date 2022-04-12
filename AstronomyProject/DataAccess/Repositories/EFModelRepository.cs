@@ -54,5 +54,19 @@ namespace DataAccess.Repositories
             }
             return await Context.Set<TModel>().CountAsync(predicate);
         }
+
+        public async Task<bool> Any(Expression<Func<TModel, bool>> predicate = null)
+        {
+            if (predicate == null)
+            {
+                return await Context.Set<TModel>().AnyAsync();
+            }
+            return await Context.Set<TModel>().AnyAsync(predicate);
+        }
+
+        public async Task<bool> All(Expression<Func<TModel, bool>> predicate)
+        {
+            return await Context.Set<TModel>().AllAsync(predicate);
+        }
     }
 }

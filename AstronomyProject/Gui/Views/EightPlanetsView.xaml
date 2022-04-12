@@ -39,7 +39,7 @@
                     FontSize="15"
                     Foreground="#333d4a"
                     Style="{StaticResource MaterialDesignButtonTextBlock}"
-                    Text="Each planet on its own" />
+                    Text="Planets Properties" />
             </TabItem.Header>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -173,7 +173,7 @@
                     FontSize="15"
                     Foreground="#333d4a"
                     Style="{StaticResource MaterialDesignButtonTextBlock}"
-                    Text="Comparison of planets" />
+                    Text="Data &amp; Statistics" />
             </TabItem.Header>
             <Grid>
                 <Grid.ColumnDefinitions>

@@ -17,6 +17,8 @@ namespace DataAccess.UnitOfWork
 
         public IModelRepository<SearchWordModel> SearchWordRepository { get; }
 
+        public IModelRepository<CloseApproach> CloseApproachsRepository { get; }
+
         Task Complete();
     }
 }

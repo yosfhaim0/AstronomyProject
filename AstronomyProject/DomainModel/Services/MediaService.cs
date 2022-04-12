@@ -14,17 +14,17 @@ namespace DomainModel.Services
 {
     public class MediaService : IMediaService
     {
-        readonly IUnitOfWork _unitOfWork;
-
         readonly ImaggaApi _imagga;
 
         readonly WordAssociationsApi _wordAssociations;
 
         readonly NasaApi _nasaApi;
 
+        readonly IDbFactory _dbFactory;
+
         public MediaService(IDbFactory dbFactory, MyConfigurations configurations)
         {
-            _unitOfWork = dbFactory.GetDataAccess(); ;
+            _dbFactory = dbFactory;
             
             _imagga = new ImaggaApi(configurations.ImaggaKey.ImaggaApiKey, configurations.ImaggaKey.ImaggaApiSecret);
 
@@ -36,9 +36,13 @@ namespace DomainModel.Services
 
         public async Task<IEnumerable<MediaGroupe>> SearchMedia(string keyWord)
         {
-            keyWord = keyWord.ToLower();
+            keyWord = keyWord
+                .ToLower()
+                .Trim();
 
-            var medias = await _unitOfWork
+            using var unitOfWork = _dbFactory.GetDataAccess();
+
+            var medias = await unitOfWork
                                                 .MediaSearchRepository
                                                 .Search(keyWord);
             if (medias.Any())
@@ -57,9 +61,12 @@ namespace DomainModel.Services
 
         public async Task<IEnumerable<string>> GetSearchWords()
         {
-            var result = await _unitOfWork
+            using var unitOfWork = _dbFactory.GetDataAccess();
+
+            var result = await unitOfWork
                 .SearchWordRepository
                 .GetAll();
+
             return result.Select(s => s.SearchWord)
                 .Distinct()
                 .Take(10);
@@ -67,21 +74,25 @@ namespace DomainModel.Services
 
         private async Task<IEnumerable<MediaGroupe>> GetNewFromNasa(string keyWord, int skip = 0)
         {
+            using var unitOfWork = _dbFactory.GetDataAccess();
+
             var mediasFromNasa = await _nasaApi.SearchMedia(keyWord, skip);
 
-            await _unitOfWork.MediaSearchRepository
+            await unitOfWork.MediaSearchRepository
                 .InsertMany(mediasFromNasa);
-            await _unitOfWork.Complete();
+            await unitOfWork.Complete();
 
-            return mediasFromNasa;
+            return await unitOfWork
+                            .MediaSearchRepository
+                            .Search(keyWord);
         }
+
+
 
         public async Task<IEnumerable<ImaggaTag>> GetMediaTags(MediaGroupe media)
         {
-            var tags = await _unitOfWork
-                .ImaggaTagRepository
-                .FindAll(t => t.MediaGroupeId == media.Id);
-            
+            IEnumerable<ImaggaTag> tags = await GetTagsFromDB(media);
+
             if (tags.Any())
             {
                 return tags;
@@ -89,16 +100,26 @@ namespace DomainModel.Services
 
             tags = await TagImage(media.PreviewUrl);
 
-            if(tags != null)
+            using var unitOfWork = _dbFactory.GetDataAccess();
+
+            if (tags != null)
             {
-                await _unitOfWork
+                await unitOfWork
                     .MediaSearchRepository
                     .AddTags(media, tags);
-                await _unitOfWork.Complete();
-                return tags;
+                await unitOfWork.Complete();
+                return await GetTagsFromDB(media);
             }
-            
+
             throw new Exception("Can not parse image");
+        }
+
+        private async Task<IEnumerable<ImaggaTag>> GetTagsFromDB(MediaGroupe media)
+        {
+            using var unitOfWork = _dbFactory.GetDataAccess();
+            return await unitOfWork
+                .ImaggaTagRepository
+                .FindAll(t => t.MediaGroupeId == media.Id);
         }
 
         private async Task<IEnumerable<MediaGroupe>> ConfigureMedia(IEnumerable<MediaGroupe> mediasFromNasa)
@@ -112,7 +133,9 @@ namespace DomainModel.Services
 
             var imageAndTags = await Task.WhenAll(tasks);
 
-            foreach(var m in mediasFromNasa)
+            using var unitOfWork = _dbFactory.GetDataAccess();
+
+            foreach (var m in mediasFromNasa)
             {
                 foreach(var imt in imageAndTags)
                 {
@@ -120,7 +143,7 @@ namespace DomainModel.Services
                     var tags = imt.Item2;
                     if (m.PreviewUrl == image)
                     {
-                        await _unitOfWork
+                        await unitOfWork
                             .MediaSearchRepository
                             .AddTags(m, tags);
                     }
