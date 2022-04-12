@@ -27,17 +27,23 @@ We use Design Patterns such as:
 
  Some pictures to demonstrate:
  
- ![image](https://user-images.githubusercontent.com/40955004/161443713-e491c519-0a86-4a9b-857b-8d5a78f6c87d.png)
-
-![image](https://user-images.githubusercontent.com/40955004/161443745-4274958c-0ca4-4327-ab16-f99db27fb78a.png)
-
-![image](https://user-images.githubusercontent.com/40955004/161443789-e5046763-cb50-4272-9be7-742afd926e71.png)
-
-![image](https://user-images.githubusercontent.com/40955004/161443812-26e6c5ad-89d9-4bf0-b9d2-3766dc3168db.png)
-
-![image](https://user-images.githubusercontent.com/40955004/161443798-4ab1c310-8da9-4fb0-bbe2-0eff7b2a2fdb.png)
-
-![image](https://user-images.githubusercontent.com/40955004/161443839-3c0dab4a-3065-42d3-ac18-9f91d03e38fe.png)
+![image](https://user-images.githubusercontent.com/40955004/162939000-86033d29-c017-4a59-9301-8faf71e5e474.png)
 
 
+![image](https://user-images.githubusercontent.com/40955004/162939084-e9f070c0-d41b-4e3a-b674-a509f9f45b49.png)
+
+
+![image](https://user-images.githubusercontent.com/40955004/162939224-d2e0cca5-c4e3-4a5c-8f3e-a96df289d858.png)
+
+
+![image](https://user-images.githubusercontent.com/40955004/162939298-c5775908-da90-4e5d-862d-55e0748148a5.png)
+
+
+![image](https://user-images.githubusercontent.com/40955004/162939562-fdcd8b8e-071d-4191-9217-d917964564e2.png)
+
+
+![image](https://user-images.githubusercontent.com/40955004/162939689-d25130a3-2de6-4a02-a77e-1cad4c51b2d3.png)
+
+
+![image](https://user-images.githubusercontent.com/40955004/162939800-cfc4964a-5b6c-4db2-a28d-5d1edcd44f49.png)
 
