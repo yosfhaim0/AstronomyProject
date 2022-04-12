@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
+    /// <summary>
+    /// Implementaion of Generic Repository using Entity Framework ORM
+    /// </summary>
+    /// <typeparam name="TModel"></typeparam>
     public class EFModelRepository<TModel> : IModelRepository<TModel> where TModel : class
     {
         readonly protected DbContext Context;

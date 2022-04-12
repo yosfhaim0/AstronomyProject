@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace DataAccess.UnitOfWork
 {
+    /// <summary>
+    /// Unit Of Work
+    /// </summary>
     public interface IUnitOfWork : IDisposable
     {
         public IModelRepository<ImageOfTheDay> ImageOfTheDayRepository { get; }

@@ -1,8 +1,8 @@
 ﻿using DataAccess.UnitOfWork;
 
-namespace DomainModel.DbFactory
+namespace DomainModel.DataAccessFactory
 {
-    public interface IDbFactory
+    public interface IDataAccessFactory
     {
         IUnitOfWork GetDataAccess();
     }

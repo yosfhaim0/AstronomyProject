@@ -1,6 +1,7 @@
 ﻿using ApiRequests.Nasa;
 using DataAccess.UnitOfWork;
 using DomainModel.Services;
+using Gui.Dialogs;
 using Models;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -18,9 +19,12 @@ namespace Gui.ViewModels
     {
         readonly IImageOfTheDayService _gallery;
 
-        public ImageOfTheDayViewModel(IImageOfTheDayService gallery)
+        readonly IDialogService _dialogService;
+
+        public ImageOfTheDayViewModel(IImageOfTheDayService gallery, IDialogService dialogService)
         {
             _gallery = gallery;
+            _dialogService = dialogService;
         }
 
         public ObservableCollection<ImageOfTheDay> Gallery { get; set; } = new();
@@ -65,15 +69,18 @@ namespace Gui.ViewModels
         public DelegateCommand Load => _load ??= new DelegateCommand(
             async () =>
             {
-                if (IsLoading || Gallery.Any())
-                {
-                    return;
-                }
                 IsLoading = true;
-                SelectedImage = await _gallery.GetTodayImage();
-                var gallery = await _gallery.GetGallery();
-                Gallery.Clear();
-                Gallery.AddRange(gallery);
+                try
+                {
+                    SelectedImage = await _gallery.GetTodayImage();
+                    var gallery = await _gallery.GetGallery();
+                    Gallery.Clear();
+                    Gallery.AddRange(gallery);
+                }
+                catch (Exception ex)
+                {
+                    _dialogService.ShowDialog("Erorr", ex.Message);
+                }
                 IsLoading = false;
             });
 

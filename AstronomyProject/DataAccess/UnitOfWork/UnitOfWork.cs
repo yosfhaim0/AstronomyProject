@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace DataAccess.UnitOfWork
 {
+    /// <summary>
+    /// Implementaion of Unit Of Work using Entity Framework ORM
+    /// </summary>
     public class UnitOfWork : IUnitOfWork
     {
         readonly AstronomyContext _context;

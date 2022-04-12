@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
+    /// <summary>
+    /// Generic Repository
+    /// </summary>
+    /// <typeparam name="TModel"></typeparam>
     public interface IModelRepository<TModel> where TModel : class
     {
         Task<IEnumerable<TModel>> GetAll();
@@ -24,7 +28,5 @@ namespace DataAccess.Repositories
         Task<bool> Any(Expression<Func<TModel, bool>> predicate = null);
 
         Task<bool> All(Expression<Func<TModel, bool>> predicate);
-
-
     }
 }

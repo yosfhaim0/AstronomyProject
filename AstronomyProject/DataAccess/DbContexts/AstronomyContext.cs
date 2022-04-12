@@ -4,6 +4,9 @@ using Models;
 
 namespace DataAccess.DbContexts
 {
+    /// <summary>
+    /// The Database of the project
+    /// </summary>
     public class AstronomyContext : DbContext
     {
         public DbSet<ImageOfTheDay> ImageOfTheDayGallery { get; set; }

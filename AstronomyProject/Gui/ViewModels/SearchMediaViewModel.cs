@@ -1,14 +1,7 @@
 ﻿using DomainModel.Services;
 using Gui.Dialogs;
-using LiveChartsCore;
-using LiveChartsCore.Measure;
-using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore.SkiaSharpView.Painting;
 using Models;
 using Prism.Commands;
-using Prism.Events;
-using Prism.Mvvm;
-using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,11 +30,17 @@ namespace Gui.ViewModels
         public DelegateCommand Load => _load ??= new DelegateCommand(
             async () =>
             {
-                if (IsLoading)
-                    return;
-                var searchs = await _mediaService.GetSearchWords();
-                Searches.Clear();
-                Searches.AddRange(searchs);
+
+                try
+                {
+                    var searchs = await _mediaService.GetSearchWords();
+                    Searches.Clear();
+                    Searches.AddRange(searchs);
+                }
+                catch (Exception ex)
+                {
+                    _dialogService.ShowDialog("Erorr", ex.Message);
+                }
             });
 
 

@@ -1,6 +1,6 @@
 ﻿using ApiRequests.Nasa;
 using DataAccess.UnitOfWork;
-using DomainModel.DbFactory;
+using DomainModel.DataAccessFactory;
 using Models;
 using Models.Configurations;
 using System;
@@ -15,18 +15,18 @@ namespace DomainModel.Services
     {
         readonly NasaApi _nasaApi;
 
-        readonly IDbFactory _dbFactory;
+        readonly IDataAccessFactory _daFactory;
 
-        public ImageOfTheDayService(IDbFactory dbFactory, MyConfigurations configuration)
+        public ImageOfTheDayService(IDataAccessFactory daFactory, MyConfigurations configuration)
         {
-            _dbFactory = dbFactory;
+            _daFactory = daFactory;
 
             _nasaApi = new NasaApi(configuration.CurrentNasaApiKey);
         }
 
         public async Task<ImageOfTheDay> GetTodayImage()
         {
-            using var unitOfWork = _dbFactory.GetDataAccess();
+            using var unitOfWork = _daFactory.GetDataAccess();
 
             var isExist = await
                 unitOfWork
@@ -52,7 +52,7 @@ namespace DomainModel.Services
 
         public async Task<IEnumerable<ImageOfTheDay>> GetGallery()
         {
-            using var unitOfWork = _dbFactory.GetDataAccess();
+            using var unitOfWork = _daFactory.GetDataAccess();
 
             var images = await unitOfWork
                 .ImageOfTheDayRepository

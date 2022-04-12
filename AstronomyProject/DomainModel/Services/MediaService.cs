@@ -1,6 +1,5 @@
 ﻿using ApiRequests.Imagga;
-using DataAccess.UnitOfWork;
-using DomainModel.DbFactory;
+using DomainModel.DataAccessFactory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +19,11 @@ namespace DomainModel.Services
 
         readonly NasaApi _nasaApi;
 
-        readonly IDbFactory _dbFactory;
+        readonly IDataAccessFactory _daFactory;
 
-        public MediaService(IDbFactory dbFactory, MyConfigurations configurations)
+        public MediaService(IDataAccessFactory daFactory, MyConfigurations configurations)
         {
-            _dbFactory = dbFactory;
+            _daFactory = daFactory;
             
             _imagga = new ImaggaApi(configurations.ImaggaKey.ImaggaApiKey, configurations.ImaggaKey.ImaggaApiSecret);
 
@@ -40,7 +39,7 @@ namespace DomainModel.Services
                 .ToLower()
                 .Trim();
 
-            using var unitOfWork = _dbFactory.GetDataAccess();
+            using var unitOfWork = _daFactory.GetDataAccess();
 
             var medias = await unitOfWork
                                                 .MediaSearchRepository
@@ -61,7 +60,7 @@ namespace DomainModel.Services
 
         public async Task<IEnumerable<string>> GetSearchWords()
         {
-            using var unitOfWork = _dbFactory.GetDataAccess();
+            using var unitOfWork = _daFactory.GetDataAccess();
 
             var result = await unitOfWork
                 .SearchWordRepository
@@ -74,7 +73,7 @@ namespace DomainModel.Services
 
         private async Task<IEnumerable<MediaGroupe>> GetNewFromNasa(string keyWord, int skip = 0)
         {
-            using var unitOfWork = _dbFactory.GetDataAccess();
+            using var unitOfWork = _daFactory.GetDataAccess();
 
             var mediasFromNasa = await _nasaApi.SearchMedia(keyWord, skip);
 
@@ -100,7 +99,7 @@ namespace DomainModel.Services
 
             tags = await TagImage(media.PreviewUrl);
 
-            using var unitOfWork = _dbFactory.GetDataAccess();
+            using var unitOfWork = _daFactory.GetDataAccess();
 
             if (tags != null)
             {
@@ -116,10 +115,16 @@ namespace DomainModel.Services
 
         private async Task<IEnumerable<ImaggaTag>> GetTagsFromDB(MediaGroupe media)
         {
-            using var unitOfWork = _dbFactory.GetDataAccess();
+            using var unitOfWork = _daFactory.GetDataAccess();
             return await unitOfWork
                 .ImaggaTagRepository
                 .FindAll(t => t.MediaGroupeId == media.Id);
+        }
+
+        private async Task<List<ImaggaTag>> TagImage(string imageUrl)
+        {
+            var imaggTag = await _imagga.AutoTagging(imageUrl);
+            return imaggTag.GetTags();
         }
 
         private async Task<IEnumerable<MediaGroupe>> ConfigureMedia(IEnumerable<MediaGroupe> mediasFromNasa)
@@ -133,7 +138,7 @@ namespace DomainModel.Services
 
             var imageAndTags = await Task.WhenAll(tasks);
 
-            using var unitOfWork = _dbFactory.GetDataAccess();
+            using var unitOfWork = _daFactory.GetDataAccess();
 
             foreach (var m in mediasFromNasa)
             {
@@ -165,22 +170,16 @@ namespace DomainModel.Services
             var reletedWords = await GetWordAssociations(keyWord);
 
             var urls = (from t in imageAndTags
-                       where IsImageReletedToSearchWord(reletedWords, t.Item2)
-                       select t.Item1).ToList();
+                        where IsImageReletedToSearchWord(reletedWords, t.Item2)
+                        select t.Item1).ToList();
 
             return from u in urls
-                      where u != null
-                      select new MediaGroupe
-                      {
+                   where u != null
+                   select new MediaGroupe
+                   {
 
-                      };
+                   };
 
-        }
-
-        private async Task<List<ImaggaTag>> TagImage(string imageUrl)
-        {
-            var imaggTag = await _imagga.AutoTagging(imageUrl);
-            return imaggTag.GetTags();
         }
 
 

@@ -6,6 +6,9 @@ using Models;
 
 namespace DomainModel.Services
 {
+    /// <summary>
+    /// Near Asteroid service
+    /// </summary>
     public interface INearAsteroidService
     {
         Task<IEnumerable<NearAsteroid>> GetNearAsteroids(Expression<Func<NearAsteroid, bool>> predicate = null);

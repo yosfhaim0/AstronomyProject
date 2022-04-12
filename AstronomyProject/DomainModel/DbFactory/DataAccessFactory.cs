@@ -1,13 +1,16 @@
 ﻿using DataAccess.UnitOfWork;
 using Models.Configurations;
 
-namespace DomainModel.DbFactory
+namespace DomainModel.DataAccessFactory
 {
-    public class DbFactory : IDbFactory
+    /// <summary>
+    /// Data Access Factory using the the Generic Repository & Unit Of Work pattern 
+    /// </summary>
+    public class DataAccessFactory : IDataAccessFactory
     {
         readonly MyConfigurations _configurations;
 
-        public DbFactory(MyConfigurations configurations)
+        public DataAccessFactory(MyConfigurations configurations)
         {
             _configurations = configurations;
         }

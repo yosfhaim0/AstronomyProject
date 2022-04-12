@@ -2,6 +2,9 @@
 
 namespace DataAccess.DbContexts
 {
+    /// <summary>
+    /// Database Context Factory using SqlServer
+    /// </summary>
     public class DbContextFactory
     {
         readonly string _connectionStrings;

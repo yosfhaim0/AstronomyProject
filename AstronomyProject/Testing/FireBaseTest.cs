@@ -14,11 +14,11 @@ namespace Testing
     {
         EightPlanetsService b = new();
         readonly FireBase a = new();
-        readonly NasaApi _nasaClient = new();
+        //readonly NasaApi _nasaClient = new();
         public async Task PushImage()
         {
             // var result = await a.Insert(@"C:\Users\yosef\1.jpg", "a");
-            var b = await _nasaClient.GetImageOfTheDay();
+            //var b = await _nasaClient.GetImageOfTheDay();
             var result1 = await a.Insert(b.Url, "a");
         }
         public async Task DeleteImage()

@@ -14,6 +14,7 @@ using LiveChartsCore.Defaults;
 using LiveChartsCore.Kernel.Sketches;
 using Prism.Regions;
 using Gui.Dialogs;
+using Tools;
 
 namespace Gui.ViewModels
 {
@@ -40,7 +41,6 @@ namespace Gui.ViewModels
             catch (ArgumentOutOfRangeException ex)
             {
                 _dialogService.ShowDialog("Erorr", ex.ParamName);
-
             }
 
             IsLoading = false;
@@ -122,8 +122,6 @@ namespace Gui.ViewModels
         public DelegateCommand Load => _load ??= new DelegateCommand(
             async () =>
             {
-                if (IsLoading)
-                    return;
                 await Search();
             });
 

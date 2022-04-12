@@ -1,6 +1,6 @@
 ﻿using ApiRequests.Nasa;
 using DataAccess.UnitOfWork;
-using DomainModel.DbFactory;
+using DomainModel.DataAccessFactory;
 using Models;
 using Models.Configurations;
 using Models.Dtos;
@@ -17,18 +17,18 @@ namespace DomainModel.Services
     {
         readonly NasaApi _nasaApi;
 
-        readonly IDbFactory _dbFactory;
+        readonly IDataAccessFactory _daFactory;
 
-        public NearAsteroidService(IDbFactory dbFactory, MyConfigurations configuration)
+        public NearAsteroidService(IDataAccessFactory daFactory, MyConfigurations configuration)
         {
-            _dbFactory = dbFactory;
+            _daFactory = daFactory;
 
             _nasaApi = new NasaApi(configuration.CurrentNasaApiKey);
         }
 
         public async Task<int> CountBy(Expression<Func<NearAsteroid, bool>> predicate)
         {
-            using var unitOfWork = _dbFactory.GetDataAccess();
+            using var unitOfWork = _daFactory.GetDataAccess();
 
             return await unitOfWork
                 .NearAstroidRepository
@@ -47,7 +47,7 @@ namespace DomainModel.Services
                 to = from.Value.AddDays(7);
             }
 
-            using var unitOfWork = _dbFactory.GetDataAccess();
+            using var unitOfWork = _daFactory.GetDataAccess();
 
             var astroids = await
                 unitOfWork.NearAstroidRepository
@@ -67,7 +67,7 @@ namespace DomainModel.Services
 
         public async Task<IEnumerable<NearAsteroid>> GetNearAsteroids(Expression<Func<NearAsteroid, bool>> predicate = null)
         {
-            using var unitOfWork = _dbFactory.GetDataAccess();
+            using var unitOfWork = _daFactory.GetDataAccess();
 
             var result = await unitOfWork
                 .NearAstroidRepository.GetNearAsteroids(predicate);
@@ -99,7 +99,7 @@ namespace DomainModel.Services
                          where !inter.Contains(a.Id)
                          select a;
 
-            using var unitOfWork = _dbFactory.GetDataAccess();
+            using var unitOfWork = _daFactory.GetDataAccess();
 
             await unitOfWork
                 .NearAstroidRepository
@@ -128,7 +128,7 @@ namespace DomainModel.Services
 
         private async Task<bool> IsDbContainCloseApproach(DateTime startDate, DateTime endDate)
         {
-            using var unitOfWork = _dbFactory.GetDataAccess();
+            using var unitOfWork = _daFactory.GetDataAccess();
 
             var isContainStart = await unitOfWork.CloseApproachsRepository
                 .Any(c => c.CloseApproachDate.Date
@@ -143,7 +143,7 @@ namespace DomainModel.Services
 
         private async Task<bool> IsDbContainCloseApproachById(DateTime endDate, int astId)
         {
-            using var unitOfWork = _dbFactory.GetDataAccess();
+            using var unitOfWork = _daFactory.GetDataAccess();
 
             return await unitOfWork.CloseApproachsRepository
                 .Any(c => c.NearAsteroidId == astId &&
@@ -152,7 +152,7 @@ namespace DomainModel.Services
 
         private async Task<bool> IsAsteroidFill(int astId)
         {
-            using var unitOfWork = _dbFactory.GetDataAccess();
+            using var unitOfWork = _daFactory.GetDataAccess();
 
             return await unitOfWork.CloseApproachsRepository
                 .Any(c => c.NearAsteroidId == astId);
@@ -169,7 +169,7 @@ namespace DomainModel.Services
         {
             var tasks = new List<Task>();
 
-            using var unitOfWork = _dbFactory.GetDataAccess();
+            using var unitOfWork = _daFactory.GetDataAccess();
 
             foreach (var astFromNasa in newAstroidsFromNasa)
             {

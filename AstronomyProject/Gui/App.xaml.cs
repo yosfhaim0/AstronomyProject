@@ -1,4 +1,4 @@
-﻿using DomainModel.DbFactory;
+﻿using DomainModel.DataAccessFactory;
 using DomainModel.Services;
 using Models.Configurations;
 using Newtonsoft.Json;
@@ -21,7 +21,7 @@ namespace Gui
         {
             containerRegistry.RegisterInstance(GetConfigurations());
             
-            containerRegistry.RegisterScoped<IDbFactory ,DbFactory>();
+            containerRegistry.RegisterScoped<IDataAccessFactory ,DataAccessFactory>();
 
             #region Register services from the domain model
             containerRegistry.RegisterScoped<IImageOfTheDayService, ImageOfTheDayService>();
