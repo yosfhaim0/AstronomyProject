@@ -13,20 +13,20 @@
     <UserControl.Resources>
         <Style x:Key="visForImageGrid" TargetType="Grid">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding SelectedMedia.MediaType}" Value="image">
+                <DataTrigger Binding="{Binding ElementName=MediaViewInc, Path=SelectedMedia.MediaType}" Value="image">
                     <Setter Property="Visibility" Value="Visible" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding SelectedMedia.MediaType}" Value="video">
+                <DataTrigger Binding="{Binding ElementName=MediaViewInc, Path=SelectedMedia.MediaType}" Value="video">
                     <Setter Property="Visibility" Value="Collapsed" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
         <Style x:Key="visForVideoGrid" TargetType="Grid">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding SelectedMedia.MediaType}" Value="video">
+                <DataTrigger Binding="{Binding ElementName=MediaViewInc, Path=SelectedMedia.MediaType}" Value="video">
                     <Setter Property="Visibility" Value="Visible" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding SelectedMedia.MediaType}" Value="image">
+                <DataTrigger Binding="{Binding ElementName=MediaViewInc, Path=SelectedMedia.MediaType}" Value="image">
                     <Setter Property="Visibility" Value="Collapsed" />
                 </DataTrigger>
             </Style.Triggers>
@@ -39,7 +39,7 @@
         Margin="5,0,5,5">
         <Grid>
             <Grid Style="{StaticResource visForImageGrid}">
-                <Image Source="{Binding SelectedMedia.Url}" />
+                <Image Source="{Binding ElementName=MediaViewInc, Path=SelectedMedia.Url}" />
             </Grid>
             <Grid Style="{StaticResource visForVideoGrid}">
                 <Grid.RowDefinitions>
@@ -51,24 +51,24 @@
                     Grid.Row="0"
                     IsMuted="{Binding IsMuted}"
                     LoadedBehavior="Manual"
-                    Source="{Binding SelectedMedia.Url}"
+                    Source="{Binding ElementName=MediaViewInc, Path=SelectedMedia.Url}"
                     UnloadedBehavior="Manual"
                     Visibility="Visible" />
 
                 <StackPanel Grid.Row="1" Orientation="Horizontal">
-                    <Button Command="{Binding PlayCommand}" Style="{StaticResource MaterialDesignIconButton}">
+                    <Button Command="{Binding ElementName=MediaViewInc, Path=viewModel.PlayCommand}" Style="{StaticResource MaterialDesignIconButton}">
                         <materialDesign:PackIcon Kind="Play" />
                     </Button>
 
-                    <Button Command="{Binding PauseCommand}" Style="{StaticResource MaterialDesignIconButton}">
+                    <Button Command="{Binding ElementName=MediaViewInc, Path=viewModel.PauseCommand}" Style="{StaticResource MaterialDesignIconButton}">
                         <materialDesign:PackIcon Kind="Pause" />
                     </Button>
 
-                    <Button Command="{Binding StopCommand}" Style="{StaticResource MaterialDesignIconButton}">
+                    <Button Command="{Binding ElementName=MediaViewInc, Path=viewModel.StopCommand}" Style="{StaticResource MaterialDesignIconButton}">
                         <materialDesign:PackIcon Kind="Stop" />
                     </Button>
 
-                    <Button Command="{Binding MuteCommand}" Style="{StaticResource MaterialDesignIconButton}">
+                    <Button Command="{Binding ElementName=MediaViewInc, Path=viewModel.MuteCommand}" Style="{StaticResource MaterialDesignIconButton}">
                         <materialDesign:PackIcon Kind="Mute" />
                     </Button>
                 </StackPanel>

@@ -221,6 +221,7 @@
                         <Grid Margin="10">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <Button
@@ -230,13 +231,21 @@
                                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                                 FontWeight="Bold"
                                 Foreground="Black"
-                                Style="{StaticResource MaterialDesignIconButton}">
+                                Style="{StaticResource MaterialDesignToolForegroundButton}">
                                 <materialDesign:PackIcon
                                     Width="15"
                                     Height="15"
                                     Kind="Close" />
                             </Button>
-                            <Image Grid.Row="1" Source="{Binding ExplanImage}" />
+                            <Image
+                                Grid.Row="1"
+                                MaxHeight="500"
+                                Source="{Binding ExplanImage}" />
+                            <TextBlock
+                                Grid.Row="2"
+                                Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                Text="{Binding SelectedProp.ToolTip}" />
+
                         </Grid>
                     </materialDesign:DialogHost.DialogContent>
                     <Button
@@ -265,14 +274,14 @@
                     Grid.Row="0"
                     Grid.Column="1"
                     Margin="4"
-                    Series="{Binding Series}"
+                    Series="{Binding PropertiesChart.Series}"
                     TooltipBackground="#480032"
                     TooltipFontFamily="Courier New"
                     TooltipFontSize="25"
                     TooltipPosition="Left"
                     TooltipTextBrush="#f2f4c3"
-                    XAxes="{Binding XAxes}"
-                    YAxes="{Binding YAxes}">
+                    XAxes="{Binding PropertiesChart.XAxes}"
+                    YAxes="{Binding PropertiesChart.YAxes}">
                     <lvc:CartesianChart.Background>
                         <ImageBrush
                             x:Name="ExplanImagePopup"

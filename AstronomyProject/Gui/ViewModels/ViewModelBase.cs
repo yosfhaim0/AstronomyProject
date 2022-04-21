@@ -12,6 +12,15 @@ namespace Gui.ViewModels
             set { SetProperty(ref _isLoading, value); }
         }
 
+        private bool _isActive = false;
+
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set { SetProperty(ref _isActive, value); }
+        }
+
+
         public void OnNavigatedTo(NavigationContext navigationContext)
         {    
         }

@@ -6,10 +6,9 @@ using System.Collections.ObjectModel;
 using DomainModel.Services;
 
 using Models;
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
 using System.Text.RegularExpressions;
 using Prism.Commands;
+using Gui.LiveCharts;
 
 namespace Gui.ViewModels
 {
@@ -26,23 +25,12 @@ namespace Gui.ViewModels
             SetPropName();
 
             SelectedProp = PropNames.First();
-
-            XAxes = new List<Axis>
-            {
-                new()
-                {
-                    // Use the labels property to define named labels.
-                    Labels = PlanetList.Select(x => x.Name).ToList(),
-                    TextSize=22,
-                    NameTextSize=22,
-                }
-            };
         }
 
         public ObservableCollection<Planet> PlanetList { get; set; } = new();
 
         public List<string> ExplanImageList { get; set; } = new();
-        
+
         private string _explanImage;
         public string ExplanImage
         {
@@ -65,7 +53,7 @@ namespace Gui.ViewModels
 
         public ObservableCollection<PropertyToolTipPair> PropNames { get; set; }
 
-        public ObservableCollection<ColumValue> PropList { get; set; } = new();
+        public ObservableCollection<ColumValue> PlanetsProperties { get; set; } = new();
 
         private PropertyToolTipPair _selectedProp;
         public PropertyToolTipPair SelectedProp
@@ -77,14 +65,9 @@ namespace Gui.ViewModels
             set
             {
                 SetProperty(ref _selectedProp, value);
-                SetPropertySeries();
-                SetExplanImage();
+                SetPropertiesChart();
+                ExplanImage = _eightPlanetsService.GetExplanImageList(SelectedProp.Property);
             }
-        }
-
-        private void SetExplanImage()
-        {
-            ExplanImage = _eightPlanetsService.GetExplanImageList(SelectedProp.Property);
         }
 
         private void SetPropName()
@@ -96,52 +79,39 @@ namespace Gui.ViewModels
             }
         }
 
-        private void SetPropertySeries()
-        {
-            List<ColumValue> res = new();
-            foreach (var item in PlanetList)
-            {
+        private Chart _propertiesChart;
+        public Chart PropertiesChart 
+        { 
+            get => _propertiesChart; 
+            set => SetProperty(ref _propertiesChart, value);
+        }
 
-                var pro = item.GetType()
+        private void SetPropertiesChart()
+        {
+            List<ColumValue> temp = new();
+            foreach (var planet in PlanetList)
+            {
+                var prop = planet.GetType()
                     .GetProperty(SelectedProp.Property);
-                res.Add(new ColumValue 
-                { 
-                    Name = pro.Name, 
-                    Value = pro.GetValue(item, null), 
-                    Plant = item.Name 
+                temp.Add(new ColumValue
+                {
+                    Name = prop.Name,
+                    Value = prop.GetValue(planet, null),
+                    Plant = planet.Name
                 });
             }
-            PropList.Clear();
-            PropList.AddRange(res);
+            PlanetsProperties.Clear();
+            PlanetsProperties.AddRange(temp);
 
-            Series.Clear();
-            Series.Add(new ColumnSeries<double>
-            {
-                Name = SelectedProp.PropertyName,
-                Values = new ObservableCollection<double>(PropList.Select(x => (double)x.Value)),
-                MaxBarWidth = 10,
-            });
-
-            YAxes.Clear();
-            YAxes.Add(
-                new()
-                {//String.Format("{0:0.##}", 123.4567); 
-                 // Now the Y axis we will display labels as currency
-                 // LiveCharts provides some common formatters
-                 // in this case we are using the currency formatter.
-
-                    Labeler = (value) => $"{FormatNumber(value)}{_eightPlanetsService.FindMida(SelectedProp.Property)}",
-                    TextSize = 22,
-                    // you could also build your own currency formatter
-                    // for example:
-                    // Labeler = (value) => value.ToString("C")
-
-                    // But the one that LiveCharts provides creates shorter labels when
-                    // the amount is in millions or trillions
-                });
-
-
+            PropertiesChart = new ChartBuilder()
+                .SetColumnSeries(values: PlanetsProperties.Select(x => (double)x.Value), 
+                    name: SelectedProp.PropertyName)
+                .SetXAxes(labels: PlanetList.Select(x => x.Name).ToList(), textSize:22, nameTextSize: 22)
+                .SetYAxes(labeler: (value) => $"{FormatNumber(value)}{_eightPlanetsService.FindMida(SelectedProp.Property)}",
+                    textSize: 22)
+                .Build();
         }
+
         private static string FormatNumber(double num)
         {
             if (num <= 1 && num >= 0)
@@ -161,13 +131,6 @@ namespace Gui.ViewModels
 
             return num.ToString("#,0");
         }
-
-        public ObservableCollection<ISeries> Series { get; set; } = new();
-
-        public List<Axis> XAxes { get; set; }
-
-        public List<Axis> YAxes { get; set; } = new();
-
     }
 
     public class ColumValue

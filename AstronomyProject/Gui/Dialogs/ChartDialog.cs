@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DomainModel.Services;
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
+using Gui.LiveCharts;
+using Gui.Views;
 using Models;
 
 namespace Gui.Dialogs
@@ -15,61 +15,53 @@ namespace Gui.Dialogs
     {
         readonly IMediaService _mediaService;
 
+        TagImageChart _chartDialog;
+
         public ChartDialog(IMediaService mediaService)
         {
             _mediaService = mediaService;
+            _chartDialog = new();
         }
 
         public async Task ShowChartByMedia(MediaGroupe media)
         {
-            var chart = new Views.TagImageChart();
+            _chartDialog = new();
             var vm = new ViewModels.TagImageChartViewModel();
             vm.IsLoading = true;
-            chart.DataContext = vm;
-            chart.Show();
-            Tuple<List<ISeries>, List<Axis>, List<Axis>> tuple;
+            _chartDialog.DataContext = vm;
+            _chartDialog.Show();
+            Chart tagsChart;
             if (media.Tags.Any())
             {
-                tuple = SetLiveChart(media.Tags);
+                tagsChart = SetLiveChart(media.Tags);
             }
             else
             {
                 var tags = await _mediaService.GetMediaTags(media);
-                tuple = SetLiveChart(tags);
+                tagsChart = SetLiveChart(tags);
             }
-            vm.NewMediaIn(tuple);
+            vm.TagsChart = tagsChart;
             vm.IsLoading = false;
 
         }
 
-        private Tuple<List<ISeries>, List<Axis>, List<Axis>>  SetLiveChart(IEnumerable<ImaggaTag> tags)
+        public void CloseDialog()
         {
-            List<ISeries> tagsSeries = new()
+            if (_chartDialog.IsVisible)
             {
-                new RowSeries<double>
-                {
-                    Name = "Confidence",
-                    Values = new List<double>(tags.Select(x => x.Confidence)),
-                    MaxBarWidth = 15,
-                }
-            };
-
-            List<Axis> yAxes = new()
-            {
-                new()
-                {
-                    Labels = tags.Select(t => t.Tag).ToList(),
-                }
-            };
-
-            List<Axis> xAxes = new()
-            {
-                new()
-                {
-                    Labeler =(value) => value.ToString(),
-                }
-            };
-            return new(tagsSeries, yAxes, xAxes);
+                _chartDialog.Close();
+            }
         }
+
+        private Chart SetLiveChart(IEnumerable<ImaggaTag> tags)
+        {
+            return new ChartBuilder()
+                .SetRowSeries(tags.Select(x => x.Confidence), "Confidence", 15)
+                .SetXAxes(labeler: (v) => v.ToString())
+                .SetYAxes(labels: tags.Select(t => t.Tag).ToList())
+                .Build();
+        }
+
+
     }
 }

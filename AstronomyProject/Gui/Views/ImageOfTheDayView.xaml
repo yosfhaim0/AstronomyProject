@@ -28,45 +28,40 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <GroupBox
-            Grid.Row="0"
-            DataContext="{Binding SelectedImage}"
-            Header="{Binding Title}"
-            Style="{StaticResource GroupBoxMainInvertThem}">
-            <GroupBox.HeaderTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <materialDesign:PackIcon
-                            Grid.Column="0"
-                            Width="28"
-                            Height="28"
-                            VerticalAlignment="Center"
-                            Kind="ImageArea" />
-                        <TextBlock
-                            Grid.Column="1"
-                            VerticalAlignment="Center"
-                            FontFamily="Consoles"
-                            FontSize="18"
-                            FontWeight="DemiBold"
-                            Text="{Binding}" />
-                        <Button
-                            Grid.Column="2"
-                            Width="150"
-                            HorizontalAlignment="Right"
-                            Background="#333d4a"
-                            Command="{Binding ElementName=GalleryView, Path=DataContext.GoToTodayImage}"
-                            Content="Show today image"
-                            Foreground="WhiteSmoke"
-                            Style="{StaticResource MaterialDesignPaperButton}"
-                            ToolTip="{Binding Source={x:Static sys:DateTime.Now}, StringFormat=dd/MM/yyyy}" />
-                    </Grid>
-                </DataTemplate>
-            </GroupBox.HeaderTemplate>
+        <GroupBox Grid.Row="0" Style="{StaticResource GroupBoxMainInvertThem}">
+            <GroupBox.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:PackIcon
+                        Grid.Column="0"
+                        Width="28"
+                        Height="28"
+                        VerticalAlignment="Center"
+                        Kind="ImageArea" />
+                    <TextBlock
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        FontFamily="Consoles"
+                        FontSize="18"
+                        FontWeight="DemiBold"
+                        Text="{Binding SelectedImage.Title}" />
+                    <Button
+                        Grid.Column="2"
+                        Width="150"
+                        HorizontalAlignment="Right"
+                        Background="#333d4a"
+                        BorderBrush="#333d4a"
+                        Command="{Binding GoToTodayImage}"
+                        Content="Show today image"
+                        Foreground="WhiteSmoke"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        ToolTip="{Binding Source={x:Static sys:DateTime.Now}, StringFormat=dd/MM/yyyy}" />
+                </Grid>
+            </GroupBox.Header>
 
             <Grid>
                 <Grid.RowDefinitions>
@@ -84,14 +79,14 @@
                     Grid.ColumnSpan="2"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Center"
-                    IsLoading="{Binding ElementName=GalleryView, Path=DataContext.IsLoading}" />
+                    IsLoading="{Binding IsLoading}" />
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="0"
                     HorizontalAlignment="Center"
                     FontSize="15"
                     Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
-                    Text="{Binding Date, StringFormat=dd/MM/yyyy}" />
+                    Text="{Binding SelectedImage.Date, StringFormat=dd/MM/yyyy}" />
                 <TextBox
                     Grid.Row="1"
                     Grid.Column="0"
@@ -102,7 +97,7 @@
                     FontFamily="{StaticResource MaterialDesignFont}"
                     FontSize="15"
                     IsReadOnly="True"
-                    Text="{Binding Explanation}"
+                    Text="{Binding SelectedImage.Explanation}"
                     TextWrapping="Wrap" />
                 <materialDesign:Card
                     Grid.Row="0"
@@ -112,10 +107,10 @@
                     <materialDesign:Card.Style>
                         <Style TargetType="materialDesign:Card">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=GalleryView, Path=DataContext.IsLoading}" Value="True">
+                                <DataTrigger Binding="{Binding IsLoading}" Value="True">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding ElementName=GalleryView, Path=DataContext.IsLoading}" Value="False">
+                                <DataTrigger Binding="{Binding IsLoading}" Value="False">
                                     <Setter Property="Visibility" Value="Visible" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -125,7 +120,7 @@
                         Width="Auto"
                         Height="Auto"
                         HorizontalAlignment="Stretch"
-                        Address="{Binding Url}"
+                        Address="{Binding SelectedImage.Url}"
                         ToolTip="Nasa Picture Of The Day" />
                 </materialDesign:Card>
             </Grid>

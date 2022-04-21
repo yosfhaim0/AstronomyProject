@@ -31,7 +31,7 @@
     </UserControl.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding SearchBetweenDates}" />
+            <i:InvokeCommandAction Command="{Binding Load}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
@@ -343,8 +343,8 @@
                                     Style="{StaticResource TabItemsForCloseApr}">
                                     <lvc:CartesianChart
                                         LegendPosition="Top"
-                                        Series="{Binding RelativeVelocitySeries}"
-                                        XAxes="{Binding XAxesDateTime}" />
+                                        Series="{Binding RelativeVelocityChart.Series}"
+                                        XAxes="{Binding RelativeVelocityChart.XAxes}" />
                                 </TabItem>
                                 <TabItem
                                     HorizontalAlignment="Center"
@@ -352,8 +352,8 @@
                                     Style="{StaticResource TabItemsForCloseApr}">
                                     <lvc:CartesianChart
                                         LegendPosition="Top"
-                                        Series="{Binding MissDistanceSeries}"
-                                        XAxes="{Binding XAxesDateTime}" />
+                                        Series="{Binding MissDistanceChart.Series}"
+                                        XAxes="{Binding MissDistanceChart.XAxes}" />
                                 </TabItem>
                                 <TabItem Header="Details" Style="{StaticResource TabItemsForCloseApr}">
                                     <Grid>
@@ -410,7 +410,7 @@
                             Style="{StaticResource MaterialDesignButtonTextBlock}"
                             Text="Risk information" />
                     </TabItem.Header>
-                    <lvc:PieChart LegendPosition="Right" Series="{Binding RiskInformation}" />
+                    <lvc:PieChart LegendPosition="Right" Series="{Binding RiskInformationChart.Series}" />
                 </TabItem>
                 <TabControl.Style>
                     <Style BasedOn="{StaticResource MaterialDesignNavigatilRailTabControl}" TargetType="TabControl">

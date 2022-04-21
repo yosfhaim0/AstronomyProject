@@ -30,12 +30,16 @@ namespace Gui.ViewModels
         public DelegateCommand Load => _load ??= new DelegateCommand(
             async () =>
             {
-
+                if (IsActive)
+                {
+                    return;
+                }
                 try
                 {
                     var searchs = await _mediaService.GetSearchWords();
                     Searches.Clear();
                     Searches.AddRange(searchs);
+                    IsActive = true;
                 }
                 catch (Exception ex)
                 {
@@ -72,7 +76,10 @@ namespace Gui.ViewModels
             set
             {
                 IsSelected = true;
-                SetProperty(ref _selectedMedia, value);
+                if(SetProperty(ref _selectedMedia, value))
+                {
+                    _chartDialog.CloseDialog();
+                }
             }
         }
 

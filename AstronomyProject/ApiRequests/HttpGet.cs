@@ -23,6 +23,10 @@ namespace ApiRequests
 
                 return content;
             }
+            catch (HttpRequestException)
+            {
+                throw new Exception("No internt conection...");
+            }
             catch (Exception)
             {
                 throw;

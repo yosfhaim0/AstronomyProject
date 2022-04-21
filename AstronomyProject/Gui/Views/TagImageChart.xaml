@@ -13,8 +13,8 @@
     <Grid>
         <local:LoadingBar IsLoading="{Binding IsLoading}" />
         <lvc:CartesianChart
-            Series="{Binding TagsSeries}"
-            XAxes="{Binding XAxes}"
-            YAxes="{Binding YAxes}" />
+            Series="{Binding TagsChart.Series}"
+            XAxes="{Binding TagsChart.XAxes}"
+            YAxes="{Binding TagsChart.YAxes}" />
     </Grid>
 </Window>

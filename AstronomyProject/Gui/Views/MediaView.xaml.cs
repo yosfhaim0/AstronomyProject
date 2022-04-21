@@ -24,12 +24,13 @@ namespace Gui.Views
     /// </summary>
     public partial class MediaView : UserControl
     {
-
-
         public MediaGroupe SelectedMedia
         {
             get { return (MediaGroupe)GetValue(SelectedMediaProperty); }
-            set { SetValue(SelectedMediaProperty, value); }
+            set 
+            { 
+                SetValue(SelectedMediaProperty, value);
+            }
         }
 
         // Using a DependencyProperty as the backing store for SelectedMedia.  This enables animation, styling, binding, etc...
@@ -37,24 +38,24 @@ namespace Gui.Views
             DependencyProperty.Register("SelectedMedia", typeof(MediaGroupe), typeof(MediaView) );
 
 
+        MedialViewModel viewModel;
 
 
         public MediaView()
         {
             InitializeComponent();
             var app = Application.Current as PrismApplicationBase;
-            var vm = app.Container.Resolve<MedialViewModel>();
-            vm.SelectedMedia = SelectedMedia;
-            DataContext = vm;
-            vm.PlayRequested += (s, e) =>
+            viewModel = app.Container.Resolve<MedialViewModel>();
+            //vm.SelectedMedia = SelectedMedia;
+            viewModel.PlayRequested += (s, e) =>
             {
                 media.Play();
             };
-            vm.PauseRequested += (s, e) =>
+            viewModel.PauseRequested += (s, e) =>
             {
                 media.Pause();
             };
-            vm.StopRequested += (s, e) =>
+            viewModel.StopRequested += (s, e) =>
             {
                 media.Stop();
             };

@@ -69,6 +69,10 @@ namespace Gui.ViewModels
         public DelegateCommand Load => _load ??= new DelegateCommand(
             async () =>
             {
+                if (IsActive)
+                {
+                    return;
+                }
                 IsLoading = true;
                 try
                 {
@@ -76,6 +80,7 @@ namespace Gui.ViewModels
                     var gallery = await _gallery.GetGallery();
                     Gallery.Clear();
                     Gallery.AddRange(gallery);
+                    IsActive = true;
                 }
                 catch (Exception ex)
                 {

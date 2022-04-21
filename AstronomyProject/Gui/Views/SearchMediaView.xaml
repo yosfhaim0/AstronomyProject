@@ -193,6 +193,7 @@
                                     </StackPanel>
                                 </Grid>
                             </Grid>
+                            <!--<local:MediaView x:Name="mediaView" SelectedMedia="{Binding SelectedMedia}" />-->
                         </materialDesign:Card>
 
                         <Button

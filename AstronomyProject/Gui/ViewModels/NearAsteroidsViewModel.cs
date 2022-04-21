@@ -7,14 +7,9 @@ using System.Threading.Tasks;
 using Models;
 using DomainModel.Services;
 using Prism.Commands;
-using Prism.Mvvm;
-using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore;
 using LiveChartsCore.Defaults;
-using LiveChartsCore.Kernel.Sketches;
-using Prism.Regions;
 using Gui.Dialogs;
-using Tools;
+using Gui.LiveCharts;
 
 namespace Gui.ViewModels
 {
@@ -122,14 +117,33 @@ namespace Gui.ViewModels
         public DelegateCommand Load => _load ??= new DelegateCommand(
             async () =>
             {
-                await Search();
+                if (IsActive)
+                {
+                    return;
+                }
+                try
+                {
+                    await Search();
+                    IsActive = true;
+                }
+                catch (Exception ex)
+                {
+                    _dialogService.ShowDialog("Erorr", ex.Message);
+                }
             });
 
         DelegateCommand _searchBetweenDates;
         public DelegateCommand SearchBetweenDates => _searchBetweenDates ??= new DelegateCommand(
             async () =>
             {
-                await Search();
+                try
+                {
+                    await Search();
+                }
+                catch (Exception ex)
+                {
+                    _dialogService.ShowDialog("Erorr", ex.Message);
+                }
             });
 
         private void OnLoading(IEnumerable<NearAsteroid> asteroids)
@@ -144,7 +158,7 @@ namespace Gui.ViewModels
 
             SelectedAstroeid = Asteroids.First();
 
-            SetRiskInfoSeries();
+            SetRiskInfoChart();
         }
 
         private DelegateCommand _filterDatesCommand;
@@ -182,36 +196,32 @@ namespace Gui.ViewModels
                          && c.CloseApproachDate <= DateTime.Now));
                      break;
              }
-             SetRelativeVelocitySeries();
-             SetMissDistanceSeries();
-             SetOrbitingBodySeries();
+             SetRelativeVelocityChart();
+             SetMissDistanceChart();
          });
 
-        public ObservableCollection<ISeries> RiskInformation { get; set; } = new();
-
-        private void SetRiskInfoSeries()
+        private Chart _riskInformationChart;
+        public Chart RiskInformationChart
         {
-            var series = new ObservableCollection<ISeries>
-            {
-                new PieSeries<int>
-                {
-                    Name = "Sentry objects",
-                    Values = new int[]{ _allAsteroids.Count(x => x.IsSentryObject) }
-                },
-                new PieSeries<int>
-                {
-                    Name = "Potentially hazardous",
-                    Values = new int[]{ _allAsteroids.Count(x => x.IsPotentiallyHazardousAsteroid) }
-                },
-                new PieSeries<int>
-                {
-                    Name = "Not dangerous at all",
-                    Values = new int[]{ _allAsteroids.Count(x => !x.IsPotentiallyHazardousAsteroid && !x.IsSentryObject) }
-                },
+            get { return _riskInformationChart; }
+            set { SetProperty(ref _riskInformationChart, value); }
+        }
 
-            };
-            RiskInformation.Clear();
-            RiskInformation.AddRange(series);
+        private void SetRiskInfoChart()
+        {
+            RiskInformationChart = new ChartBuilder()
+                .SetPieSeries(new List<int[]>
+                {
+                    new int[]{ _allAsteroids.Count(x => x.IsSentryObject) },
+                    new int[]{ _allAsteroids.Count(x => x.IsPotentiallyHazardousAsteroid) },
+                    new int[]{ _allAsteroids.Count(x => !x.IsPotentiallyHazardousAsteroid && !x.IsSentryObject) }
+
+                }, new string[] 
+                { 
+                    "Sentry objects",
+                    "Potentially hazardous",
+                    "Not dangerous at all"
+                }).Build();
         }
 
         private IEnumerable<CloseApproachGroupByOrbitingBody> GroupByOrbitingBody()
@@ -225,78 +235,44 @@ namespace Gui.ViewModels
                    };
         }
 
-        public ObservableCollection<ISeries> OrbitingBodySeries { get; set; } = new();
-
-        private void SetOrbitingBodySeries()
-        {
-            var groupByOB = GroupByOrbitingBody();
-            var series = new List<ISeries>();
-            foreach (var c in groupByOB)
-            {
-                series.Add(new PieSeries<int>
-                {
-                    Values = new ObservableCollection<int> { c.Values.Count() },
-                    Name = c.OrbitingBody,
-                    InnerRadius = 70
-                });
-            }
-            OrbitingBodySeries.Clear();
-            OrbitingBodySeries.AddRange(series);
+        Chart _relativeVelocityChart;
+        public Chart RelativeVelocityChart 
+        { 
+            get => _relativeVelocityChart; 
+            set => SetProperty(ref _relativeVelocityChart, value); 
         }
 
-        public ObservableCollection<ISeries> RelativeVelocitySeries { get; set; } = new();
-
-        private void SetRelativeVelocitySeries()
+        private void SetRelativeVelocityChart()
         {
             var groupByOB = GroupByOrbitingBody();
-            var series = new List<ISeries>();
-            foreach (var c in groupByOB)
-            {
-                series.Add(new ColumnSeries<DateTimePoint>
-                {
-                    Values = new ObservableCollection<DateTimePoint>(from r in c.Values
-                                                                     select new DateTimePoint(r.CloseApproachDate, r.RelativeVelocity)),
-                    Name = $"{c.OrbitingBody}: {c.Values.Count()}"
-                });
-            }
-
-            RelativeVelocitySeries.Clear();
-            RelativeVelocitySeries.AddRange(series);
+            RelativeVelocityChart = new ChartBuilder()
+                .SetXAxesDateTime()
+                .SetColumnSeries(groupByOB
+                .Select(c => c.Values
+                .Select(v => new DateTimePoint(v.CloseApproachDate, v.RelativeVelocity))),
+                groupByOB.Select(c => $"{c.OrbitingBody}: {c.Values.Count()}"))
+                .Build();
         }
 
-        public ObservableCollection<ISeries> MissDistanceSeries { get; set; } = new();
+        Chart _missDistanceChart;
+        public Chart MissDistanceChart
+        {
+            get => _missDistanceChart;
+            set => SetProperty(ref _missDistanceChart, value);
+        }
 
-        private void SetMissDistanceSeries()
+        private void SetMissDistanceChart()
         {
             var groupByOB = GroupByOrbitingBody();
-            var series = new List<ISeries>();
-            foreach (var c in groupByOB)
-            {
-                series.Add(new ColumnSeries<DateTimePoint>
-                {
-                    
-                    Values = new ObservableCollection<DateTimePoint>(from m in c.Values
-                                                                         select new DateTimePoint(m.CloseApproachDate, m.MissDistance)),
-                    Name = $"{c.OrbitingBody}: {c.Values.Count()}"
-                    
-                });
-            }
+            MissDistanceChart = new ChartBuilder()
+                        .SetXAxesDateTime()
+                        .SetColumnSeries(groupByOB
+                        .Select(c => c.Values
+                        .Select(v => new DateTimePoint(v.CloseApproachDate, v.MissDistance))),
+                        groupByOB.Select(c => $"{c.OrbitingBody}: {c.Values.Count()}"))
+                        .Build();
 
-            MissDistanceSeries.Clear();
-            MissDistanceSeries.AddRange(series);
         }
-
-        public ObservableCollection<ICartesianAxis> XAxesDateTime { get; set; } = new()
-        {
-            new Axis
-            {
-                Labeler = value => new DateTime((long)value).ToString("dd/MM/yyyy"),
-                LabelsRotation = 15,
-                TextSize= 15,
-                UnitWidth = TimeSpan.FromDays(1).Ticks,
-                MinStep = TimeSpan.FromDays(1).Ticks, 
-            }
-        };
     }
 
     class CloseApproachGroupByOrbitingBody
