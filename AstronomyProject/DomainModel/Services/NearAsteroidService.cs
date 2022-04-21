@@ -1,5 +1,4 @@
 ﻿using ApiRequests.Nasa;
-using DataAccess.UnitOfWork;
 using DomainModel.DataAccessFactory;
 using Models;
 using Models.Configurations;

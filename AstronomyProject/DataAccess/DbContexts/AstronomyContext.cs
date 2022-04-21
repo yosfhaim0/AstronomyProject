@@ -1,5 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace DataAccess.DbContexts
@@ -27,17 +26,5 @@ namespace DataAccess.DbContexts
         {
 
         }
-
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    var con = @"Data Source=(localdb)\MSSQLLocalDB;Database=AstronomyDB;Trusted_Connection=True;";
-        //    optionsBuilder.UseSqlServer(con);
-        //}
-
-        //public AstronomyContext() : base()
-        //{
-
-        //}
-
     }
 }
