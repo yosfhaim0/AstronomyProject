@@ -24,6 +24,7 @@ We use Design Patterns such as:
 * **Dependency Injection**
 * **Generic Repository & Unit Of Work**
 * **Factory**
+* **Builder**
 
  Some pictures to demonstrate:
  
