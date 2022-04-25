@@ -145,7 +145,7 @@
                                     <MediaElement
                                         x:Name="media"
                                         Grid.Row="0"
-                                        IsMuted="{Binding IsMuted}"
+                                        IsMuted="False"
                                         LoadedBehavior="Manual"
                                         ScrubbingEnabled="True"
                                         Source="{Binding SelectedMedia.Url}"
@@ -179,10 +179,10 @@
                                                 <materialDesign:PackIcon.Style>
                                                     <Style TargetType="materialDesign:PackIcon">
                                                         <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding IsMuted}" Value="True">
+                                                            <DataTrigger Binding="{Binding ElementName=media, Path=IsMuted}" Value="True">
                                                                 <Setter Property="Kind" Value="VolumeHigh" />
                                                             </DataTrigger>
-                                                            <DataTrigger Binding="{Binding IsMuted}" Value="False">
+                                                            <DataTrigger Binding="{Binding ElementName=media, Path=IsMuted}" Value="False">
                                                                 <Setter Property="Kind" Value="VolumeOff" />
                                                             </DataTrigger>
                                                         </Style.Triggers>

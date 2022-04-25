@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Gui.ViewModels
 {
-    public class SearchMediaViewModel : ViewModelBase
+    public class SearchMediaViewModel : ViewModelBase, IMediaPlayer
     {
         readonly IMediaService _mediaService;
 
@@ -173,48 +173,41 @@ namespace Gui.ViewModels
                 return !IsLoading;
             });
 
-        private bool _isMuted = false;
-        public bool IsMuted
-        {
-            get { return _isMuted; }
-            set { SetProperty(ref _isMuted, value); }
-        }
-
-
-        public event EventHandler PlayRequested;
-
-        public event EventHandler PauseRequested;
-
-        public event EventHandler StopRequested;
 
         private DelegateCommand _play;
         public DelegateCommand PlayCommand => _play ??= new(
             () =>
             {
-                PlayRequested?.Invoke(this, EventArgs.Empty);
+                Play?.Invoke();
             });
 
         private DelegateCommand _pause;
         public DelegateCommand PauseCommand => _pause ??= new(
             () =>
             {
-                PauseRequested?.Invoke(this, EventArgs.Empty);
+                Pause?.Invoke();
             });
 
         private DelegateCommand _stop;
         public DelegateCommand StopCommand => _stop ??= new(
             () =>
             {
-                StopRequested?.Invoke(this, EventArgs.Empty);
+                Stop?.Invoke();
             });
 
         private DelegateCommand _mute;
         public DelegateCommand MuteCommand => _mute ??= new(
             () =>
             {
-                IsMuted = !IsMuted;
+                Mute?.Invoke();
             });
 
+        public Action Play { get; set; }
 
+        public Action Stop { get; set; }
+
+        public Action Pause { get; set; }
+
+        public Action Mute { get; set; }
     }
 }

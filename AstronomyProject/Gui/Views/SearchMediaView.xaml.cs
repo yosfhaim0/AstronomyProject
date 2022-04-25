@@ -12,21 +12,25 @@ namespace Gui.Views
     {
         public SearchMediaView()
         {
-            InitializeComponent();
             var app = Application.Current as PrismApplicationBase;
             var vm = app.Container.Resolve<ViewModels.SearchMediaViewModel>();
             DataContext = vm;
-            vm.PlayRequested += (s, e) =>
+            InitializeComponent();
+            vm.Play += () =>
             {
                 media.Play();
             };
-            vm.PauseRequested += (s, e) =>
+            vm.Pause += () =>
             {
                 media.Pause();
             };
-            vm.StopRequested += (s, e) =>
+            vm.Stop += () =>
             {
                 media.Stop();
+            };
+            vm.Mute += () =>
+            {
+                media.IsMuted = !media.IsMuted;
             };
         }
     }
