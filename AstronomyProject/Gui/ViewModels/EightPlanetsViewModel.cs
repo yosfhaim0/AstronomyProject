@@ -8,6 +8,7 @@ using DomainModel.Services;
 using Models;
 using System.Text.RegularExpressions;
 using Prism.Commands;
+using static Tools.Extensions;
 using Gui.LiveCharts;
 
 namespace Gui.ViewModels
@@ -53,7 +54,7 @@ namespace Gui.ViewModels
 
         public ObservableCollection<PropertyToolTipPair> PropNames { get; set; }
 
-        public ObservableCollection<ColumValue> PlanetsProperties { get; set; } = new();
+        public ObservableCollection<ColumnValue> PlanetsProperties { get; set; } = new();
 
         private PropertyToolTipPair _selectedProp;
         public PropertyToolTipPair SelectedProp
@@ -88,12 +89,12 @@ namespace Gui.ViewModels
 
         private void SetPropertiesChart()
         {
-            List<ColumValue> temp = new();
+            List<ColumnValue> temp = new();
             foreach (var planet in PlanetList)
             {
                 var prop = planet.GetType()
                     .GetProperty(SelectedProp.Property);
-                temp.Add(new ColumValue
+                temp.Add(new ColumnValue
                 {
                     Name = prop.Name,
                     Value = prop.GetValue(planet, null),
@@ -107,33 +108,13 @@ namespace Gui.ViewModels
                 .SetColumnSeries(values: PlanetsProperties.Select(x => (double)x.Value), 
                     name: SelectedProp.PropertyName)
                 .SetXAxes(labels: PlanetList.Select(x => x.Name).ToList(), textSize:22, nameTextSize: 22)
-                .SetYAxes(labeler: (value) => $"{FormatNumber(value)}{_eightPlanetsService.FindMida(SelectedProp.Property)}",
+                .SetYAxes(labeler: (value) => $"{value.FormatNumber()}{_eightPlanetsService.FindMida(SelectedProp.Property)}",
                     textSize: 22)
                 .Build();
         }
-
-        private static string FormatNumber(double num)
-        {
-            if (num <= 1 && num >= 0)
-                return string.Format("{0:0.###}", (num));
-            // Ensure number has max 3 significant digits (no rounding up can happen)
-            long i = (long)Math.Pow(10, (int)Math.Max(0, Math.Log10(num) - 2));
-            if (i == 0)
-                return num.ToString("0.##");
-            num = num / i * i;
-
-            if (num >= 1000000000)
-                return (num / 1000000000D).ToString("0.##") + "B";
-            if (num >= 1000000)
-                return (num / 1000000D).ToString("0.##") + "M";
-            if (num >= 1000)
-                return (num / 1000D).ToString("0.##") + "K";
-
-            return num.ToString("#,0");
-        }
     }
 
-    public class ColumValue
+    public class ColumnValue
     {
         public object Value { get; set; }
         public string Name { get; set; }

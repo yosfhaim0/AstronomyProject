@@ -9,7 +9,6 @@ namespace DomainModel.Services
         Task<IEnumerable<ImaggaTag>> GetMediaTags(MediaGroupe media);
         Task<IEnumerable<MediaGroupe>> SearchMedia(string keyWord);
         Task<IEnumerable<MediaGroupe>> SearchMedia(string keyWord, int skip);
-
         Task<IEnumerable<string>> GetSearchWords();
     }
 }

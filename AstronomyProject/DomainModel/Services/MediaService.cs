@@ -37,7 +37,6 @@ namespace DomainModel.Services
             _wordAssociations = new(configurations.WordAssociationsApiKey);
         }
 
-
         public async Task<IEnumerable<MediaGroupe>> SearchMedia(string keyWord)
         {
             keyWord = keyWord
@@ -132,99 +131,5 @@ namespace DomainModel.Services
             var imaggTag = await _imagga.AutoTagging(imageUrl);
             return imaggTag.GetTags();
         }
-
-        private async Task<IEnumerable<MediaGroupe>> ConfigureMedia(IEnumerable<MediaGroupe> mediasFromNasa)
-        {
-            List<Task<Tuple<string, List<ImaggaTag>>>> tasks = new();
-            var urls = mediasFromNasa.Select(m => m.PreviewUrl);
-            foreach (var im in urls)
-            {
-                tasks.Add(GetImageTagPair(im));
-            }
-
-            var imageAndTags = await Task.WhenAll(tasks);
-
-            using var unitOfWork = _daFactory.GetDataAccess();
-
-            foreach (var m in mediasFromNasa)
-            {
-                foreach(var imt in imageAndTags)
-                {
-                    var image = imt.Item1;
-                    var tags = imt.Item2;
-                    if (m.PreviewUrl == image)
-                    {
-                        await unitOfWork
-                            .MediaSearchRepository
-                            .AddTags(m, tags);
-                    }
-                }
-            }
-            return mediasFromNasa;
-        }
-
-        private async Task<IEnumerable<MediaGroupe>> ConfigureMediaSmart(IEnumerable<MediaGroupe> mediasFromNasa, string keyWord)
-        {
-            List<Task<Tuple<string, List<ImaggaTag>>>> tasks = new();
-            foreach (var im in mediasFromNasa.Select(m => m.Url))
-            {
-                tasks.Add(GetImageTagPair(im));
-            }
-
-            var imageAndTags = await Task.WhenAll(tasks);
-
-            var reletedWords = await GetWordAssociations(keyWord);
-
-            var urls = (from t in imageAndTags
-                        where IsImageReletedToSearchWord(reletedWords, t.Item2)
-                        select t.Item1).ToList();
-
-            return from u in urls
-                   where u != null
-                   select new MediaGroupe
-                   {
-
-                   };
-
-        }
-
-
-
-        private async Task<Tuple<string, List<ImaggaTag>>> GetImageTagPair(string imageUrl)
-        {
-
-            var imaggTag = await _imagga.AutoTagging(imageUrl);
-            var tags = imaggTag.GetTags();
-
-            return new(imageUrl, tags);
-        }
-
-        private async Task<List<Association>> GetWordAssociations(string searchWord)
-        {
-            return await _wordAssociations.GetAssociations(searchWord);
-        }
-
-        private bool IsImageReletedToSearchWord(List<Association> associations, List<ImaggaTag> tags)
-        {
-            if(tags == null)
-            {
-                return false;
-            }
-
-            var tagsWords = tags.Select(t => t.Tag.ToLower());
-            var associationsWords = from a in associations
-                                    orderby a.Weight descending
-                                    //where a.Pos == Pos.Noun
-                                    select a.Word.ToLower();
-            var inter = tagsWords.Intersect(associationsWords.Take(25));
-            if (inter.Any())
-            {
-                return  true;
-            }
-
-            return false;
-        }
-
-        
     }
 }

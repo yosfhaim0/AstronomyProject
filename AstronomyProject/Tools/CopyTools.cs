@@ -60,7 +60,7 @@ namespace Tools
         /// <returns>The new copy of the original object</returns>
         public static T Clone<T>(this T original) where T : new()
         {
-            T copyToObject = new T();
+            T copyToObject = new();
 
             foreach (PropertyInfo propertyInfo in typeof(T).GetProperties())
             {

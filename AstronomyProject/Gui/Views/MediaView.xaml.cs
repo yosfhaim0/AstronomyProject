@@ -38,7 +38,7 @@ namespace Gui.Views
             DependencyProperty.Register("SelectedMedia", typeof(MediaGroupe), typeof(MediaView) );
 
 
-        MedialViewModel viewModel;
+        readonly MedialViewModel viewModel;
 
 
         public MediaView()

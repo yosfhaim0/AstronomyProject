@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using DomainModel.Services;
 using Gui.LiveCharts;
 using Gui.Views;
+using Gui.ViewModels;
 using Models;
 
 namespace Gui.Dialogs
@@ -26,8 +27,10 @@ namespace Gui.Dialogs
         public async Task ShowChartByMedia(MediaGroupe media)
         {
             _chartDialog = new();
-            var vm = new ViewModels.TagImageChartViewModel();
-            vm.IsLoading = true;
+            var vm = new TagImageChartViewModel
+            {
+                IsLoading = true
+            };
             _chartDialog.DataContext = vm;
             _chartDialog.Show();
             Chart tagsChart;
@@ -58,7 +61,7 @@ namespace Gui.Dialogs
             return new ChartBuilder()
                 .SetRowSeries(tags.Select(x => x.Confidence), "Confidence", 15)
                 .SetXAxes(labeler: (v) => v.ToString())
-                .SetYAxes(labels: tags.Select(t => t.Tag).ToList())
+                .SetYAxes(labels: tags.Select(t => t.Tag).ToList(), textSize:18)
                 .Build();
         }
 

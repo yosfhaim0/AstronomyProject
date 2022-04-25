@@ -120,6 +120,7 @@ namespace Gui.ViewModels
             });
 
 
+
         bool _isIoadingTagChart = false;
         public bool IsIoadingTagChart
         {

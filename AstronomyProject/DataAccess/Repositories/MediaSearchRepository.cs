@@ -22,7 +22,7 @@ namespace DataAccess.Repositories
                 .Select(s => s.MediaGroupeId)
                 .ToListAsync();
 
-            if(!mediaIds.Any())
+            if (!mediaIds.Any())
             {
                 return new List<MediaGroupe>();
             }
