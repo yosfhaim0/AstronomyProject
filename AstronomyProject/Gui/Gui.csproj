@@ -22,9 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CefSharp.Wpf.NETCore" Version="98.1.190" />
+    <PackageReference Include="CefSharp.Wpf.NETCore" Version="100.0.230" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.101" />
-    <PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.5.0" />
     <PackageReference Include="Prism.Unity" Version="8.1.97" />
   </ItemGroup>
 
@@ -32,6 +32,18 @@
     <ProjectReference Include="..\DomainModel\DomainModel.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
     <ProjectReference Include="..\Tools\Tools.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="chromiumembeddedframework.runtime.win-arm64" Version="100.0.23" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="chromiumembeddedframework.runtime.win-x64" Version="100.0.23" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="chromiumembeddedframework.runtime.win-x86" Version="100.0.23" />
   </ItemGroup>
 
 </Project>

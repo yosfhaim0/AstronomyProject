@@ -9,6 +9,8 @@ using System.IO;
 using System.Windows;
 using Gui.Views;
 using Gui.Dialogs;
+using System.Threading;
+using System.Reflection;
 
 namespace Gui
 {
@@ -19,9 +21,13 @@ namespace Gui
     {
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            LoadHeavyAssembly(typeof(CefSharp.Wpf.ChromiumWebBrowser));
+            LoadHeavyAssembly(typeof(LiveChartsCore.ISeries));
+            LoadHeavyAssembly(typeof(LiveChartsCore.SkiaSharpView.Axis));
+
             containerRegistry.RegisterInstance(GetConfigurations());
-            
-            containerRegistry.RegisterScoped<IDataAccessFactory ,DataAccessFactory>();
+
+            containerRegistry.RegisterScoped<IDataAccessFactory, DataAccessFactory>();
 
             #region Register services from the domain model
             containerRegistry.RegisterScoped<IImageOfTheDayService, ImageOfTheDayService>();
@@ -40,6 +46,26 @@ namespace Gui
             containerRegistry.RegisterForNavigation<EightPlanetsView>();
 
             #endregion
+        }
+
+        private void LoadHeavyAssembly(Type type)
+        {
+            string assemblyString = type.Assembly.FullName.ToString();
+            new Thread(
+                () =>
+                {
+                    try
+                    {
+                        Assembly.Load(assemblyString);
+                    }
+                    catch (Exception)
+                    {
+                        return;
+                    }
+                })
+            {
+                Priority = ThreadPriority.Lowest
+            }.Start();
         }
 
         private MyConfigurations GetConfigurations()

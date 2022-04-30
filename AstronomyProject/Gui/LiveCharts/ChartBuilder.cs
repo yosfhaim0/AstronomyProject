@@ -11,7 +11,7 @@ namespace Gui.LiveCharts
 {
     public class ChartBuilder
     {
-        Chart _chart = new();
+        readonly Chart _chart = new();
 
         public Chart Build()
         {
@@ -39,12 +39,12 @@ namespace Gui.LiveCharts
         public ChartBuilder SetColumnSeries<T>(IEnumerable<IEnumerable<T>> values, IEnumerable<string> names, double maxBarWidth = 10)
         {
             _chart.Series = new ObservableCollection<ISeries>();
-            foreach (var item in values.Zip(names))
+            foreach (var (value, name) in values.Zip(names))
             {
                 _chart.Series.Add(new ColumnSeries<T>
                 {
-                    Values = new ObservableCollection<T>(item.First),
-                    Name = item.Second,
+                    Values = new ObservableCollection<T>(value),
+                    Name = name,
                     MaxBarWidth = maxBarWidth
                 });
             }
@@ -68,12 +68,12 @@ namespace Gui.LiveCharts
         public ChartBuilder SetRowSeries<T>(IEnumerable<IEnumerable<T>> values, IEnumerable<string> names, double maxBarWidth = 10)
         {
             _chart.Series = new ObservableCollection<ISeries>();
-            foreach (var item in values.Zip(names))
+            foreach (var (value, name) in values.Zip(names))
             {
                 _chart.Series.Add(new RowSeries<T>
                 {
-                    Values = new ObservableCollection<T>(item.First),
-                    Name = item.Second,
+                    Values = new ObservableCollection<T>(value),
+                    Name = name,
                     MaxBarWidth = maxBarWidth
                 });
             }
@@ -83,12 +83,12 @@ namespace Gui.LiveCharts
         public ChartBuilder SetPieSeries<T>(IEnumerable<IEnumerable<T>> values, IEnumerable<string> names)
         {
             _chart.Series = new ObservableCollection<ISeries>();
-            foreach (var item in values.Zip(names))
+            foreach (var (value, name) in values.Zip(names))
             {
                 _chart.Series.Add(new PieSeries<T>
                 {
-                    Values = new ObservableCollection<T>(item.First),
-                    Name = item.Second,
+                    Values = new ObservableCollection<T>(value),
+                    Name = name,
                 });
             }
             return this;
