@@ -29,7 +29,7 @@ namespace DataAccess.Repositories
             return asteroids;
         }
 
-        public async Task<IEnumerable<NearAsteroid>> ClosestApproachBetweenDates(DateTime startDate, DateTime endDate = default)
+        public async Task<IEnumerable<NearAsteroid>> SearchNearAsteroids(DateTime startDate, DateTime endDate = default)
         {
             try
             {

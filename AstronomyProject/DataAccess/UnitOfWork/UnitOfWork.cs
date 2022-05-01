@@ -1,5 +1,4 @@
-﻿using ApiRequests.FireBaseStorage;
-using DataAccess.DbContexts;
+﻿using DataAccess.DbContexts;
 using DataAccess.Repositories;
 using Models;
 using Models.Configurations;
@@ -18,8 +17,6 @@ namespace DataAccess.UnitOfWork
         {
             _context = new DbContextFactory(configurations.CurrentConnectionStrings)
                 .CreateAstronomyContext();
-
-            var firebase = new FireBase(configurations.FirebaseConnection);
 
             NearAstroidRepository = new NearAsteroidRepository(_context);
             MediaSearchRepository = new MediaSearchRepository(_context);

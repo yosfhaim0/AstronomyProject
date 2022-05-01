@@ -50,7 +50,7 @@ namespace DomainModel.Services
 
             var astroids = await
                 unitOfWork.NearAstroidRepository
-                .ClosestApproachBetweenDates(from.Value, to.Value);
+                .SearchNearAsteroids(from.Value, to.Value);
 
             if (!astroids.Any() || !await IsDbContainCloseApproach(from.Value, to.Value))
             {
