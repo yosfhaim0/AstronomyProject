@@ -88,7 +88,7 @@ namespace DomainModel.Services
                    select new PropertyToolTipPair
                    {
                        PropertyName = p.Key,
-                       ToolTip = p.Value.SpliceText(10),
+                       ToolTip = p.Value.SpliceText(10)+ "\n (Source: Wikipedia or first search result on Google)",
                    };
         }
     }
