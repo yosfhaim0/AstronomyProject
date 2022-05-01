@@ -13,9 +13,9 @@
     FontSize="16"
     Foreground="WhiteSmoke"
     mc:Ignorable="d">
-    <UserControl.Resources>
+    <!--<UserControl.Resources>
         <converters:DataTypeConverter x:Key="DataTypeConverter" />
-    </UserControl.Resources>
+    </UserControl.Resources>-->
     <materialDesign:Card>
         <materialDesign:Card.Background>
             <SolidColorBrush Opacity="0.4" Color="#333d4a" />
