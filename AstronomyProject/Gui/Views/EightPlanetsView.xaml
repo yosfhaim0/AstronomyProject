@@ -239,7 +239,7 @@
                             </Button>
                             <Image
                                 Grid.Row="1"
-                                MaxHeight="500"
+                                MaxHeight="400"
                                 Source="{Binding ExplanImage}" />
                             <TextBlock
                                 Grid.Row="2"
