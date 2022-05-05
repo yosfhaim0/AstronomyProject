@@ -26,6 +26,9 @@ We use Design Patterns such as:
 * **Factory**
 * **Builder**
 
+A video demonstrating the use of the app
+https://youtu.be/4UlsXTnmWec
+
  Some pictures to demonstrate:
  
 ![image](https://user-images.githubusercontent.com/40955004/162939000-86033d29-c017-4a59-9301-8faf71e5e474.png)
