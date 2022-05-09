@@ -9,10 +9,6 @@ The project presents a spectacular window interface where we recieve, proccess a
 
 We dislplay features such as "Picture of the day" and charted data about close approach asteroids (miss distance, diameter, relative velocity, dangerous / not dangerous)  
 
-<p align="center">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/4UlsXTnmWec" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</p>
-
 # Technologies:
 
 * **Frontend** - WPF for desktop application
